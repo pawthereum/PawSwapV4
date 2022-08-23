@@ -25,6 +25,8 @@ export const ConfirmSwap = memo(({
     ...prepareConfig
   });
 
+  console.log({ prepareConfig })
+
   const { write, isLoading } = useContractWrite({
     ...config,
     onSuccess (data) {

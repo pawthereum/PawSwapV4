@@ -38,7 +38,7 @@ export const SwapButton = () => {
           outputToken?.token?.address,
           causeAmount || '0',
           cause?.address || address,
-          trade?.calculatedAmountWithSlippage?.raw?.toString(),
+          '0', //trade?.calculatedAmountWithSlippage?.raw?.toString(),
           true
         ],
         overrides: {

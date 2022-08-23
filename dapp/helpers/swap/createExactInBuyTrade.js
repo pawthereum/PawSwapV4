@@ -17,6 +17,7 @@ export const createExactInBuyTrade = ({
     ).quotient
   );
   const amountInSwap = inputAmount?.subtract(amountDeductedPreSwap);
+  console.log({ amountIn: amountInSwap?.raw?.toString() })
 
   // execute swap
   const swapResult =  new Trade(route, amountInSwap);
@@ -40,6 +41,7 @@ export const createExactInBuyTrade = ({
     ).quotient
   );
   const calculatedAmountWithSlippage = calculatedAmount.subtract(slippageAmount);
+  console.log({ c: calculatedAmountWithSlippage?.raw?.toString()})
   return {
     swapResult,
     calculatedAmount,
