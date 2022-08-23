@@ -14,7 +14,21 @@ async function sleep (ms) {
   })
 }
 
+async function verify (address, args) {
+  try {
+  // verify the token contract code
+  await hre.run("verify:verify", {
+      address: address,
+      constructorArguments: args
+  });
+  } catch (e) {
+  console.log("error verifying contract", e);
+  }
+  await sleep(1000);
+}
+
 const ZERO_ZERO_ZERO_ONE = '100000000000000';
+const HALF_A_BEAN = '50000000000000000';
 const ONE_MILLION_PAWTH = "1000000000000000";
 
 let PawswapFactory;
@@ -73,9 +87,9 @@ async function main() {
   await sleep(3000);
 
   pawswap = await Pawswap.deploy(
-    wethAddress,
     pawswapFactory.address,
     pawswapRouter.address,
+    wethAddress,
     { nonce: getNonce() }
   );
   console.log('deployed pawswap...');
@@ -117,7 +131,7 @@ async function main() {
     deployer.address,
     ONE_MILLION_PAWTH,
     {
-      value: ZERO_ZERO_ZERO_ONE,
+      value: HALF_A_BEAN,
       from: deployer.address,
       nonce: getNonce()
     }
@@ -125,6 +139,23 @@ async function main() {
   console.log('created pawth LP...')
 
   console.log("Account balance after deploy:", (await deployer.getBalance()).toString());
+
+  // verifications
+  await verify(pawthereum.address, [
+    deployer.address,
+    deployer.address,
+    deployer.address,
+    pancakeSwapRouterAddress,
+  ]);
+  await verify(pawswap.address, [
+    pawswapFactory.address,
+    pawswapRouter.address,
+    wethAddress,
+  ]);
+  await verify(pawthTaxStructure.address, [
+    pawthereum.address,
+    pawthTaxStructure.address,
+  ]);
 
   console.log({
     pawswap: pawswap.address,
