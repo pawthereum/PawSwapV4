@@ -13,7 +13,7 @@ export const tokenList = {
     {
       "name": "Pawthereum",
       "symbol": "PAWTH",
-      "address": "0xdf09234aB3247656F6672DCcc011F78bBabCB8Ea",
+      "address": "0x020e270199fE37657c7c88667Ff7272BE5d3fb1a",
       "chainId": 97,
       "decimals": 9,
       "logoURI": "https://assets.coingecko.com/coins/images/19275/large/pawth.png?1635127429",

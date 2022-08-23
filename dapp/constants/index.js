@@ -4,8 +4,8 @@ import { defaultChains } from 'wagmi';
 
 const pawswapAbi = pawswapJson.abi;
 
-// use eth by default in prod and localhost by default in dev
-export const defaultChainId = process.env.NODE_ENV === 'production' ? 1 : 1337
+// use testnet by default in prod until we are ready and localhost by default in dev
+export const defaultChainId = process.env.NODE_ENV === 'production' ? 97 : 1337
 export const validChains =  defaultChains?.concat([
   {
     id: 56,
@@ -88,7 +88,7 @@ export const PAWSWAP = {
     abi: pawswapAbi,
   },
   97: {
-    address: '0xE4D2774d63A2EA484AA772D7fA405B1BA600F802',
+    address: '0x90727Ec3d86F75A762fb9B75635903e53d1fB581',
     abi: pawswapAbi,
   }
 }

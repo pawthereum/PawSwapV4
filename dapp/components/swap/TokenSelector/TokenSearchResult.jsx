@@ -61,6 +61,8 @@ export default function TokenSearchResult ({ token, isLoading, img, side }) {
   }, [connectedChain]);
 
   useEffect(() => {
+    console.log({t: tokenList.tokens.filter(t => t.isFeatured && t.chainId === chain?.id)});
+
     if (token) {
       token.logoURI = img;
       setResults([token]);
