@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Brand Fonts */
+@font-face {
+  font-family: 'Comfortaa';
+  font-style: light;
+  font-weight: 100;
+  src: url('../public/fonts/Comfortaa-Light.ttf');
+}
+
+@font-face {
+  font-family: 'Comfortaa';
+  font-style: medium;
+  font-weight: 200;
+  src: url('../public/fonts/Comfortaa-Medium.ttf');
+}
+
+@font-face {
+  font-family: 'Comfortaa';
+  font-style: normal;
+  font-weight: 300;
+  src: url('../public/fonts/Comfortaa-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Comfortaa';
+  font-style: bold;
+  font-weight: 600;
+  src: url('../public/fonts/Comfortaa-SemiBold.ttf');
+}
+
+@font-face {
+  font-family: 'Comfortaa';
+  font-style: bold;
+  font-weight: 800;
+  src: url('../public/fonts/Comfortaa-Bold.ttf');
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Comfortaa, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    color: white;
+    background: black;
+  }
+}
+
+.btn {
+  @apply capitalize;
+}
+
+.app-bg {
+  @apply bg-gradient-radial from-primary;
+}
+
+.notification {
+  @apply fixed flex min-w-fit flex-col gap-2 p-4;
+}
+
