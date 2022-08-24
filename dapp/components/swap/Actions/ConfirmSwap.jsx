@@ -62,7 +62,17 @@ export const ConfirmSwap = memo(({
       });
     },
     onError (error) {
-      console.log({ error })
+      console.log({ error });
+      popNotification({
+        type: 'error',
+        title: 'Swap Error',
+        description: 
+          <div className="flex items-center">
+            <span>{error?.toString()}</span>
+          </div>
+        ,
+        link: `${chain?.blockExplorers?.default?.url}/tx/${data.hash}`
+      });
     }
   });
 
