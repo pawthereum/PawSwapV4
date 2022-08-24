@@ -76,6 +76,7 @@ const useSwap = () => {
     args: [nonNativeTokenInSwap?.token?.address],
     enabled: nonNativeTokenInSwap !== null,
     watch: nonNativeTokenInSwap !== null,
+    cacheTime: 30000,
   });
 
   const { data: buyTaxes } = useContractRead({
@@ -84,7 +85,8 @@ const useSwap = () => {
     functionName: 'getBuyTaxAmounts',
     args: [address || constants?.AddressZero],
     enabled: taxStructureAddress !== undefined,
-    watch: taxStructureAddress !== undefined
+    watch: taxStructureAddress !== undefined,
+    cacheTime: 30000,
   });
 
   const { data: sellTaxes } = useContractRead({
@@ -93,7 +95,8 @@ const useSwap = () => {
     functionName: 'getSellTaxAmounts',
     args: [address || constants?.AddressZero],
     enabled: taxStructureAddress !== undefined,
-    watch: taxStructureAddress !== undefined
+    watch: taxStructureAddress !== undefined,
+    cacheTime: 30000,
   });
 
   const { data: taxNames } = useContractRead({
@@ -101,7 +104,8 @@ const useSwap = () => {
     contractInterface: TAX_STRUCTURE_ABI,
     functionName: 'getTaxNames',
     enabled: taxStructureAddress !== undefined,
-    watch: taxStructureAddress !== undefined
+    watch: taxStructureAddress !== undefined,
+    cacheTime: 30000,
   });
 
   const { data: taxWallets } = useContractRead({
@@ -109,7 +113,8 @@ const useSwap = () => {
     contractInterface: TAX_STRUCTURE_ABI,
     functionName: 'getTaxWallets',
     enabled: taxStructureAddress !== undefined,
-    watch: taxStructureAddress !== undefined
+    watch: taxStructureAddress !== undefined,
+    cacheTime: 30000,
   });
 
   const { data: preSwapBuyTaxAmount } = useContractRead({
@@ -147,6 +152,7 @@ const useSwap = () => {
     args: nonNativeTokenInSwap?.token?.address,
     enabled: taxStructureAddress !== undefined,
     watch: taxStructureAddress !== undefined,
+    cacheTime: 15000,
   });
 
   const sortTokens = (tokenList) => {

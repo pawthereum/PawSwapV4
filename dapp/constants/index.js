@@ -88,7 +88,7 @@ export const PAWSWAP = {
     abi: pawswapAbi,
   },
   97: {
-    address: '0x612Eb9DF548d5626E5632F973eB6E5332F548A4B',
+    address: '0x81A3c0125ADD4A5466a27a71b31e0C13B1429091',
     abi: pawswapAbi,
   }
 }

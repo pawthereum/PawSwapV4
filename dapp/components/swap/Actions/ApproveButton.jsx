@@ -29,6 +29,7 @@ export const ApproveButton = () => {
     functionName: 'allowance',
     args: [address, PAWSWAP[chain?.id]?.address],
     watch: true,
+    cacheTime: 15000,
   });
 
   const { config: approveConfig, isLoading: approvalIsLoading } = usePrepareContractWrite({

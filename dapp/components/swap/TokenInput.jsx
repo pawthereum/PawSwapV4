@@ -50,6 +50,7 @@ export const TokenInput = ({ side }) => {
     functionName: 'balanceOf',
     enabled: isConnected,
     watch: true,
+    cacheTime: 30000,
     args: address
   });
 
@@ -57,6 +58,7 @@ export const TokenInput = ({ side }) => {
     addressOrName: address,
     enabled: isConnected,
     watch: true,
+    cacheTime: 30000,
   });
 
   const userBalance = useMemo(() => {

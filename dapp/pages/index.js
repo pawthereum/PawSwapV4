@@ -40,7 +40,7 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="flex justify-center mt-10">
+      <footer className="flex justify-center mt-10 mb-5">
         <a
           href="https://pawthereum.com"
           target="_blank"

@@ -38,6 +38,8 @@ export default function TokenSearchResult ({ token, isLoading, img, side }) {
     enabled: isConnected,
   });
 
+  console.log({ tokenBalanceData })
+
   useEffect(() => {
     const isNative = (token) => {
       return token?.address?.toLowerCase() === NATIVE_ADDRESS;

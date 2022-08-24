@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import SwapContext from "../../context/SwapContext";
 import { utils } from 'ethers';
 import { PAWSWAP_FEE } from "../../constants";
@@ -14,11 +14,13 @@ export const SwapInfo = () => {
     totalSellTax,
     nonNativeTokenInSwap,
     taxNames,
-    taxWallets,
     isBuy,
     trade,
     isExactIn,
   } = useContext(SwapContext);
+
+  const [totalTax, setTotalTax] = useState(0);
+  const [taxes, setTaxes] = useState([]);
 
   const calculatedSymbol = useMemo(() => {
     return isExactIn ? outputToken?.token?.symbol : inputToken?.token?.symbol;
@@ -57,12 +59,18 @@ export const SwapInfo = () => {
     return 'text-success'; 
   }, [trade]);
 
-  console.log({ trade, nonNativeTokenInSwap, taxNames, taxWallets, buyTaxes, sellTaxes })
+  console.log({ trade, nonNativeTokenInSwap, taxNames, buyTaxes, sellTaxes, totalTax })
 
+  useEffect(() => {
+    setTaxes(isBuy ? buyTaxes : sellTaxes);
+  }, [isBuy, buyTaxes, sellTaxes]);
 
-  const taxes = useMemo(() => {
-    return isBuy ? buyTaxes : sellTaxes;
-  }, [isBuy]);
+  useEffect(() => {
+    console.log({
+      totalBuyTax: totalBuyTax?.toString()
+    })
+    setTotalTax(isBuy ? Number(totalBuyTax?.toString()) : Number(totalSellTax?.toString()));
+  }, [isBuy, totalBuyTax, totalSellTax]);
 
   if (!trade) return (<></>);
 
@@ -80,24 +88,26 @@ export const SwapInfo = () => {
           </div>
         </div>
         <div className="flex justify-between">
-          <div>Total {nonNativeTokenInSwap?.token?.symbol || 'Loading...'} Tax</div>
+          <div>Total&nbsp;
+            {nonNativeTokenInSwap?.token?.symbol || 'Loading...'}&nbsp;
+            {isBuy ? 'Buy' : 'Sell'}&nbsp;Tax</div>
           <div className="font-bold">
-            {totalBuyTax / 100 || 'Loading...'}%
+            {totalTax ? totalTax / 100 : 'Loading...'}%
           </div>
         </div>
-        <div className="pl-4 text-xs">
-          <div className="w-full">
-            {!taxes?.length ? '' : taxes?.map((t, i) => (
-              t?.toString() === '0' || taxNames[i] === '' ? '' :
+        {!taxes?.length && !taxNames?.length ? '' : taxes?.map((t, i) => (
+          t?.toString() === '0' || taxNames[i] === '' ? '' :
+          <div className="pl-4 text-xs">
+            <div className="w-full">
               <div className="flex justify-between">
                 <div>{taxNames[i]}</div>
                 <div>
                   {t?.toString() / 100 || 'Loading...'}%
                 </div>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
+        ))}
         <div className="flex justify-between">
           <div>PancakeSwap Fee</div>
           <div className="font-bold">
