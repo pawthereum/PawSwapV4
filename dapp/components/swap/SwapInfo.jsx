@@ -1,6 +1,7 @@
 import { useContext, useMemo } from "react";
 import SwapContext from "../../context/SwapContext";
 import { utils } from 'ethers';
+import { PAWSWAP_FEE } from "../../constants";
 import formatWithCommas from "../../helpers/formatWithCommas";
 
 export const SwapInfo = () => {
@@ -77,7 +78,7 @@ export const SwapInfo = () => {
         <div className="flex justify-between">
           <div>PawSwap Fee</div>
           <div className="font-bold">
-            0.03%
+            {PAWSWAP_FEE / 100}%
           </div>
         </div>
       </div>
