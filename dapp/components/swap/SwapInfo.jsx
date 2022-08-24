@@ -10,6 +10,11 @@ export const SwapInfo = () => {
     outputToken,
     buyTaxes,
     sellTaxes,
+    totalBuyTax,
+    totalSellTax,
+    nonNativeTokenInSwap,
+    taxNames,
+    taxWallets,
     isBuy,
     trade,
     isExactIn,
@@ -52,7 +57,12 @@ export const SwapInfo = () => {
     return 'text-success'; 
   }, [trade]);
 
-  console.log({ trade })
+  console.log({ trade, nonNativeTokenInSwap, taxNames, taxWallets, buyTaxes, sellTaxes })
+
+
+  const taxes = useMemo(() => {
+    return isBuy ? buyTaxes : sellTaxes;
+  }, [isBuy]);
 
   if (!trade) return (<></>);
 
@@ -67,6 +77,25 @@ export const SwapInfo = () => {
           <div>Price Impact</div>
           <div className={`${impactClass} font-bold`}>
             {trade?.swapResult?.priceImpact?.toSignificant(4)}%
+          </div>
+        </div>
+        <div className="flex justify-between">
+          <div>Total {nonNativeTokenInSwap?.token?.symbol || 'Loading...'} Tax</div>
+          <div className="font-bold">
+            {totalBuyTax / 100 || 'Loading...'}%
+          </div>
+        </div>
+        <div className="pl-4 text-xs">
+          <div className="w-full">
+            {!taxes?.length ? '' : taxes?.map((t, i) => (
+              t?.toString() === '0' || taxNames[i] === '' ? '' :
+              <div className="flex justify-between">
+                <div>{taxNames[i]}</div>
+                <div>
+                  {t?.toString() / 100 || 'Loading...'}%
+                </div>
+              </div>
+            ))}
           </div>
         </div>
         <div className="flex justify-between">

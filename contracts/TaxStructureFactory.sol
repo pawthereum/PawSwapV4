@@ -434,17 +434,24 @@ contract TaxStructure is Ownable {
       );
     }
 
-    function getTaxNamesAndWallets () external view returns (string memory, address, string memory, address, string memory, address, string memory, address, string memory, address, address, address) {
+    function getTaxNames () external view returns (string memory, string memory, string memory, string memory, string memory, string memory, string memory) {
       return (
         tax1Name,
-        tax1Wallet,
         tax2Name,
-        tax2Wallet,
         tax3Name,
-        tax3Wallet,
         tax4Name,
-        tax4Wallet,
         tokenTaxName,
+        "Burn Tax",
+        "Liquidity Tax"
+      );
+    }
+
+    function getTaxWallets () external view returns (address, address, address, address, address, address, address) {
+      return (
+        tax1Wallet,
+        tax2Wallet,
+        tax3Wallet,
+        tax4Wallet,
         tokenTaxWallet,
         burnAddress,
         lpTokenHolder

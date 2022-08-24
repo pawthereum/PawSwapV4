@@ -50,7 +50,7 @@ const useSwap = () => {
       return inputToken;
     }
     return null;
-  }, [inputToken, outputToken]);
+  }, [inputToken, outputToken, trade]);
 
   // native token in the trade
   const native = useMemo(() => {
@@ -96,10 +96,18 @@ const useSwap = () => {
     watch: taxStructureAddress !== undefined
   });
 
-  const { data: taxNamesAndWallets } = useContractRead({
+  const { data: taxNames } = useContractRead({
     addressOrName: taxStructureAddress,
     contractInterface: TAX_STRUCTURE_ABI,
-    functionName: 'getTaxNamesAndWallets',
+    functionName: 'getTaxNames',
+    enabled: taxStructureAddress !== undefined,
+    watch: taxStructureAddress !== undefined
+  });
+
+  const { data: taxWallets } = useContractRead({
+    addressOrName: taxStructureAddress,
+    contractInterface: TAX_STRUCTURE_ABI,
+    functionName: 'getTaxWallets',
     enabled: taxStructureAddress !== undefined,
     watch: taxStructureAddress !== undefined
   });
@@ -329,6 +337,9 @@ const useSwap = () => {
   return {
     buyTaxes,
     sellTaxes,
+    taxNames,
+    taxWallets,
+    nonNativeTokenInSwap,
     causeAmount,
     inputToken,
     outputToken,
