@@ -60,45 +60,53 @@ export const TokenSelector = ({ side }) => {
   }
 
   return (
-    <div className="min-w-max">
-      <label htmlFor={`${side}-token-selector`} className="btn btn-lg btn-wide modal-button sm:shadow-inner clip-left min-h-full sm:btn-lg btn-ghost bg-base-200 hover:bg-base-300">
-        <div className="avatar">
-          <div className="rounded-full">
-            <SelectedTokenImg token={selectedToken}/>
+    <div className="">
+      <span class="label-text text-right">
+        You must be the token owner to list
+      </span>
+      <div className="min-w-max">
+        <label 
+          htmlFor={`${side}-token-selector`} 
+          className={`btn btn-wide modal-button shadow-inner min-h-full btn-lg btn-ghost bg-base-200 hover:bg-base-300`}
+          >
+          <div className="avatar">
+            <div className="rounded-full">
+              <SelectedTokenImg token={selectedToken}/>
+            </div>
+          </div>
+          <span className="ml-1">{selectedToken?.token?.symbol || 'Select Token'}</span>
+          <ChevronDown className="h-5 w-5 ml-1" />
+        </label>
+        <input type="checkbox" id={`${side}-token-selector`} className="modal-toggle" />
+        <div className="modal modal-bottom sm:modal-middle">
+          <div className="modal-box">
+            <div className="flex justify-between">
+              <h3 className="font-bold text-lg">Select Token</h3>
+              <label htmlFor={`${side}-token-selector`} className="btn btn-sm btn-ghost btn-circle absolute top-4 right-4"><X/></label>
+            </div>
+            <input 
+              type="text" 
+              placeholder="Search for Token"
+              className="shadow-inner input bg-base-200 hover:bg-base-300 focus:outline-0 input-lg w-full" 
+              value={tokenQuery}
+              onChange={handleTokenQueryChange}
+            />
+            <TokenSearchResult 
+              token={erc20Data} 
+              isLoading={erc20DataLoading} 
+              img={tokenImg}
+              side={side}
+            />
           </div>
         </div>
-        <span className="ml-1">{selectedToken?.token?.symbol || 'Select Token'}</span>
-        <ChevronDown className="h-5 w-5 ml-1" />
-      </label>
-      <input type="checkbox" id={`${side}-token-selector`} className="modal-toggle" />
-      <div className="modal modal-bottom sm:modal-middle">
-        <div className="modal-box">
-          <div className="flex justify-between">
-            <h3 className="font-bold text-lg">Select Token</h3>
-            <label htmlFor={`${side}-token-selector`} className="btn btn-sm btn-ghost btn-circle absolute top-4 right-4"><X/></label>
+        { !listToken ? <></> :
+          <div className="w-full flex justify-center mt-2">
+            <a className="btn btn-primary btn-lg btn-wide" onClick={() => nextStep()}>
+              Next <ChevronRight className="h-5 w-5" />
+            </a>
           </div>
-          <input 
-            type="text" 
-            placeholder="Search for Token"
-            className="shadow-inner input bg-base-200 hover:bg-base-300 focus:outline-0 input-lg w-full" 
-            value={tokenQuery}
-            onChange={handleTokenQueryChange}
-          />
-          <TokenSearchResult 
-            token={erc20Data} 
-            isLoading={erc20DataLoading} 
-            img={tokenImg}
-            side={side}
-          />
-        </div>
+        }
       </div>
-      { !listToken ? <></> :
-        <div className="w-full flex justify-center mt-2">
-          <a className="btn btn-primary btn-lg btn-wide" onClick={() => nextStep()}>
-            Next <ChevronRight className="h-5 w-5" />
-          </a>
-        </div>
-      }
     </div>
   )
 }
