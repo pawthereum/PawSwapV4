@@ -46,12 +46,13 @@ const useList = () => {
   });
 
   const { data: buyTaxes } = useContractRead({
-    addressOrName: taxStructureAddress,
+    // default to the contract recently deployed or pasted
+    // fall back to what is already listed if it exists
+    addressOrName: taxStructureContractAddress || taxStructureAddress,
     contractInterface: TAX_STRUCTURE_ABI,
     functionName: 'getBuyTaxAmounts',
     args: [constants?.AddressZero],
-    enabled: taxStructureAddress !== undefined,
-    watch: taxStructureAddress !== undefined,
+    watch: true,
     cacheTime: 30000,
   });
 
@@ -107,6 +108,10 @@ const useList = () => {
   }, [connectedChain]);
 
   return {
+    buyTaxes,
+    sellTaxes,
+    taxNames,
+    taxWallets,
     listToken,
     listedTaxStructureAddress,
     taxStructureContractAddress,

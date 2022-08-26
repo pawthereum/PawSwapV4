@@ -109,8 +109,8 @@ export const LaunchContract = () => {
   return (
     <div className="grid grid-flow-row gap-2">
       <div>
-        <label class="label flex justify-end pb-0">
-          <span class="label-text text-right">
+        <label className="label flex justify-end pb-0">
+          <span className="label-text text-right">
             { taxStructureContractAddress 
               ? shortenAddress(taxStructureContractAddress)
               : 'Paste existing or deploy new'
@@ -125,8 +125,8 @@ export const LaunchContract = () => {
           className="input shadow-inner bg-base-200 hover:bg-base-300 focus:outline-0 input-lg w-full" 
         />
         {!onChainTaxStruct || onChainTaxStruct === constants.AddressZero ? '' :
-          <label class="label flex justify-end pb-0">
-            <span class="label-text text-right">
+          <label className="label flex justify-end pb-0">
+            <span className="label-text text-right">
               Launched at: 
               <a 
                 className="ml-1 font-bold"

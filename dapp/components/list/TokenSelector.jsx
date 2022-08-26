@@ -61,7 +61,7 @@ export const TokenSelector = ({ side }) => {
 
   return (
     <div className="">
-      <span class="label-text text-right">
+      <span className="label-text text-right">
         You must be the token owner to list
       </span>
       <div className="min-w-max">

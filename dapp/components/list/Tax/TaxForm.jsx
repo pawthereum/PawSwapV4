@@ -1,11 +1,17 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Percent } from 'react-feather';
 
-export const TaxForm = ({ tax }) => {
+export const TaxForm = ({ tax, index }) => {
   const [name, setName] = useState('');
   const [buy, setBuy] = useState('');
   const [sell, setSell] = useState('');
   const [wallet, setWallet] = useState('');
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+
+  const areEqual = (val1, val2) => {
+    if (val2 === 'Tax' + (index + 1)) return true;
+    return String(val1?.replace(/\s+/g, "")) === String(val2?.replace(/\s+/g, ""));
+  }
 
   const handleNameChanged = (e) => {
     setName(e.target.value);
@@ -21,6 +27,10 @@ export const TaxForm = ({ tax }) => {
     setSell(e.target.value);
   }
 
+  useEffect(() => {
+    setName(tax?.name);
+  }, [tax]);
+
   const displayBuy = useMemo(() => {
     return buy ? buy : '0';
   }, [buy]);
@@ -29,16 +39,37 @@ export const TaxForm = ({ tax }) => {
     return sell ? sell : '0';
   }, [sell]);
 
+  const displayName = useMemo(() => {
+    if (name === '') {
+      if (tax?.name === '') {
+        return 'Tax ' + (index + 1);
+      }
+      return tax?.name;
+    }
+    return name;
+  }, [tax?.name, name]);
+
+  useEffect(() => {
+    console.log({ tax, name })
+    console.log(areEqual(displayName, tax?.name));
+    if (!areEqual(displayName, tax?.name)) return setHasUnsavedChanges(true);
+   // if (displayBuy != tax?.buy?.toString()) return setHasUnsavedChanges(true);
+   // if (displaySell != tax?.sell?.toString()) return setHasUnsavedChanges(true);
+    return setHasUnsavedChanges(false);
+  }, [displayName, displayBuy, displaySell, tax?.name]);
+
   return (
     <div className="collapse collapse-arrow rounded-md">
       <input type="checkbox" className="peer" /> 
       <div className="collapse-title peer-checked:bg-secondary peer-checked:text-secondary-content">
         <div className="flex items-center justify-between">
           <div className="grow md:flex items-center sm:grid sm:grid-flow-row">
-            <div className="text-lg">Tax 1</div>
-            <span className="badge badge-primary badge-sm sm:ml-2">
-              unsaved changes
-            </span> 
+            <div className="text-lg">{displayName}</div>
+            { !hasUnsavedChanges ? '' :
+              <span className="badge badge-primary badge-sm sm:ml-2">
+                unsaved changes
+              </span> 
+            }
           </div>
           <div className="flex">
             <div className="badge badge-success mx-1">
