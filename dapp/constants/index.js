@@ -1,3 +1,4 @@
+import taxStructureFactoryJson from '../../artifacts/contracts/TaxStructureFactory.sol/TaxStructureFactory.json';
 import taxStructureJson from '../../artifacts/contracts/TaxStructureFactory.sol/TaxStructure.json';
 import pawswapJson from '../../artifacts/contracts/Pawswap.sol/PawSwap.json';
 import { defaultChains } from 'wagmi';
@@ -90,6 +91,19 @@ export const PAWSWAP = {
   97: {
     address: '0x81A3c0125ADD4A5466a27a71b31e0C13B1429091',
     abi: pawswapAbi,
+  }
+}
+
+export const TAX_STRUCTURE_FACTORY = {
+  1337: {
+    address: '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6',
+    abi: taxStructureFactoryJson.abi
+  }
+}
+
+export const PANCAKESWAP_ROUTER = {
+  1337: {
+    address: '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
   }
 }
 

@@ -160,6 +160,7 @@ async function main() {
     pawswap: pawswap.address,
     safemoon: safemoon.address,
     pawthereum: pawthereum.address,
+    pancakeRouter: pancakeRouter.address,
     taxStructureFactory: taxStructureFactory.address
   })
 

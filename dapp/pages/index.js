@@ -24,7 +24,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>PawSwap</title>
+        <title>PawSwap | Swap</title>
         <meta name="description" content="A decentralized exchange by Pawthereum" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

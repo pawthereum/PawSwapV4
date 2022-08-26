@@ -76,7 +76,7 @@ interface IERC20 {
 }
 
 contract TaxStructureFactory is Ownable {
-  event Deploy(address addr);
+  event Deploy(address addr, address deployer);
 
   constructor () {}
 
@@ -84,7 +84,7 @@ contract TaxStructureFactory is Ownable {
     TaxStructure _contract = new TaxStructure{
       salt: bytes32(_salt)
     }(_msgSender(), _router);
-    emit Deploy(address(_contract));
+    emit Deploy(address(_contract), msg.sender);
     return address(_contract);
   }
 }
