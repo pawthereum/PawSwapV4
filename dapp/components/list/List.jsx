@@ -3,6 +3,7 @@ import TokenSelector from '../list/TokenSelector';
 import ListContext from '../../context/ListContext';
 import Steps from './Steps';
 import LaunchContract from './LaunchContract';
+import { Manage } from './Manage';
 
 export const List = memo(() => {
   const { step } = useContext(ListContext);
@@ -27,6 +28,7 @@ export const List = memo(() => {
           <div className="flex items-center justify-center mt-2">
             { step === 0 ? <TokenSelector /> : '' }
             { step === 1 ? <LaunchContract /> : '' }
+            { step === 2 ? <Manage /> : '' }
           </div>
 
         </div>

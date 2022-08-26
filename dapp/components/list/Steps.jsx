@@ -1,4 +1,5 @@
-import { useContext } from 'react';
+import { constants } from 'ethers';
+import { useContext, useEffect, useState } from 'react';
 import ListContext from '../../context/ListContext';
 import shortenAddress from '../../helpers/shortenAddress';
 
@@ -7,8 +8,15 @@ export const Steps = () => {
     step, 
     updateStep, 
     listToken,
+    listedTaxStructureAddress,
     taxStructureContractAddress
   } = useContext(ListContext);
+  const [onChainTaxStruct, setOnChainTaxStruct] = useState(null);
+
+  useEffect(() => {
+    setOnChainTaxStruct(listedTaxStructureAddress);
+  }, [listedTaxStructureAddress]);
+
   return (
     <ul className="steps steps-vertical lg:steps-horizontal">
       <li 
@@ -30,13 +38,22 @@ export const Steps = () => {
         className={`cursor-pointer step ${step >= 1 ? 'step-primary' : ''}`}
         onClick={() => updateStep(1)}
       >
-        { !taxStructureContractAddress 
-          ? 'Launch Contract' 
+        { !taxStructureContractAddress
+          ? onChainTaxStruct !== constants.AddressZero 
+            ? 
+              <div className="grid grid-flow-row">
+                <div>Launch Contract</div>
+                <div className="text-xs tracking-widest uppercase text-base-content">
+                  {shortenAddress(onChainTaxStruct)}
+                </div>
+              </div>
+            :
+              'Launch Contract'
           : 
             <div className="grid grid-flow-row">
               <div>Launch Contract</div>
               <div className="text-xs tracking-widest uppercase text-base-content">
-                {shortenAddress(taxStructureContractAddress)}
+                {shortenAddress(taxStructureContractAddress || onChainTaxStruct)}
               </div>
             </div>
         }

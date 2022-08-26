@@ -5,17 +5,27 @@ import ListContext from '../../context/ListContext';
 import { TAX_STRUCTURE_FACTORY, defaultChainId, PANCAKESWAP_ROUTER } from '../../constants';
 import NotificationContext from '../../context/NotificationContext';
 import shortenAddress from '../../helpers/shortenAddress';
+import { constants } from 'ethers';
 
 export const LaunchContract = () => {
   const { popNotification } = useContext(NotificationContext);
   const { 
+    listedTaxStructureAddress,
     taxStructureContractAddress,
     updateTaxStructureContractAddress,
     nextStep,
   } = useContext(ListContext);
   const { address } = useAccount();
   const { chain: connectedChain } = useNetwork();
-  const [chain, setChain] = useState({ id: defaultChainId });
+  const [chain, setChain] = useState({ 
+    id: defaultChainId,
+    blockExplorers: {
+      default: {
+        url: 'https://bscscan.com/'
+      }
+    } 
+  });
+  const [onChainTaxStruct, setOnChainTaxStruct] = useState(null);
   const [deployInProgress, setDeployInProgress] = useState(false);
 
   // listen for new deploys and if we find one that was deployed
@@ -38,7 +48,14 @@ export const LaunchContract = () => {
 
   useEffect(() => {
     if (!connectedChain) {
-      setChain({ id: defaultChainId });
+      setChain({ 
+        id: defaultChainId,
+        blockExplorers: {
+          default: {
+            url: 'https://bscscan.com/'
+          }
+        }
+      });
     } else {
       setChain(connectedChain);
     }
@@ -85,6 +102,10 @@ export const LaunchContract = () => {
     }
   });
 
+  useEffect(() => {
+    setOnChainTaxStruct(listedTaxStructureAddress);
+  }, [listedTaxStructureAddress]);
+
   return (
     <div className="grid grid-flow-row gap-2">
       <div>
@@ -99,20 +120,52 @@ export const LaunchContract = () => {
         <input 
           type="text" 
           onChange={handleInputChanged}
-          value={taxStructureContractAddress}
+          value={taxStructureContractAddress || ''}
           placeholder="0xa1B2c...D3e4"
           className="input shadow-inner bg-base-200 hover:bg-base-300 focus:outline-0 input-lg w-full" 
         />
+        {!onChainTaxStruct || onChainTaxStruct === constants.AddressZero ? '' :
+          <label class="label flex justify-end pb-0">
+            <span class="label-text text-right">
+              Launched at: 
+              <a 
+                className="ml-1 font-bold"
+                target="_blank"
+                rel="noopener noreferrer"
+                href={chain?.blockExplorers?.default?.url + '/address/' + onChainTaxStruct}
+              >
+                {shortenAddress(onChainTaxStruct)}
+              </a>
+            </span>
+          </label>
+        }
       </div>
       { !taxStructureContractAddress 
         ? 
-          <button 
-            className={`btn btn-lg btn-wide btn-primary ${isLoading || deployInProgress ? 'loading' : ''}`}
-            disabled={!write}
-            onClick={() => write?.()}
-          >
-            Launch Tax Structure Contract
-          </button>
+          onChainTaxStruct !== constants.AddressZero
+          ?
+            <div>
+              <button 
+                className={`btn btn-lg btn-wide btn-primary ${isLoading || deployInProgress ? 'loading' : ''}`}
+                disabled={!write}
+                onClick={() => write?.()}
+              >
+                Launch New Tax Structure Contract
+              </button>
+              <div className="w-full flex justify-center mt-2">
+                <a className="btn btn-outline btn-primary btn-lg btn-wide" onClick={() => nextStep()}>
+                  Next <ChevronRight className="h-5 w-5" />
+                </a>
+              </div>
+            </div>
+          :
+            <button 
+              className={`btn btn-lg btn-wide btn-primary ${isLoading || deployInProgress ? 'loading' : ''}`}
+              disabled={!write}
+              onClick={() => write?.()}
+            >
+              Launch New Tax Structure Contract
+            </button>
         :
           <div className="w-full flex justify-center mt-2">
             <a className="btn btn-primary btn-lg btn-wide" onClick={() => nextStep()}>
