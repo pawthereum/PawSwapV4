@@ -9,7 +9,12 @@ import { ExternalLink } from 'react-feather';
 
 export const TaxForm = ({ tax, index }) => {
   const { popNotification } = useContext(NotificationContext);
-  const { listedTaxStructureAddress, taxStructureContractAddress } = useContext(ListContext);
+  const { 
+    listedTaxStructureAddress, 
+    taxStructureContractAddress,
+    refetchListedTaxStructure,
+    refetchTaxInfo
+  } = useContext(ListContext);
   const { chain: connectedChain } = useNetwork();
   const [chain, setChain] = useState({ id: defaultChainId });
   const [name, setName] = useState('');
@@ -140,6 +145,8 @@ export const TaxForm = ({ tax, index }) => {
         link: `${chain?.blockExplorers?.default?.url}/tx/${data.hash}`
       });
       await data.wait();
+      await refetchListedTaxStructure();
+      await refetchTaxInfo();
       setUpdateInProgress(false);
       popNotification({
         type: 'success',

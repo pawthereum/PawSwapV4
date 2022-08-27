@@ -44,7 +44,6 @@ const useList = () => {
     contractInterface: PAWSWAP[chain?.id]?.abi,
     functionName: 'tokenTaxContracts',
     args: [listToken?.token?.address],
-    watch: true,
   });
 
   const { data: buyTaxData, refetch: refetchBuyTaxes } = useContractRead({
@@ -54,8 +53,6 @@ const useList = () => {
     contractInterface: TAX_STRUCTURE_ABI,
     functionName: 'getBuyTaxAmounts',
     args: [constants?.AddressZero],
-    watch: true,
-    cacheTime: 30000,
   });
 
   const { data: sellTaxData, refetch: refetchSellTaxes } = useContractRead({
@@ -63,24 +60,18 @@ const useList = () => {
     contractInterface: TAX_STRUCTURE_ABI,
     functionName: 'getSellTaxAmounts',
     args: [constants?.AddressZero],
-    watch: true,
-    cacheTime: 30000,
   });
 
   const { data: taxNameData, refetch: refetchTaxNames } = useContractRead({
     addressOrName: taxStructureContractAddress || listedTaxStructureAddress,
     contractInterface: TAX_STRUCTURE_ABI,
     functionName: 'getTaxNames',
-    watch: true,
-    cacheTime: 30000,
   });
 
   const { data: taxWalletData, refetch: refetchTaxWallets } = useContractRead({
     addressOrName: taxStructureContractAddress || listedTaxStructureAddress,
     contractInterface: TAX_STRUCTURE_ABI,
     functionName: 'getTaxWallets',
-    watch: true,
-    cacheTime: 30000,
   });
 
   const refetchListedTaxStructure = async () => {
@@ -110,7 +101,7 @@ const useList = () => {
     setTaxWallets(taxWalletData);
   }, [taxWalletData]);
 
-  const updateTaxInfo = async () => {
+  const refetchTaxInfo = async () => {
     const [
       newBuyTaxes, 
       newSellTaxes, 
@@ -130,7 +121,7 @@ const useList = () => {
 
   useEffect(() => {
     setListedTaxStructureAddress(taxStructureAddress);
-    updateTaxInfo();
+    refetchTaxInfo();
   }, [taxStructUpdated]);
 
   useEffect(() => {
@@ -150,6 +141,8 @@ const useList = () => {
     listedTaxStructureAddress,
     taxStructureContractAddress,
     step,
+    refetchListedTaxStructure,
+    refetchTaxInfo,
     nextStep,
     updateStep,
     updateListToken,
