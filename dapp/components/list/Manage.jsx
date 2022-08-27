@@ -37,6 +37,18 @@ export const Manage = () => {
     });
   }, [taxNames, taxWallets, buyTaxes, sellTaxes]);
 
+  const liquidityTax = useMemo(() => {
+    return [taxNames[6]].map((t, i) => {
+      return {
+        name: t,
+        buy: buyTaxes[i + 6],
+        sell: sellTaxes[i + 6],
+        wallet: taxWallets[i + 6],
+        updateFunction: `setLiquidityTax`
+      }
+    });
+  }, [taxNames, taxWallets, buyTaxes, sellTaxes]);
+
   const totalBuyTax = useMemo(() => {
     if (!buyTaxes) return BigNumber.from('0');
     const bnTotal = buyTaxes?.reduce((p, c) => BigNumber.from(c).add(p), BigNumber.from('0'));
@@ -82,6 +94,12 @@ export const Manage = () => {
       <div className="text-xs">These taxes go to the specified wallet in {listToken?.token?.symbol}</div>
       <div className="divider my-0"></div>
       {tokenTaxes?.map((t, i) => (
+        <TaxForm tax={t} key={i} index={i} />
+      ))}
+      <div className="text-lg mt-8">Liquidity Tax</div>
+      <div className="text-xs">This tax will be added to the {listToken?.token?.symbol}/{chain?.nativeCurrency?.symbol} LP</div>
+      <div className="divider my-0"></div>
+      {liquidityTax?.map((t, i) => (
         <TaxForm tax={t} key={i} index={i} />
       ))}
     </div>

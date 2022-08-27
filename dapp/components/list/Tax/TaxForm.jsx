@@ -5,6 +5,7 @@ import NotificationContext from '../../../context/NotificationContext';
 import { useContractWrite, usePrepareContractWrite, useNetwork } from 'wagmi';
 import { TAX_STRUCTURE_ABI, defaultChainId } from '../../../constants';
 import formatError from '../../../helpers/formatError';
+import { ExternalLink } from 'react-feather';
 
 export const TaxForm = ({ tax, index }) => {
   const { popNotification } = useContext(NotificationContext);

@@ -42,7 +42,7 @@ const Notification = () => {
   return (
     <div
       style={{ zIndex: 9999 }} 
-      className={`top-2 right-2 absolute max-w-sm border-2 bg-base-100 mr-2 mt-2 shadow-xl sm:mr-10 sm:mt-10 rounded-xl p-5 ${notification?.type === 'error' ? 'border-error' : 'border-success'}`}
+      className={`top-2 right-2 fixed max-w-sm border-2 bg-base-100 mr-2 mt-2 shadow-xl sm:mr-10 sm:mt-10 rounded-xl p-5 ${notification?.type === 'error' ? 'border-error' : 'border-success'}`}
     >
       <div className="ml-2 mr-6 cursor-pointer break-words" onClick={() => goToLink()}>
         <span className="font-semibold">
