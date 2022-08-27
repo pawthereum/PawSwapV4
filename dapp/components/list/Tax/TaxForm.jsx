@@ -8,9 +8,9 @@ export const TaxForm = ({ tax, index }) => {
   const [wallet, setWallet] = useState('');
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
-  const areEqual = (val1, val2) => {
-    if (val2 === 'Tax' + (index + 1)) return true;
-    return String(val1?.replace(/\s+/g, "")) === String(val2?.replace(/\s+/g, ""));
+  const nameIsChanged = (val1, val2) => {
+    if (val1 === 'Tax ' + (index + 1)) return false;
+    return String(val1?.replace(/\s+/g, "")) !== String(val2?.replace(/\s+/g, ""));
   }
 
   const handleNameChanged = (e) => {
@@ -51,8 +51,8 @@ export const TaxForm = ({ tax, index }) => {
 
   useEffect(() => {
     console.log({ tax, name })
-    console.log(areEqual(displayName, tax?.name));
-    if (!areEqual(displayName, tax?.name)) return setHasUnsavedChanges(true);
+    console.log(nameIsChanged(displayName, tax?.name));
+    if (nameIsChanged(displayName, tax?.name)) return setHasUnsavedChanges(true);
    // if (displayBuy != tax?.buy?.toString()) return setHasUnsavedChanges(true);
    // if (displaySell != tax?.sell?.toString()) return setHasUnsavedChanges(true);
     return setHasUnsavedChanges(false);
