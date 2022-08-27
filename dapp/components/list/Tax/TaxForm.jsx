@@ -25,6 +25,7 @@ export const TaxForm = ({ tax, index }) => {
   const [updateInProgress, setUpdateInProgress] = useState(false);
 
   const nameIsChanged = (val1, val2) => {
+    if (val1 === 'Tax 5' && tax?.updateFunction === 'setTokenTax') return false;
     if (val1 === 'Tax ' + (index + 1)) return false;
     return String(val1?.toLowerCase().replace(/\s+/g, "")) !== String(val2?.toLowerCase().replace(/\s+/g, ""));
   }
@@ -84,6 +85,9 @@ export const TaxForm = ({ tax, index }) => {
 
   const displayName = useMemo(() => {
     if (name === '') {
+      if (tax?.updateFunction === 'setTokenTax') {
+        return 'Tax 5'
+      }
       if (tax?.name === '') {
         return 'Tax ' + (index + 1);
       }

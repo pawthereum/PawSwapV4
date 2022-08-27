@@ -97,7 +97,7 @@ export const Manage = () => {
         <TaxForm tax={t} key={i} index={i} />
       ))}
       <div className="text-lg mt-8">Liquidity Tax</div>
-      <div className="text-xs">This tax will be added to the {listToken?.token?.symbol}/{chain?.nativeCurrency?.symbol} LP</div>
+      <div className="text-xs">This tax will be added to the {listToken?.token?.symbol}/{chain?.nativeCurrency?.symbol} LP and LP tokens will be sent to the wallet specified</div>
       <div className="divider my-0"></div>
       {liquidityTax?.map((t, i) => (
         <TaxForm tax={t} key={i} index={i} />
