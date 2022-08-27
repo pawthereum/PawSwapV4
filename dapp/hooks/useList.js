@@ -10,6 +10,10 @@ const useList = () => {
   const [taxStructureContractAddress, setTaxStructureContractAddress] = useState(null); // tax struct deployed by or pasted by user
   const [listedTaxStructureAddress, setListedTaxStructureAddress] = useState(null); // the tax struct for listed token (must be listed already)
   const [listToken, setListToken] = useState(null);
+  const [buyTaxes, setBuyTaxes] = useState([]);
+  const [sellTaxes, setSellTaxes] = useState([]);
+  const [taxNames, setTaxNames] = useState([]);
+  const [taxWallets, setTaxWallets] = useState([]);
 
   const updateListToken = (token) => {
     setListToken(token);
@@ -40,15 +44,13 @@ const useList = () => {
     contractInterface: PAWSWAP[chain?.id]?.abi,
     functionName: 'tokenTaxContracts',
     args: [listToken?.token?.address],
-    enabled: listToken !== null,
-    watch: listToken !== null,
-    cacheTime: 30000,
+    watch: true,
   });
 
-  const { data: buyTaxes } = useContractRead({
+  const { data: buyTaxData, refetch: refetchBuyTaxes } = useContractRead({
     // default to the contract recently deployed or pasted
     // fall back to what is already listed if it exists
-    addressOrName: taxStructureContractAddress || taxStructureAddress,
+    addressOrName: taxStructureContractAddress || listedTaxStructureAddress,
     contractInterface: TAX_STRUCTURE_ABI,
     functionName: 'getBuyTaxAmounts',
     args: [constants?.AddressZero],
@@ -56,31 +58,28 @@ const useList = () => {
     cacheTime: 30000,
   });
 
-  const { data: sellTaxes } = useContractRead({
-    addressOrName: taxStructureAddress,
+  const { data: sellTaxData, refetch: refetchSellTaxes } = useContractRead({
+    addressOrName: taxStructureContractAddress || listedTaxStructureAddress,
     contractInterface: TAX_STRUCTURE_ABI,
     functionName: 'getSellTaxAmounts',
     args: [constants?.AddressZero],
-    enabled: taxStructureAddress !== undefined,
-    watch: taxStructureAddress !== undefined,
+    watch: true,
     cacheTime: 30000,
   });
 
-  const { data: taxNames } = useContractRead({
-    addressOrName: taxStructureAddress,
+  const { data: taxNameData, refetch: refetchTaxNames } = useContractRead({
+    addressOrName: taxStructureContractAddress || listedTaxStructureAddress,
     contractInterface: TAX_STRUCTURE_ABI,
     functionName: 'getTaxNames',
-    enabled: taxStructureAddress !== undefined,
-    watch: taxStructureAddress !== undefined,
+    watch: true,
     cacheTime: 30000,
   });
 
-  const { data: taxWallets } = useContractRead({
-    addressOrName: taxStructureAddress,
+  const { data: taxWalletData, refetch: refetchTaxWallets } = useContractRead({
+    addressOrName: taxStructureContractAddress || listedTaxStructureAddress,
     contractInterface: TAX_STRUCTURE_ABI,
     functionName: 'getTaxWallets',
-    enabled: taxStructureAddress !== undefined,
-    watch: taxStructureAddress !== undefined,
+    watch: true,
     cacheTime: 30000,
   });
 
@@ -96,7 +95,42 @@ const useList = () => {
   }, [listToken]);
 
   useEffect(() => {
+    setBuyTaxes(buyTaxData);
+  }, [buyTaxData]);
+
+  useEffect(() => {
+    setSellTaxes(sellTaxData);
+  }, [sellTaxData]);
+
+  useEffect(() => {
+    setTaxNames(taxNameData);
+  }, [taxNameData]);
+
+  useEffect(() => {
+    setTaxWallets(taxWalletData);
+  }, [taxWalletData]);
+
+  const updateTaxInfo = async () => {
+    const [
+      newBuyTaxes, 
+      newSellTaxes, 
+      newTaxWallets,
+      newTaxNames
+    ] = await Promise.all([
+      refetchBuyTaxes(),
+      refetchSellTaxes(),
+      refetchTaxWallets(),
+      refetchTaxNames()
+    ]);
+    setBuyTaxes(newBuyTaxes?.data);
+    setSellTaxes(newSellTaxes?.data);
+    setTaxWallets(newTaxWallets?.data);
+    setTaxNames(newTaxNames?.data);
+  }
+
+  useEffect(() => {
     setListedTaxStructureAddress(taxStructureAddress);
+    updateTaxInfo();
   }, [taxStructUpdated]);
 
   useEffect(() => {
