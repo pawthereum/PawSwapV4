@@ -4,6 +4,7 @@ import ListContext from '../../context/ListContext';
 import Steps from './Steps';
 import LaunchContract from './LaunchContract';
 import { Manage } from './Manage';
+import ConfirmListing from './ConfirmListing';
 
 export const List = memo(() => {
   const { step } = useContext(ListContext);
@@ -29,6 +30,7 @@ export const List = memo(() => {
             { step === 0 ? <TokenSelector /> : '' }
             { step === 1 ? <LaunchContract /> : '' }
             { step === 2 ? <Manage /> : '' }
+            { step === 3 ? <ConfirmListing /> : '' }
           </div>
 
         </div>
