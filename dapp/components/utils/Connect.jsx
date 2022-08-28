@@ -90,7 +90,7 @@ export default function Connect() {
   )
 
   return (
-    <div className="top-16 w-56 text-right">
+    <div className="top-16 text-right">
       <div className="dropdown dropdown-end">
         <label tabIndex={0} className="btn m-1" onClick={showMenuHandler}>
           Connect

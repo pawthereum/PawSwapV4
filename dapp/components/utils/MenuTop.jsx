@@ -5,6 +5,7 @@ import Connect from './Connect';
 
 export default function MenuTop() {
   const router = useRouter();
+
   return (
     <div className="navbar max-w-3xl mx-auto mt-2">
       <div className="flex-1">
@@ -22,7 +23,7 @@ export default function MenuTop() {
             List
           </a>
         </Link>
-      </div>
+      </div> 
       <div className="flex-none">
         <Connect />
       </div>
