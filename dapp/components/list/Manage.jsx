@@ -10,8 +10,6 @@ export const Manage = () => {
   const { chain: connectedChain } = useNetwork();
   const [chain, setChain] = useState({ id: defaultChainId, nativeCurrency: { symbol: 'ETH' } });
 
-  console.log({ taxNames })
-
   const nativeTaxes = useMemo(() => {
     if (!taxNames || !taxWallets || !buyTaxes || !sellTaxes) return [];
     return taxNames.slice(0, 4).map((t, i) => {
@@ -60,8 +58,6 @@ export const Manage = () => {
     const bnTotal = sellTaxes?.reduce((p, c) => BigNumber.from(c).add(p), BigNumber.from('0'));
     return Number(bnTotal?.toString()) / 100;
   }, [sellTaxes]);
-
-  console.log({ nativeTaxes, tokenTaxes })
 
   useEffect(() => {
     if (!connectedChain) {

@@ -70,8 +70,6 @@ export const ConfirmSwap = memo(({
           <div className="flex items-center">
             <span>{error?.toString()}</span>
           </div>
-        ,
-        link: `${chain?.blockExplorers?.default?.url}/tx/${data.hash}`
       });
     }
   });

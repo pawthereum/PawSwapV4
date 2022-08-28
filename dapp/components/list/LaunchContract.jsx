@@ -99,6 +99,16 @@ export const LaunchContract = () => {
         ,
         link: `${chain?.blockExplorers?.default?.url}/tx/${data.hash}`
       });
+    },
+    onError(e) {
+      popNotification({
+        type: 'error',
+        title: 'Deploy Error',
+        description: 
+          <div className="flex items-center">
+            <span>{e?.toString()}</span>
+          </div>
+      });
     }
   });
 
