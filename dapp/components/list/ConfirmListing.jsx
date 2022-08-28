@@ -6,9 +6,14 @@ import shortenAddress from "../../helpers/shortenAddress";
 import ListContext from "../../context/ListContext";
 import NotificationContext from "../../context/NotificationContext";
 import formatError from "../../helpers/formatError";
+import { constants } from "ethers";
 
 export const ConfirmListing = () => {
-  const { listToken, taxStructureContractAddress } = useContext(ListContext);
+  const { 
+    listToken, 
+    taxStructureContractAddress,
+    listedTaxStructureAddress
+  } = useContext(ListContext);
   const { popNotification } = useContext(NotificationContext);
   const { chain: connectedChain } = useNetwork();
   const [chain, setChain] = useState({ id: defaultChainId });
@@ -44,6 +49,7 @@ export const ConfirmListing = () => {
         link: `${chain?.blockExplorers?.default?.url}/tx/${data.hash}`
       });
       await data.wait();
+      setListInProgress(true);
       popNotification({
         type: 'success',
         title: 'List Confirmed',
@@ -93,9 +99,9 @@ export const ConfirmListing = () => {
       </div>
       <div className="flex justify-center mt-2">
         <div className="form-control w-full">
-          <label class="label">
-            <span class="label-text">PawSwap Address</span>
-            <span class="label-text-alt">{shortenAddress(PAWSWAP[chain?.id]?.address)}</span>
+          <label className="label">
+            <span className="label-text">PawSwap Address</span>
+            <span className="label-text-alt">{shortenAddress(PAWSWAP[chain?.id]?.address)}</span>
           </label>
           <label className="input-group">
             <input ref={addressRef} onChange={() => {}} value={PAWSWAP[chain?.id]?.address} type="text" className="input w-full input-bordered" />
@@ -112,7 +118,7 @@ export const ConfirmListing = () => {
         <button 
           className={`btn btn-wide btn-primary ${isLoading || listInProgress ? 'loading' : ''}`}
           onClick={() => { write?.() }}
-          disabled={!write}
+          disabled={!write || !acknowledged}
         >
           List
         </button>
@@ -123,6 +129,19 @@ export const ConfirmListing = () => {
           </div>
         }
       </div>
+      { listedTaxStructureAddress === constants.AddressZero ? '' :
+        <div className="flex justify-center text-center text-xs mt-2">
+          {listToken?.token?.symbol} is currently listed at 
+            <a 
+              className="ml-1 font-bold"
+              target="_blank"
+              rel="noopener noreferrer"
+              href={chain?.blockExplorers?.default?.url + '/address/' + listedTaxStructureAddress}
+            >
+              {shortenAddress(listedTaxStructureAddress)}
+            </a>
+        </div>
+      }
     </div>
   )
 }

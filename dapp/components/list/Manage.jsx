@@ -3,6 +3,7 @@ import { useNetwork } from 'wagmi';
 import { defaultChainId } from '../../constants';
 import { BigNumber } from 'ethers';
 import TaxForm from './Tax/TaxForm';
+import ExchangeForm from './Tax/ExchangeForm';
 import ListContext from '../../context/ListContext';
 
 export const Manage = () => {
@@ -102,6 +103,7 @@ export const Manage = () => {
         <div className="text-xl">Exchange</div>
       </div>
       <div className="flex w-full text-sm">The liquidity pool that will be used when executing trades</div>
+        <ExchangeForm />
     </div>
   )
 }

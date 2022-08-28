@@ -14,6 +14,7 @@ const useList = () => {
   const [sellTaxes, setSellTaxes] = useState([]);
   const [taxNames, setTaxNames] = useState([]);
   const [taxWallets, setTaxWallets] = useState([]);
+  const [routerAddress, setRouterAddress] = useState('');
 
   const updateListToken = (token) => {
     setListToken(token);
@@ -74,14 +75,18 @@ const useList = () => {
     functionName: 'getTaxWallets',
   });
 
+  const { data: routerAddressData, refetch: refetchRouterAddress } = useContractRead({
+    addressOrName: taxStructureContractAddress || listedTaxStructureAddress,
+    contractInterface: TAX_STRUCTURE_ABI,
+    functionName: 'routerAddress',
+  });
+
   const refetchListedTaxStructure = async () => {
     const refetched = await refetchTaxStructureAddress();
-    console.log({ refetched });
     setListedTaxStructureAddress(refetched?.data);
   }
 
   useEffect(() => {
-    console.log({ listToken })
     refetchListedTaxStructure();
   }, [listToken]);
 
@@ -101,22 +106,29 @@ const useList = () => {
     setTaxWallets(taxWalletData);
   }, [taxWalletData]);
 
+  useEffect(() => {
+    setRouterAddress(routerAddressData);
+  }, [routerAddressData]);
+
   const refetchTaxInfo = async () => {
     const [
       newBuyTaxes, 
       newSellTaxes, 
       newTaxWallets,
-      newTaxNames
+      newTaxNames,
+      newRouterAddress,
     ] = await Promise.all([
       refetchBuyTaxes(),
       refetchSellTaxes(),
       refetchTaxWallets(),
-      refetchTaxNames()
+      refetchTaxNames(),
+      refetchRouterAddress()
     ]);
     setBuyTaxes(newBuyTaxes?.data);
     setSellTaxes(newSellTaxes?.data);
     setTaxWallets(newTaxWallets?.data);
     setTaxNames(newTaxNames?.data);
+    setRouterAddress(newRouterAddress?.data);
   }
 
   useEffect(() => {
@@ -137,6 +149,7 @@ const useList = () => {
     sellTaxes,
     taxNames,
     taxWallets,
+    routerAddress,
     listToken,
     listedTaxStructureAddress,
     taxStructureContractAddress,

@@ -107,6 +107,12 @@ export const PANCAKESWAP_ROUTER = {
   }
 }
 
+export const SAFEMOONSWAP_ROUTER = {
+  1337: {
+    address: '0x4FC8d32690cc91D4c39d9d3abcBD16989F875707',
+  }
+}
+
 export const TAX_STRUCTURE_ABI = taxStructureJson.abi;
 
 export const DEFAULT_SLIPPAGE = 1; // 1% default slippage

@@ -139,14 +139,14 @@ async function main() {
   await staking.startReward(1);
 
   // setup other token test contracts
-  await safemoon.initialize(pawswapRouter.address);
+  await safemoon.initialize(pancakeRouter.address);
   await safemoon.excludeFromFee(pawswap.address);
-  await safemoon.excludeFromFee(pawswapRouter.address);
-  await safemoon.excludeFromFee(pawswapFactory.address);
+  await safemoon.excludeFromFee(pancakeRouter.address);
+  await safemoon.excludeFromFee(pancakeRouter.address);
   // create a safemoon LP
   const oneHundredMillionSfm = '100000000000000000';
-  await safemoon.approve(pawswapRouter.address, oneHundredMillionSfm);
-  await pawswapRouter.addLiquidityETH(
+  await safemoon.approve(pancakeRouter.address, oneHundredMillionSfm);
+  await pancakeRouter.addLiquidityETH(
     safemoon.address,
     oneHundredMillionPawth,
     '0',
