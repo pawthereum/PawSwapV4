@@ -38,7 +38,7 @@ export default function TokenSearchResult ({ token, isLoading, img, side }) {
     enabled: isConnected,
   });
 
-  console.log({ tokenBalanceData })
+  console.log({ tokenBalanceData, results })
 
   useEffect(() => {
     const isNative = (token) => {

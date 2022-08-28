@@ -235,6 +235,7 @@ const useSwap = () => {
       } else {
         setSwapError(null);
       }
+      console.log({ createdTrade })
     } catch (e) {
       console.log({ e });
       setSwapError(e);
