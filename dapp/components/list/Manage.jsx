@@ -98,6 +98,10 @@ export const Manage = () => {
       {liquidityTax?.map((t, i) => (
         <TaxForm tax={t} key={i} index={i} />
       ))}
+      <div className="flex items-center justify-between mt-8">
+        <div className="text-xl">Exchange</div>
+      </div>
+      <div className="flex w-full text-sm">The liquidity pool that will be used when executing trades</div>
     </div>
   )
 }

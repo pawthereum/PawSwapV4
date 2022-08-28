@@ -75,6 +75,11 @@ export const TaxForm = ({ tax, index }) => {
     setWallet(tax?.wallet);
   }, [tax]);
 
+  const hideName = useMemo(() => {
+    return tax?.updateFunction === 'setLiquidityTax' ||
+           tax?.updateFunction === 'setBurnTax';
+  }, [tax]);
+
   const displayBuy = useMemo(() => {
     return buy ? buy : '0';
   }, [buy]);
@@ -203,10 +208,12 @@ export const TaxForm = ({ tax, index }) => {
               <span className="bg-error"><Percent className="h-5 w-5"/></span>
             </label>
           </div>
-          <label className="input-group my-1 w-full">
-            <span>Name</span>
-            <input value={name} onChange={handleNameChanged} type="text" placeholder="Tax Name" className="input input-bordered w-full" />
-          </label>
+          { hideName ? '' :
+            <label className="input-group my-1 w-full">
+              <span>Name</span>
+              <input value={name} onChange={handleNameChanged} type="text" placeholder="Tax Name" className="input input-bordered w-full" />
+            </label>
+          }
           <label className="input-group my-1">
             <span>Wallet</span>
             <input value={wallet} onChange={handleWalletChanged} type="text" placeholder="0xA1b23C...D3e4" className="input input-bordered w-full" />
