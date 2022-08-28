@@ -77,3 +77,6 @@ a {
   @apply fixed flex min-w-fit flex-col gap-2 p-4;
 }
 
+.filter-primary {
+  filter: invert(63%) sepia(38%) saturate(4653%) hue-rotate(298deg) brightness(104%) contrast(101%);
+}

@@ -49,7 +49,7 @@ export default function ListPage() {
           <div className="flex items-center">
             <div className="mr-1">Learn more about</div>
             <div className="pt-2">
-              <Image src="/img/pawth-horizontal.svg" alt="Pawthereum Logo" width={132} height={20} />
+              <Image src="/img/pawth-horizontal.svg" className="filter-primary" alt="Pawthereum Logo" width={132} height={20} />
             </div>
           </div>
         </a>
