@@ -174,7 +174,7 @@ export const ConfirmSwap = memo(({
                 <span>View on BSC Scan</span>
               </a>
             </div>
-            <div className="text-xs mx-auto mt-8">
+            <div className="text-xs mx-auto mt-40 sm:mt-8">
               <span>It is safe to close this modal</span>
             </div>
           </div>
