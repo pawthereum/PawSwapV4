@@ -33,6 +33,7 @@ const useSwap = () => {
   const [trade, setTrade] = useState(null);
   const [slippage, setSlippage] = useState(DEFAULT_SLIPPAGE);
   const [typicalBuyTax, setTypicalBuyTax] = useState(null);
+  const [typicalSellTax, setTypicalSellTax] = useState(null);
 
   const { address } = useAccount({
     onDisconnect() {
@@ -185,14 +186,10 @@ const useSwap = () => {
     // we expect this transaction to fail, so I'll see you in the
     // catch function!
     try {
-      await feeOracleContract?.callStatic?.buyFee(
-        token,
-        dex,
-        {
-          value: utils.parseEther('0.000001'),
-          from: address || constants.AddressZero
-        }
-      )
+      await feeOracleContract?.callStatic?.buyFee(token, dex, { 
+        value: utils.parseEther('0.000001'),
+        from: address || constants.AddressZero
+      });
     } catch (e) {
       // this is where we expect to be with each call.
       // the blockchain will come back with a revert which is treated
@@ -203,8 +200,23 @@ const useSwap = () => {
       const actualAmountReceivedInSwap = Number(data?.split(',')[1] || '0');
       const slippage = 0.01;
       const taxAmount = ((expectedAmountReceivedInSwap / actualAmountReceivedInSwap) - 1) - slippage;
-      console.log({ taxAmount })
       setTypicalBuyTax(taxAmount?.toFixed(2) * 100);
+    }
+  }
+
+  const fetchTypicalSellFee = async ({ token, dex }) => {
+    try {
+      await feeOracleContract?.callStatic?.sellFee(token, dex, {
+        value: utils.parseEther('0.000001'),
+        from: address || constants.AddressZero
+      });
+    } catch (e) {
+      const data = e?.errorArgs?.[0];
+      const expectedAmountReceivedInSwap = Number(data?.split(',')[0] || '0');
+      const actualAmountReceivedInSwap = Number(data?.split(',')[1] || '0');
+      const slippage = 0.01;
+      const taxAmount = ((expectedAmountReceivedInSwap / actualAmountReceivedInSwap) - 1) - slippage;
+      setTypicalSellTax(taxAmount?.toFixed(2) * 100);
     }
   }
 
@@ -214,7 +226,11 @@ const useSwap = () => {
       token: nonNativeTokenInSwap?.token?.address, 
       dex: '0x10ED43C718714eb63d5aA57B78B54704E256024E', //TODO: set this to: router 
     });
-  }, [nonNativeTokenInSwap, router])
+    fetchTypicalSellFee({
+      token: nonNativeTokenInSwap?.token?.address, 
+      dex: '0x10ED43C718714eb63d5aA57B78B54704E256024E', //TODO: set this to: router 
+    });
+  }, [nonNativeTokenInSwap, router]);
 
   const sortTokens = (tokenList) => {
     return tokenList.sort((a, b) => 
@@ -421,6 +437,7 @@ const useSwap = () => {
     totalBuyTax,
     totalSellTax,
     typicalBuyTax,
+    typicalSellTax,
     isBuy,
     updateInputToken,
     updateOutputToken,
