@@ -203,6 +203,7 @@ const useSwap = () => {
       const actualAmountReceivedInSwap = Number(data?.split(',')[1] || '0');
       const slippage = 0.01;
       const taxAmount = ((expectedAmountReceivedInSwap / actualAmountReceivedInSwap) - 1) - slippage;
+      console.log({ taxAmount })
       setTypicalBuyTax(taxAmount?.toFixed(2) * 100);
     }
   }
@@ -419,6 +420,7 @@ const useSwap = () => {
     trade,
     totalBuyTax,
     totalSellTax,
+    typicalBuyTax,
     isBuy,
     updateInputToken,
     updateOutputToken,

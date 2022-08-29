@@ -1,5 +1,5 @@
 import { memo, useContext, useState, useEffect } from 'react';
-import { ArrowDown, MoreHorizontal } from 'react-feather';
+import { ArrowDown } from 'react-feather';
 import SwapContext from '../../context/SwapContext';
 import { CauseSelector } from './CauseSelector';
 import TokenInput from './TokenInput';
@@ -7,6 +7,7 @@ import ErrorMessage from './ErrorMessage';
 import Settings from './Settings';
 import SwapActions from './SwapActions';
 import SwapInfo from './SwapInfo';
+import Savings from './Savings';
 
 export const Swap = memo(() => {
   const { swapError } = useContext(SwapContext);
@@ -45,7 +46,7 @@ export const Swap = memo(() => {
           <TokenInput side='output' />
 
           <div className="flex items-center justify-center my-2">
-            <MoreHorizontal className="h-5 w-5" />
+            <Savings />
           </div>
 
           {/* { CHARITY } */}
