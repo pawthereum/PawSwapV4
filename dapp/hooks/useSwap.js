@@ -1,8 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { BigNumber, constants, utils } from 'ethers';
 import { tokenList } from '../constants/tokenList';
-import { NATIVE_ADDRESS, PAWSWAP, TAX_STRUCTURE_ABI, DEFAULT_SLIPPAGE, PAWSWAP_FEE } from '../constants';
-import { useAccount, useContractRead, useNetwork } from 'wagmi';
+import { 
+  NATIVE_ADDRESS, 
+  PAWSWAP, 
+  TAX_STRUCTURE_ABI, 
+  DEFAULT_SLIPPAGE, 
+  PAWSWAP_FEE,
+  FEE_ORACLE
+} from '../constants';
+import { useAccount, useContractRead, useNetwork, usePrepareContractWrite, useSigner, useContract } from 'wagmi';
 import { Token, Pair, TokenAmount, Route, Percent } from '@uniswap/sdk';
 import { defaultChainId } from '../constants';
 import { createExactInBuyTrade } from '../helpers/swap/createExactInBuyTrade';
@@ -13,6 +20,7 @@ import { getPawth, getNative } from '../helpers/getTokens';
 
 const useSwap = () => {
   const { chain: connectedChain } = useNetwork();
+  const { data: signer } = useSigner()
   const [chain, setChain] = useState({ id: defaultChainId });
   const [inputToken, setInputToken] = useState(null);
   const [outputToken, setOutputToken] = useState(null);
@@ -24,6 +32,7 @@ const useSwap = () => {
   const [isExactIn, setIsExactIn] = useState(false);
   const [trade, setTrade] = useState(null);
   const [slippage, setSlippage] = useState(DEFAULT_SLIPPAGE);
+  const [typicalBuyTax, setTypicalBuyTax] = useState(null);
 
   const { address } = useAccount({
     onDisconnect() {
@@ -117,6 +126,15 @@ const useSwap = () => {
     cacheTime: 30000,
   });
 
+  const { data: router } = useContractRead({
+    addressOrName: taxStructureAddress,
+    contractInterface: TAX_STRUCTURE_ABI,
+    functionName: 'routerAddress',
+    enabled: taxStructureAddress !== undefined,
+    watch: taxStructureAddress !== undefined,
+    cacheTime: 30000,
+  });
+
   const { data: preSwapBuyTaxAmount } = useContractRead({
     addressOrName: taxStructureAddress,
     contractInterface: TAX_STRUCTURE_ABI,
@@ -154,6 +172,48 @@ const useSwap = () => {
     watch: taxStructureAddress !== undefined,
     cacheTime: 15000,
   });
+
+  const feeOracleContract = useContract({
+    addressOrName: FEE_ORACLE[chain?.id]?.address,
+    contractInterface: FEE_ORACLE[chain?.id]?.abi,
+    signerOrProvider: signer,
+  });
+
+  const fetchTypicalBuyFee = async ({ token, dex }) => {
+    // this function is really something. read this comment.
+    // we use call static which will simulate a transaction
+    // we expect this transaction to fail, so I'll see you in the
+    // catch function!
+    try {
+      await feeOracleContract?.callStatic?.buyFee(
+        token,
+        dex,
+        {
+          value: utils.parseEther('0.000001'),
+          from: address || constants.AddressZero
+        }
+      )
+    } catch (e) {
+      // this is where we expect to be with each call.
+      // the blockchain will come back with a revert which is treated
+      // as an error. in the error, we have the data we need to 
+      // derive the standard fees for the token
+      const data = e?.errorArgs?.[0];
+      const expectedAmountReceivedInSwap = Number(data?.split(',')[0] || '0');
+      const actualAmountReceivedInSwap = Number(data?.split(',')[1] || '0');
+      const slippage = 0.01;
+      const taxAmount = ((expectedAmountReceivedInSwap / actualAmountReceivedInSwap) - 1) - slippage;
+      setTypicalBuyTax(taxAmount?.toFixed(2) * 100);
+    }
+  }
+
+  useEffect(() => {
+    if (!nonNativeTokenInSwap || router === constants.AddressZero) return;
+    fetchTypicalBuyFee({ 
+      token: nonNativeTokenInSwap?.token?.address, 
+      dex: '0x10ED43C718714eb63d5aA57B78B54704E256024E', //TODO: set this to: router 
+    });
+  }, [nonNativeTokenInSwap, router])
 
   const sortTokens = (tokenList) => {
     return tokenList.sort((a, b) => 

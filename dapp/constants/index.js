@@ -1,6 +1,7 @@
 import taxStructureFactoryJson from '../../artifacts/contracts/TaxStructureFactory.sol/TaxStructureFactory.json';
 import taxStructureJson from '../../artifacts/contracts/TaxStructureFactory.sol/TaxStructure.json';
 import pawswapJson from '../../artifacts/contracts/Pawswap.sol/PawSwap.json';
+import { feeOracleAbi } from './abis/feeOracle';
 import { defaultChains } from 'wagmi';
 
 const pawswapAbi = pawswapJson.abi;
@@ -110,6 +111,21 @@ export const PANCAKESWAP_ROUTER = {
 export const SAFEMOONSWAP_ROUTER = {
   1337: {
     address: '0x4FC8d32690cc91D4c39d9d3abcBD16989F875707',
+  }
+}
+
+export const FEE_ORACLE = {
+  1337: {
+    address: '0x76239B3832ED9b03C34Ae0174A1f4C1fb27c012c',
+    abi: feeOracleAbi
+  },
+  97: {
+    address: '0x76239B3832ED9b03C34Ae0174A1f4C1fb27c012c',
+    abi: feeOracleAbi
+  },
+  56: {
+    address: '0x76239B3832ED9b03C34Ae0174A1f4C1fb27c012c',
+    abi: feeOracleAbi
   }
 }
 
