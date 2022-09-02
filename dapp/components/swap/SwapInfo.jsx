@@ -1,8 +1,10 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import SwapContext from "../../context/SwapContext";
 import { utils } from 'ethers';
-import { PAWSWAP_FEE } from "../../constants";
+import { PAWSWAP_FEE, defaultChainId } from "../../constants";
 import formatWithCommas from "../../helpers/formatWithCommas";
+import getRouterByAddress from "../../helpers/getRouterAddress";
+import { useNetwork } from 'wagmi';
 
 export const SwapInfo = () => {
   const {
@@ -17,10 +19,13 @@ export const SwapInfo = () => {
     isBuy,
     trade,
     isExactIn,
+    router,
   } = useContext(SwapContext);
 
   const [totalTax, setTotalTax] = useState(0);
   const [taxes, setTaxes] = useState([]);
+  const { chain: connectedChain } = useNetwork();
+  const [chain, setChain] = useState({ id: defaultChainId });
 
   const calculatedSymbol = useMemo(() => {
     return isExactIn ? outputToken?.token?.symbol : inputToken?.token?.symbol;
@@ -72,6 +77,14 @@ export const SwapInfo = () => {
     setTotalTax(isBuy ? Number(totalBuyTax?.toString()) : Number(totalSellTax?.toString()));
   }, [isBuy, totalBuyTax, totalSellTax]);
 
+  useEffect(() => {
+    if (!connectedChain) {
+      setChain({ id: defaultChainId });
+    } else {
+      setChain(connectedChain);
+    }
+  }, [connectedChain]);
+
   if (!trade) return (<></>);
 
   return (
@@ -109,9 +122,9 @@ export const SwapInfo = () => {
           </div>
         ))}
         <div className="flex justify-between">
-          <div>PancakeSwap Fee</div>
+          <div>{getRouterByAddress(router, chain)?.name} Fee</div>
           <div className="font-bold">
-            0.25%
+          {getRouterByAddress(router, chain)?.fee}%
           </div>
         </div>
         <div className="flex justify-between">

@@ -118,18 +118,26 @@ export const TAX_STRUCTURE_FACTORY = {
 export const PANCAKESWAP_ROUTER = {
   1337: {
     address: '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
+    fee: 0.25,
+    name: 'PancakeSwap',
   },
   56: {
     address: '0x10ED43C718714eb63d5aA57B78B54704E256024E',
+    fee: 0.25,
+    name: 'PancakeSwap',
   }
 }
 
 export const SAFEMOONSWAP_ROUTER = {
   1337: {
     address: '0x4FC8d32690cc91D4c39d9d3abcBD16989F875707',
+    fee: 0.25,
+    name: 'SafeMoonSwap',
   },
   56: {
-    address: '',
+    address: '0xE804f3C3E6DdA8159055428848fE6f2a91c2b9AF',
+    fee: 0.25,
+    name: 'SafeMoonSwap',
   }
 }
 

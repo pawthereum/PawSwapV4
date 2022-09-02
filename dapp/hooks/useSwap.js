@@ -439,6 +439,7 @@ const useSwap = () => {
     typicalBuyTax,
     typicalSellTax,
     isBuy,
+    router,
     updateInputToken,
     updateOutputToken,
     updateInputAmount,
