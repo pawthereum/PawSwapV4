@@ -188,7 +188,7 @@ const useSwap = () => {
     try {
       await feeOracleContract?.callStatic?.buyFee(token, dex, { 
         value: utils.parseEther('0.000001'),
-        from: address || constants.AddressZero
+        from: address || constants.AddressZero,
       });
     } catch (e) {
       // this is where we expect to be with each call.
@@ -208,7 +208,7 @@ const useSwap = () => {
     try {
       await feeOracleContract?.callStatic?.sellFee(token, dex, {
         value: utils.parseEther('0.000001'),
-        from: address || constants.AddressZero
+        from: address || constants.AddressZero,
       });
     } catch (e) {
       const data = e?.errorArgs?.[0];
@@ -223,12 +223,12 @@ const useSwap = () => {
   useEffect(() => {
     if (!nonNativeTokenInSwap || router === constants.AddressZero) return;
     fetchTypicalBuyFee({ 
-      token: nonNativeTokenInSwap?.token?.address, 
-      dex: '0x10ED43C718714eb63d5aA57B78B54704E256024E', //TODO: set this to: router 
+      token: nonNativeTokenInSwap?.token?.address,
+      dex: router,
     });
     fetchTypicalSellFee({
-      token: nonNativeTokenInSwap?.token?.address, 
-      dex: '0x10ED43C718714eb63d5aA57B78B54704E256024E', //TODO: set this to: router 
+      token: nonNativeTokenInSwap?.token?.address,
+      dex: router,
     });
   }, [nonNativeTokenInSwap, router]);
 

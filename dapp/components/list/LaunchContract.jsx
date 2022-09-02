@@ -32,8 +32,8 @@ export const LaunchContract = () => {
   // by the connected address, set the tax structure in context to
   // the deployed contract
   useContractEvent({
-    addressOrName: TAX_STRUCTURE_FACTORY[chain?.id]?.address,
-    contractInterface: TAX_STRUCTURE_FACTORY[chain?.id]?.abi,
+    addressOrName: TAX_STRUCTURE_FACTORY[chain?.id]?.address || TAX_STRUCTURE_FACTORY['default']?.address,
+    contractInterface: TAX_STRUCTURE_FACTORY[chain?.id]?.abi || TAX_STRUCTURE_FACTORY['default']?.abi,
     eventName: 'Deploy',
     listener: (event) => {
       if (event[1] === address) {

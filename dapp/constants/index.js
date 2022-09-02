@@ -7,8 +7,8 @@ import { defaultChains } from 'wagmi';
 const pawswapAbi = pawswapJson.abi;
 
 // use testnet by default in prod until we are ready and localhost by default in dev
-export const defaultChainId = process.env.NODE_ENV === 'production' ? 97 : 97
-export const validChains =  defaultChains?.concat([
+export const defaultChainId = process.env.NODE_ENV === 'production' ? 56 : 97
+export const validChains = [
   {
     id: 56,
     name: 'BNB Chain',
@@ -76,7 +76,7 @@ export const validChains =  defaultChains?.concat([
     },
     testnet: true
   }
-]);
+].concat(defaultChains);
 
 export const NATIVE_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 
@@ -92,12 +92,24 @@ export const PAWSWAP = {
   97: {
     address: '0x81A3c0125ADD4A5466a27a71b31e0C13B1429091',
     abi: pawswapAbi,
+  },
+  56: {
+    address: '0xfb96997aC9D14f39d202e6D505C76EE01f85013D',
+    abi: pawswapAbi,
   }
 }
 
 export const TAX_STRUCTURE_FACTORY = {
+  'default': {
+    address: '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6',
+    abi: taxStructureFactoryJson.abi
+  },
   1337: {
     address: '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6',
+    abi: taxStructureFactoryJson.abi
+  },
+  56: {
+    address: '0xdc3e542a3824ef646761155Ec442886bF12E7ab5',
     abi: taxStructureFactoryJson.abi
   }
 }
@@ -105,12 +117,18 @@ export const TAX_STRUCTURE_FACTORY = {
 export const PANCAKESWAP_ROUTER = {
   1337: {
     address: '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
+  },
+  56: {
+    address: '0x10ED43C718714eb63d5aA57B78B54704E256024E',
   }
 }
 
 export const SAFEMOONSWAP_ROUTER = {
   1337: {
     address: '0x4FC8d32690cc91D4c39d9d3abcBD16989F875707',
+  },
+  56: {
+    address: '',
   }
 }
 
