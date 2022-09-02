@@ -53,11 +53,9 @@ export const Swap = memo(() => {
           <CauseSelector />
           
           <div className="card-actions justify-center mt-4">
-            {/* { DISPLAY ERROR IF EXISTS } */}
-            { !error ? <></> : <ErrorMessage error={error} /> }
-            
             {/* { DISPLAY BUTTONS FOR SWAPPING } */}
-            <SwapActions />
+            {/* { DISPLAY ERROR IF EXISTS } */}
+            { !error ? <SwapActions /> : <ErrorMessage error={error} /> }
           </div>
         </div>
       </div>
