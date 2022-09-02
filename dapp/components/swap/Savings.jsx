@@ -18,12 +18,12 @@ export const Savings = () => {
     console.log({typicalBuyTax, totalBuyTax})
     if (!typicalBuyTax || !totalBuyTax) return;
     console.log('setting buy...')
-    setBuySavings(typicalBuyTax - Number(totalBuyTax?.toString()));
+    setBuySavings((typicalBuyTax * 100 - Number(totalBuyTax?.toString())) / 100);
   }, [typicalBuyTax, totalBuyTax]);
 
   useEffect(() => {
     if (!typicalSellTax || !totalSellTax) return;
-    setSellSavings(typicalSellTax - Number(totalSellTax?.toString()));
+    setSellSavings((typicalSellTax * 100 - Number(totalSellTax?.toString())) / 100);
   },[typicalSellTax, totalSellTax]);
 
   const savings = useMemo(() => {
@@ -37,7 +37,7 @@ export const Savings = () => {
         <div className="flex flex-col w-full border-opacity-50">
           <div className="divider" style={{ gap: 0 }}>
             <div className="flex items-center mx-2">
-              <span className="mr-1">You are saving {buySavings}%!</span>
+              <span className="mr-1">You are saving {savings}%!</span>
               <label htmlFor="my-modal-4" className="btn btn-circle btn-ghost btn-xs shrink">
                 <HelpCircle className="h-5 w-5" />
               </label>
