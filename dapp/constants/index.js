@@ -82,6 +82,7 @@ export const NATIVE_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 
 export const PAWTH_CHARITY_WALLET = {
   1337: '0x9036464e4ecD2d40d21EE38a0398AEdD6805a09B',
+  56: '0x9e84fe006aa1c290f4cbcd78be32131cbf52cb23',
 }
 
 export const PAWSWAP = {

@@ -26,6 +26,8 @@ export default function TokenSearchResult ({ token, isLoading, img, side }) {
     // watch: true,
   });
 
+  console.log({img, results })
+
   const { data: tokenBalanceData, internal: tokenBalanceDataInternal } = useContractReads({
     contracts: results.map(r => {
       return {
@@ -73,7 +75,7 @@ export default function TokenSearchResult ({ token, isLoading, img, side }) {
         return t.isFeatured && t.chainId == chain?.id
       }));
     }
-  }, [token]);
+  }, [token, img]);
 
   const selectToken = (t) => {
     const token = new Token(chain?.id, t?.address, t?.decimals, t?.symbol, t?.name);

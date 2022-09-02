@@ -24,6 +24,8 @@ export const TokenSelector = ({ side }) => {
   useEffect(() => {
     if (utils.isAddress(tokenQuery)) {
       setTokenAddress(tokenQuery);
+    } else {
+      setTokenAddress(null);
     }
   }, [tokenQuery]);
 
