@@ -15,9 +15,7 @@ export const Savings = () => {
   const [sellSavings, setSellSavings] = useState(null);
 
   useEffect(() => {
-    console.log({typicalBuyTax, totalBuyTax})
     if (!typicalBuyTax || !totalBuyTax) return;
-    console.log('setting buy...')
     setBuySavings((typicalBuyTax * 100 - Number(totalBuyTax?.toString())) / 100);
   }, [typicalBuyTax, totalBuyTax]);
 

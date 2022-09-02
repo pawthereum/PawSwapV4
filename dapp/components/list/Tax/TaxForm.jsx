@@ -122,8 +122,6 @@ export const TaxForm = ({ tax, index }) => {
     return args;
   }, [tax, name, wallet, buy, sell]);
 
-  console.log({ updateArgs })
-
   const { config, error } = usePrepareContractWrite({
     addressOrName: taxStructureContractAddress || listedTaxStructureAddress,
     contractInterface: TAX_STRUCTURE_ABI,

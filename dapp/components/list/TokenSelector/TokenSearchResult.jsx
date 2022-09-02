@@ -26,8 +26,6 @@ export default function TokenSearchResult ({ token, isLoading, img, side }) {
     // watch: true,
   });
 
-  console.log({img, results })
-
   const { data: tokenBalanceData, internal: tokenBalanceDataInternal } = useContractReads({
     contracts: results.map(r => {
       return {
@@ -39,8 +37,6 @@ export default function TokenSearchResult ({ token, isLoading, img, side }) {
     }),
     enabled: isConnected,
   });
-
-  console.log({ tokenBalanceData })
 
   useEffect(() => {
     const isNative = (token) => {
@@ -65,8 +61,6 @@ export default function TokenSearchResult ({ token, isLoading, img, side }) {
   }, [connectedChain]);
 
   useEffect(() => {
-    console.log({t: tokenList.tokens.filter(t => t.isFeatured && t.chainId === chain?.id)});
-
     if (token) {
       token.logoURI = img;
       setResults([token]);
