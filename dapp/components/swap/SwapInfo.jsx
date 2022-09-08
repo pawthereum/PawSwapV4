@@ -20,6 +20,7 @@ export const SwapInfo = () => {
     trade,
     isExactIn,
     router,
+    causeAmount,
   } = useContext(SwapContext);
 
   const [totalTax, setTotalTax] = useState(0);
@@ -85,6 +86,22 @@ export const SwapInfo = () => {
     }
   }, [connectedChain]);
 
+  const TaxRow = ({ tax, taxName, isCause }) => {
+    if (isCause && !tax) return (<></>)
+    return (
+      <div className="pl-4 text-xs">
+        <div className="w-full">
+          <div className="flex justify-between">
+            <div>{taxName}</div>
+            <div>
+              {tax?.toString() / 100 || 'Loading...'}%
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!trade) return (<></>);
 
   return (
@@ -108,18 +125,10 @@ export const SwapInfo = () => {
             {totalTax ? totalTax / 100 : 'Loading...'}%
           </div>
         </div>
+        { causeAmount ? <TaxRow tax={Number(causeAmount) * 100} taxName="Your Donation" isCause={true} /> : null }
         {!taxes?.length && !taxNames?.length ? '' : taxes?.map((t, i) => (
           t?.toString() === '0' || taxNames[i] === '' ? '' :
-          <div className="pl-4 text-xs">
-            <div className="w-full">
-              <div className="flex justify-between">
-                <div>{taxNames[i]}</div>
-                <div>
-                  {t?.toString() / 100 || 'Loading...'}%
-                </div>
-              </div>
-            </div>
-          </div>
+          <TaxRow tax={t} taxName={taxNames[i]} key={i} />
         ))}
         <div className="flex justify-between">
           <div>{getRouterByAddress(router, chain)?.name} Fee</div>
