@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import { Activity, ChevronDown } from 'react-feather';
 import { useAccount, useConnect, useDisconnect, useEnsName, useNetwork, useSwitchNetwork } from 'wagmi';
@@ -7,6 +8,11 @@ import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import { validChains } from '../../constants';
 // helpers
 import shortenAddress from '../../helpers/shortenAddress'
+// images
+import metamaskIcon from '../../public/img/metamask.png';
+import walletConnectIcon from '../../public/img/walletconnect.png';
+import injectedIcon from '../../public/img/injected.png';
+import coinbaseIcon from '../../public/img/coinbase.png';
 
 export default function Connect() {
   const { address, isConnected } = useAccount();
@@ -26,6 +32,19 @@ export default function Connect() {
     const validChainIds = validChains?.map(c => c?.id);
     return !validChainIds?.includes(connectedChain?.id);
   }, [connectedChain, isConnected]);
+
+  const getConnectorImg = (connectorName) => {
+    switch (connectorName) {
+      case 'MetaMask':
+        return metamaskIcon;
+      case 'WalletConnect':
+        return walletConnectIcon;
+      case 'Coinbase Wallet':
+        return coinbaseIcon;
+      default:
+        return injectedIcon;
+    }
+  }
 
   useEffect(() => {
     setHasAccount(isConnected && !!address);
@@ -99,20 +118,23 @@ export default function Connect() {
             aria-hidden="true"
           />
         </label>
-        {showMenu && <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-neutral-content text-neutral rounded-box w-52">
+        {showMenu && <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-neutral-content text-neutral rounded-box w-56">
           { !connectors ? <></> : connectors
             .filter(connector => connector.ready && connector.id !== activeConnector?.id)
             ?.map(connector => (
               <li key={connector.id}>
-                <a
-                  className="hover:bg-neutral-focus hover:text-neutral-content"
+                <div 
+                  className="hover:bg-neutral-focus hover:text-neutral-content flex items-center"
                   onClick={async () => {
                     await connect({ connector });
                     setShowMenu(false);
                   }}
                 >
-                  {connector.name}
-                </a>
+                  <Image src={getConnectorImg(connector.name)} height={20} width={20} />
+                  <a>
+                    {connector.name}
+                  </a>
+                </div>
               </li>
             ))}
         </ul>}

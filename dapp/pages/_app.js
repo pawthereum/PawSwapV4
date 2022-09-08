@@ -60,6 +60,12 @@ const client = createClient({
         },
       },
     }),
+    new CoinbaseWalletConnector({
+      options: {
+        appName: 'PawSwap',
+        jsonRpcUrl: `https://eth-mainnet.alchemyapi.io/v2/${alchemyId}`,
+      },
+    }),
     new InjectedConnector({
       validChains,
       options: {
@@ -67,12 +73,6 @@ const client = createClient({
         shimDisconnect: true,
       },
     }),
-    new CoinbaseWalletConnector({
-      options: {
-        appName: 'PawSwap',
-        jsonRpcUrl: `https://eth-mainnet.alchemyapi.io/v2/${alchemyId}`,
-      },
-    })
   ],
   provider,
   webSocketProvider
