@@ -19,7 +19,7 @@ export const Info = () => {
         <div className="grid grid-flow-row gap-2">
           <span className="text-lg text-center font-bold">PawSwap saves you from token fees and helps you donate your savings to charity.</span>
           <p>Projects are incentivized to list their tokens on PawSwap with less fees than other DEXs through PawSwaps Tax Structure Technology.</p>
-          <p>PawSwap makes it easy for you to donate a portion of your swap to charity.</p>
+          <p>PawSwap makes it easy for you to donate a portion of your swap to one of the thousands of charities and causes on the platform!</p>
         </div>
       </div>
   </div>
