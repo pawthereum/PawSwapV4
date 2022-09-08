@@ -29,6 +29,8 @@ export const Savings = () => {
     return isBuy ? buySavings : sellSavings;
   },[isBuy, buySavings, sellSavings]);
 
+  console.log({ savings, buySavings, sellSavings })
+
   return (
     <div className="w-full flex justify-center">
       { !savings ? <MoreHorizontal className="h-5 w-5" /> :

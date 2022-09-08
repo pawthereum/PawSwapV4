@@ -17,6 +17,7 @@ import { createExactInSellTrade } from '../helpers/swap/createExactInSellTrade';
 import { createExactOutBuyTrade } from '../helpers/swap/createExactOutBuyTrade';
 import { createExactOutSellTrade } from '../helpers/swap/createExactOutSellTrade';
 import { getPawth, getNative } from '../helpers/getTokens';
+import usePrevious from './usePrevious';
 
 const useSwap = () => {
   const { chain: connectedChain } = useNetwork();
@@ -61,6 +62,8 @@ const useSwap = () => {
     }
     return null;
   }, [inputToken, outputToken, trade]);
+  // keep track of the previous native token
+  const prevNonNativeTokenInSwap = usePrevious(nonNativeTokenInSwap);
 
   // native token in the trade
   const native = useMemo(() => {
@@ -221,6 +224,10 @@ const useSwap = () => {
   }
 
   useEffect(() => {
+    // if the same token is in the trade and we have already fetched the fees, skip
+    if (prevNonNativeTokenInSwap?.token?.address === nonNativeTokenInSwap?.token?.address) {
+      if (typicalBuyTax && typicalSellTax) return;
+    };
     if (!nonNativeTokenInSwap || router === constants.AddressZero) return;
     fetchTypicalBuyFee({ 
       token: nonNativeTokenInSwap?.token?.address,
@@ -230,7 +237,7 @@ const useSwap = () => {
       token: nonNativeTokenInSwap?.token?.address,
       dex: router,
     });
-  }, [nonNativeTokenInSwap, router]);
+  }, [nonNativeTokenInSwap, router, inputAmount, outputAmount]);
 
   const sortTokens = (tokenList) => {
     return tokenList.sort((a, b) => 
