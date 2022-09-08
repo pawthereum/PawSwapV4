@@ -311,8 +311,7 @@ const useSwap = () => {
       }
       const userBalanceIsInsufficient = BigNumber.from(
         userInputTokenBalance?.raw?.toString()).lt(
-          BigNumber.from(inputAmount?.raw?.toString()
-        )
+          BigNumber.from(inputAmount?.raw?.toString())
       );
       if (userBalanceIsInsufficient) {
         setSwapError({ name: 'Insufficient Balance' });
@@ -393,7 +392,7 @@ const useSwap = () => {
     if (!amount || !inputToken) return;
     setUserInputTokenBalance(new TokenAmount(
       inputToken?.token,
-      utils.parseUnits(amount || '0', inputToken?.token?.decimals || 18)
+      amount
     ));
   }
   
