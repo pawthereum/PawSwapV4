@@ -145,6 +145,14 @@ export const SAFEMOONSWAP_ROUTER = {
   }
 }
 
+export const UNISWAP_ROUTER = {
+  1: {
+    address: '0x7a250d5630b4cf539739df2c5dacb4c659f2488d',
+    fee: 0.3,
+    name: 'Uniswap',
+  }
+}
+
 export const FEE_ORACLE = {
   1337: {
     address: '0x76239B3832ED9b03C34Ae0174A1f4C1fb27c012c',
@@ -155,6 +163,10 @@ export const FEE_ORACLE = {
     abi: feeOracleAbi
   },
   56: {
+    address: '0x76239B3832ED9b03C34Ae0174A1f4C1fb27c012c',
+    abi: feeOracleAbi
+  },
+  1: {
     address: '0x76239B3832ED9b03C34Ae0174A1f4C1fb27c012c',
     abi: feeOracleAbi
   }
