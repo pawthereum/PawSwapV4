@@ -101,6 +101,7 @@ export const PAWSWAP = {
   1: {
     address: '0x72548521eDDb0bbdCC3C55AB63Ca08c541d8171D',
     abi: pawswapAbi,
+  }
 }
 
 export const TAX_STRUCTURE_FACTORY = {
