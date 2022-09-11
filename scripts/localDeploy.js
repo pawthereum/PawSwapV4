@@ -161,7 +161,8 @@ async function main() {
     safemoon: safemoon.address,
     pawthereum: pawthereum.address,
     pancakeRouter: pancakeRouter.address,
-    taxStructureFactory: taxStructureFactory.address
+    taxStructureFactory: taxStructureFactory.address,
+    staking: staking.address
   })
 
 }

@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import './staking/SafeERC20.sol';
-import './staking/SafeMath.sol';
-import './staking/Ownable.sol';
+import "./staking/SafeERC20.sol";
+import "./staking/SafeMath.sol";
+import "./staking/Ownable.sol";
 import "./staking/ReentrancyGuard.sol";
 import "./staking/IUniRouter02.sol";
 import "./staking/IWETH.sol";
 
 interface IToken {
-     /**
+    /**
      * @dev Returns the amount of tokens in existence.
      */
     function totalSupply() external view returns (uint256);
@@ -46,7 +46,6 @@ contract PawthStaking is Ownable, ReentrancyGuard {
     // The pool limit (0 if none)
     uint256 public poolLimitPerUser;
 
-
     // The block number when staking starts.
     uint256 public startBlock;
     // The block number when staking ends.
@@ -56,7 +55,6 @@ contract PawthStaking is Ownable, ReentrancyGuard {
     // The block number of the last pool update
     uint256 public lastRewardBlock;
 
-
     // swap router and path, slipPage
     uint256 public slippageFactor = 950; // 5% default slippage tolerance
     uint256 public constant slippageFactorUL = 995;
@@ -65,14 +63,13 @@ contract PawthStaking is Ownable, ReentrancyGuard {
     address[] public reflectionToStakedPath;
     address[] public earnedToStakedPath;
 
-
     // The deposit & withdraw fee
     uint256 public constant MAX_FEE = 2000;
     uint256 public depositFee;
 
     uint256 public withdrawFee;
     uint256 public buyBackRate = 7500; // 75%
-    uint256 public walletARate = 2500;   // 25%
+    uint256 public walletARate = 2500; // 25%
 
     address public walletA;
     address public buyBackAddress = 0x000000000000000000000000000000000000dEaD;
@@ -181,19 +178,25 @@ contract PawthStaking is Ownable, ReentrancyGuard {
 
         depositFee = _depositFee;
         withdrawFee = _withdrawFee;
-        
+
         walletA = msg.sender;
 
-        uint256 decimalsRewardToken = uint256(IToken(address(earnedToken)).decimals());
+        uint256 decimalsRewardToken = uint256(
+            IToken(address(earnedToken)).decimals()
+        );
         require(decimalsRewardToken < 30, "Must be inferior to 30");
         PRECISION_FACTOR = uint256(10**(uint256(40).sub(decimalsRewardToken)));
 
         uint256 decimalsdividendToken = 18;
-        if(address(dividendToken) != address(0x0)) {
-            decimalsdividendToken = uint256(IToken(address(dividendToken)).decimals());
+        if (address(dividendToken) != address(0x0)) {
+            decimalsdividendToken = uint256(
+                IToken(address(dividendToken)).decimals()
+            );
             require(decimalsdividendToken < 30, "Must be inferior to 30");
         }
-        PRECISION_FACTOR_REFLECTION = uint256(10**(uint256(40).sub(decimalsdividendToken)));
+        PRECISION_FACTOR_REFLECTION = uint256(
+            10**(uint256(40).sub(decimalsdividendToken))
+        );
 
         uniRouterAddress = _uniRouter;
         earnedToStakedPath = _earnedToStakedPath;
@@ -207,7 +210,7 @@ contract PawthStaking is Ownable, ReentrancyGuard {
      * @param _amount: amount to withdraw (in earnedToken)
      */
     function deposit(uint256 _amount) external nonReentrant {
-        require(_amount > 0, "Amount should be greator than 0");
+        require(_amount > 0, "Amount should be greater than 0");
 
         UserInfo storage user = userInfo[msg.sender];
 
@@ -221,36 +224,43 @@ contract PawthStaking is Ownable, ReentrancyGuard {
         _updatePool();
 
         if (user.amount > 0) {
-            uint256 pending =
-                user.amount.mul(accTokenPerShare).div(PRECISION_FACTOR).sub(
-                    user.rewardDebt
-                );
+            uint256 pending = user
+                .amount
+                .mul(accTokenPerShare)
+                .div(PRECISION_FACTOR)
+                .sub(user.rewardDebt);
             if (pending > 0) {
-                require(availableRewardTokens() >= pending, "Insufficient reward tokens");
+                require(
+                    availableRewardTokens() >= pending,
+                    "Insufficient reward tokens"
+                );
                 earnedToken.safeTransfer(address(msg.sender), pending);
-                
-                if(totalEarned > pending) {
+
+                if (totalEarned > pending) {
                     totalEarned = totalEarned.sub(pending);
                 } else {
                     totalEarned = 0;
                 }
             }
 
-            uint256 pendingReflection = 
-                user.amount.mul(accDividendPerShare).div(PRECISION_FACTOR_REFLECTION).sub(
-                    user.reflectionDebt
-                );
+            uint256 pendingReflection = user
+                .amount
+                .mul(accDividendPerShare)
+                .div(PRECISION_FACTOR_REFLECTION)
+                .sub(user.reflectionDebt);
             if (pendingReflection > 0 && hasDividend) {
-                if(address(dividendToken) == address(0x0)) {
+                if (address(dividendToken) == address(0x0)) {
                     payable(msg.sender).transfer(pendingReflection);
                 } else {
-                    IERC20(dividendToken).safeTransfer(address(msg.sender), pendingReflection);
+                    IERC20(dividendToken).safeTransfer(
+                        address(msg.sender),
+                        pendingReflection
+                    );
                 }
                 totalReflections = totalReflections.sub(pendingReflection);
             }
         }
 
-        
         uint256 beforeAmount = stakingToken.balanceOf(address(this));
         stakingToken.safeTransferFrom(
             address(msg.sender),
@@ -258,7 +268,7 @@ contract PawthStaking is Ownable, ReentrancyGuard {
             _amount
         );
         uint256 afterAmount = stakingToken.balanceOf(address(this));
-        
+
         uint256 realAmount = afterAmount.sub(beforeAmount);
         if (depositFee > 0) {
             uint256 fee = realAmount.mul(depositFee).div(10000);
@@ -267,13 +277,17 @@ contract PawthStaking is Ownable, ReentrancyGuard {
                 realAmount = realAmount.sub(fee);
             }
         }
-        
+
         user.amount = user.amount.add(realAmount);
-        user.rewardDebt = user.amount.mul(accTokenPerShare).div(PRECISION_FACTOR);
-        user.reflectionDebt = user.amount.mul(accDividendPerShare).div(PRECISION_FACTOR_REFLECTION);
+        user.rewardDebt = user.amount.mul(accTokenPerShare).div(
+            PRECISION_FACTOR
+        );
+        user.reflectionDebt = user.amount.mul(accDividendPerShare).div(
+            PRECISION_FACTOR_REFLECTION
+        );
 
         totalStaked = totalStaked.add(realAmount);
-        
+
         emit Deposit(msg.sender, realAmount);
     }
 
@@ -282,38 +296,46 @@ contract PawthStaking is Ownable, ReentrancyGuard {
      * @param _amount: amount to withdraw (in earnedToken)
      */
     function withdraw(uint256 _amount) external nonReentrant {
-        require(_amount > 0, "Amount should be greator than 0");
+        require(_amount > 0, "Amount should be greater than 0");
 
         UserInfo storage user = userInfo[msg.sender];
         require(user.amount >= _amount, "Amount to withdraw too high");
 
         _updatePool();
 
-        if(user.amount > 0) {
-            uint256 pending =
-                user.amount.mul(accTokenPerShare).div(PRECISION_FACTOR).sub(
-                    user.rewardDebt
-                );
+        if (user.amount > 0) {
+            uint256 pending = user
+                .amount
+                .mul(accTokenPerShare)
+                .div(PRECISION_FACTOR)
+                .sub(user.rewardDebt);
             if (pending > 0) {
-                require(availableRewardTokens() >= pending, "Insufficient reward tokens");
+                require(
+                    availableRewardTokens() >= pending,
+                    "Insufficient reward tokens"
+                );
                 earnedToken.safeTransfer(address(msg.sender), pending);
-                
-                if(totalEarned > pending) {
+
+                if (totalEarned > pending) {
                     totalEarned = totalEarned.sub(pending);
                 } else {
                     totalEarned = 0;
                 }
             }
 
-            uint256 pendingReflection = 
-                user.amount.mul(accDividendPerShare).div(PRECISION_FACTOR_REFLECTION).sub(
-                    user.reflectionDebt
-                );
+            uint256 pendingReflection = user
+                .amount
+                .mul(accDividendPerShare)
+                .div(PRECISION_FACTOR_REFLECTION)
+                .sub(user.reflectionDebt);
             if (pendingReflection > 0 && hasDividend) {
-                if(address(dividendToken) == address(0x0)) {
+                if (address(dividendToken) == address(0x0)) {
                     payable(msg.sender).transfer(pendingReflection);
                 } else {
-                    IERC20(dividendToken).safeTransfer(address(msg.sender), pendingReflection);
+                    IERC20(dividendToken).safeTransfer(
+                        address(msg.sender),
+                        pendingReflection
+                    );
                 }
                 totalReflections = totalReflections.sub(pendingReflection);
             }
@@ -345,8 +367,12 @@ contract PawthStaking is Ownable, ReentrancyGuard {
 
         stakingToken.safeTransfer(address(msg.sender), realAmount);
 
-        user.rewardDebt = user.amount.mul(accTokenPerShare).div(PRECISION_FACTOR);
-        user.reflectionDebt = user.amount.mul(accDividendPerShare).div(PRECISION_FACTOR_REFLECTION);
+        user.rewardDebt = user.amount.mul(accTokenPerShare).div(
+            PRECISION_FACTOR
+        );
+        user.reflectionDebt = user.amount.mul(accDividendPerShare).div(
+            PRECISION_FACTOR_REFLECTION
+        );
 
         emit Withdraw(msg.sender, _amount);
     }
@@ -359,22 +385,28 @@ contract PawthStaking is Ownable, ReentrancyGuard {
 
         if (user.amount == 0) return;
 
-        uint256 pending =
-            user.amount.mul(accTokenPerShare).div(PRECISION_FACTOR).sub(
-                user.rewardDebt
-            );
+        uint256 pending = user
+            .amount
+            .mul(accTokenPerShare)
+            .div(PRECISION_FACTOR)
+            .sub(user.rewardDebt);
         if (pending > 0) {
-            require(availableRewardTokens() >= pending, "Insufficient reward tokens");
+            require(
+                availableRewardTokens() >= pending,
+                "Insufficient reward tokens"
+            );
             earnedToken.safeTransfer(address(msg.sender), pending);
-            
-            if(totalEarned > pending) {
+
+            if (totalEarned > pending) {
                 totalEarned = totalEarned.sub(pending);
             } else {
                 totalEarned = 0;
             }
         }
-        
-        user.rewardDebt = user.amount.mul(accTokenPerShare).div(PRECISION_FACTOR);
+
+        user.rewardDebt = user.amount.mul(accTokenPerShare).div(
+            PRECISION_FACTOR
+        );
     }
 
     function claimDividend() external payable nonReentrant {
@@ -386,20 +418,26 @@ contract PawthStaking is Ownable, ReentrancyGuard {
 
         if (user.amount == 0) return;
 
-        uint256 pendingReflection = 
-            user.amount.mul(accDividendPerShare).div(PRECISION_FACTOR_REFLECTION).sub(
-                user.reflectionDebt
-            );
+        uint256 pendingReflection = user
+            .amount
+            .mul(accDividendPerShare)
+            .div(PRECISION_FACTOR_REFLECTION)
+            .sub(user.reflectionDebt);
         if (pendingReflection > 0) {
-            if(address(dividendToken) == address(0x0)) {
+            if (address(dividendToken) == address(0x0)) {
                 payable(msg.sender).transfer(pendingReflection);
             } else {
-                IERC20(dividendToken).safeTransfer(address(msg.sender), pendingReflection);
+                IERC20(dividendToken).safeTransfer(
+                    address(msg.sender),
+                    pendingReflection
+                );
             }
             totalReflections = totalReflections.sub(pendingReflection);
         }
-        
-        user.reflectionDebt = user.amount.mul(accDividendPerShare).div(PRECISION_FACTOR_REFLECTION);
+
+        user.reflectionDebt = user.amount.mul(accDividendPerShare).div(
+            PRECISION_FACTOR_REFLECTION
+        );
     }
 
     function compoundReward() external payable nonReentrant {
@@ -410,19 +448,23 @@ contract PawthStaking is Ownable, ReentrancyGuard {
 
         if (user.amount == 0) return;
 
-        uint256 pending =
-            user.amount.mul(accTokenPerShare).div(PRECISION_FACTOR).sub(
-                user.rewardDebt
-            );
+        uint256 pending = user
+            .amount
+            .mul(accTokenPerShare)
+            .div(PRECISION_FACTOR)
+            .sub(user.rewardDebt);
         if (pending > 0) {
-            require(availableRewardTokens() >= pending, "Insufficient reward tokens");
-            if(totalEarned > pending) {
+            require(
+                availableRewardTokens() >= pending,
+                "Insufficient reward tokens"
+            );
+            if (totalEarned > pending) {
                 totalEarned = totalEarned.sub(pending);
             } else {
                 totalEarned = 0;
             }
-            
-            if(address(stakingToken) != address(earnedToken)) {
+
+            if (address(stakingToken) != address(earnedToken)) {
                 uint256 beforeAmount = stakingToken.balanceOf(address(this));
                 _safeSwap(pending, earnedToStakedPath, address(this));
                 uint256 afterAmount = stakingToken.balanceOf(address(this));
@@ -438,14 +480,23 @@ contract PawthStaking is Ownable, ReentrancyGuard {
 
             totalStaked = totalStaked.add(pending);
             user.amount = user.amount.add(pending);
-            user.reflectionDebt = user.amount.mul(accDividendPerShare).div(PRECISION_FACTOR_REFLECTION).sub(
-                (user.amount.sub(pending)).mul(accDividendPerShare).div(PRECISION_FACTOR_REFLECTION).sub(user.reflectionDebt)
-            );
+            user.reflectionDebt = user
+                .amount
+                .mul(accDividendPerShare)
+                .div(PRECISION_FACTOR_REFLECTION)
+                .sub(
+                    (user.amount.sub(pending))
+                        .mul(accDividendPerShare)
+                        .div(PRECISION_FACTOR_REFLECTION)
+                        .sub(user.reflectionDebt)
+                );
 
             emit Deposit(msg.sender, pending);
         }
-        
-        user.rewardDebt = user.amount.mul(accTokenPerShare).div(PRECISION_FACTOR);
+
+        user.rewardDebt = user.amount.mul(accTokenPerShare).div(
+            PRECISION_FACTOR
+        );
     }
 
     function compoundDividend() external payable nonReentrant {
@@ -457,17 +508,18 @@ contract PawthStaking is Ownable, ReentrancyGuard {
 
         if (user.amount == 0) return;
 
-        uint256 pending = 
-            user.amount.mul(accDividendPerShare).div(PRECISION_FACTOR_REFLECTION).sub(
-                user.reflectionDebt
-            );
+        uint256 pending = user
+            .amount
+            .mul(accDividendPerShare)
+            .div(PRECISION_FACTOR_REFLECTION)
+            .sub(user.reflectionDebt);
         if (pending > 0) {
             totalReflections = totalReflections.sub(pending);
 
-            if(address(stakingToken) != address(dividendToken)) {
-                if(address(dividendToken) == address(0x0)) {
+            if (address(stakingToken) != address(dividendToken)) {
+                if (address(dividendToken) == address(0x0)) {
                     address wethAddress = IUniRouter02(uniRouterAddress).WETH();
-                    IWETH(wethAddress).deposit{ value: pending }();
+                    IWETH(wethAddress).deposit{value: pending}();
                 }
 
                 uint256 beforeAmount = stakingToken.balanceOf(address(this));
@@ -486,23 +538,37 @@ contract PawthStaking is Ownable, ReentrancyGuard {
 
             totalStaked = totalStaked.add(pending);
             user.amount = user.amount.add(pending);
-            user.rewardDebt = user.amount.mul(accTokenPerShare).div(PRECISION_FACTOR).sub(
-                (user.amount.sub(pending)).mul(accTokenPerShare).div(PRECISION_FACTOR).sub(user.rewardDebt)
-            );
+            user.rewardDebt = user
+                .amount
+                .mul(accTokenPerShare)
+                .div(PRECISION_FACTOR)
+                .sub(
+                    (user.amount.sub(pending))
+                        .mul(accTokenPerShare)
+                        .div(PRECISION_FACTOR)
+                        .sub(user.rewardDebt)
+                );
 
             emit Deposit(msg.sender, pending);
         }
-        
-        user.reflectionDebt = user.amount.mul(accDividendPerShare).div(PRECISION_FACTOR_REFLECTION);
+
+        user.reflectionDebt = user.amount.mul(accDividendPerShare).div(
+            PRECISION_FACTOR_REFLECTION
+        );
     }
 
     function _transferPerformanceFee() internal {
-        require(msg.value >= performanceFee, 'should pay small gas to compound or harvest');
+        require(
+            msg.value >= performanceFee,
+            "should pay small gas to compound or harvest"
+        );
 
         (bool sent, ) = buyBackWallet.call{value: performanceFee}("");
         require(sent, "Failed to transfer performance fee");
-        if(msg.value > performanceFee) {
-            (bool sentRefund, ) = msg.sender.call{value: msg.value.sub(performanceFee)}("");
+        if (msg.value > performanceFee) {
+            (bool sentRefund, ) = msg.sender.call{
+                value: msg.value.sub(performanceFee)
+            }("");
             require(sentRefund, "Failed to refund superfluous performance fee");
         }
     }
@@ -530,7 +596,7 @@ contract PawthStaking is Ownable, ReentrancyGuard {
      * @notice Available amount of reward token
      */
     function availableRewardTokens() public view returns (uint256) {
-        if(address(earnedToken) == address(dividendToken)) return totalEarned;
+        if (address(earnedToken) == address(dividendToken)) return totalEarned;
 
         uint256 _amount = earnedToken.balanceOf(address(this));
         if (address(earnedToken) == address(stakingToken)) {
@@ -545,19 +611,19 @@ contract PawthStaking is Ownable, ReentrancyGuard {
      * @notice Available amount of reflection token
      */
     function availabledividendTokens() public view returns (uint256) {
-        if(address(dividendToken) == address(0x0)) {
+        if (address(dividendToken) == address(0x0)) {
             return address(this).balance;
         }
 
         uint256 _amount = IERC20(dividendToken).balanceOf(address(this));
-        
-        if(address(dividendToken) == address(earnedToken)) {
-            if(_amount < totalEarned) return 0;
+
+        if (address(dividendToken) == address(earnedToken)) {
+            if (_amount < totalEarned) return 0;
             _amount = _amount.sub(totalEarned);
         }
 
-        if(address(dividendToken) == address(stakingToken)) {
-            if(_amount < totalStaked) return 0;
+        if (address(dividendToken) == address(stakingToken)) {
+            if (_amount < totalStaked) return 0;
             _amount = _amount.sub(totalStaked);
         }
 
@@ -571,14 +637,17 @@ contract PawthStaking is Ownable, ReentrancyGuard {
      */
     function pendingReward(address _user) external view returns (uint256) {
         UserInfo storage user = userInfo[_user];
-        
-        if (block.number > lastRewardBlock && totalStaked != 0 && lastRewardBlock > 0) {
+
+        if (
+            block.number > lastRewardBlock &&
+            totalStaked != 0 &&
+            lastRewardBlock > 0
+        ) {
             uint256 multiplier = _getMultiplier(lastRewardBlock, block.number);
             uint256 pawthReward = multiplier.mul(rewardPerBlock);
-            uint256 adjustedTokenPerShare =
-                accTokenPerShare.add(
-                    pawthReward.mul(PRECISION_FACTOR).div(totalStaked)
-                );
+            uint256 adjustedTokenPerShare = accTokenPerShare.add(
+                pawthReward.mul(PRECISION_FACTOR).div(totalStaked)
+            );
             return
                 user
                     .amount
@@ -596,50 +665,59 @@ contract PawthStaking is Ownable, ReentrancyGuard {
     function pendingDividends(address _user) external view returns (uint256) {
         UserInfo storage user = userInfo[_user];
 
-        if(totalStaked == 0) return 0;
-        
+        if (totalStaked == 0) return 0;
+
         uint256 reflectionAmount = availabledividendTokens();
         uint256 sTokenBal = stakingToken.balanceOf(address(this));
 
         uint256 adjustedReflectionPerShare = accDividendPerShare.add(
-                reflectionAmount.sub(totalReflections).mul(PRECISION_FACTOR_REFLECTION).div(sTokenBal)
-            );
-        
-        uint256 pendingReflection = 
-                user.amount.mul(adjustedReflectionPerShare).div(PRECISION_FACTOR_REFLECTION).sub(
-                    user.reflectionDebt
-                );
-        
+            reflectionAmount
+                .sub(totalReflections)
+                .mul(PRECISION_FACTOR_REFLECTION)
+                .div(sTokenBal)
+        );
+
+        uint256 pendingReflection = user
+            .amount
+            .mul(adjustedReflectionPerShare)
+            .div(PRECISION_FACTOR_REFLECTION)
+            .sub(user.reflectionDebt);
+
         return pendingReflection;
     }
 
     /************************
-    ** Admin Methods
-    *************************/
-    function harvest() external onlyOwner {        
+     ** Admin Methods
+     *************************/
+    function harvest() external onlyOwner {
         _updatePool();
 
         uint256 _amount = stakingToken.balanceOf(address(this));
         _amount = _amount.sub(totalStaked);
 
-        uint256 pendingReflection = _amount.mul(accDividendPerShare).div(PRECISION_FACTOR_REFLECTION).sub(reflectionDebt);
-        if(pendingReflection > 0) {
-            if(address(dividendToken) == address(0x0)) {
+        uint256 pendingReflection = _amount
+            .mul(accDividendPerShare)
+            .div(PRECISION_FACTOR_REFLECTION)
+            .sub(reflectionDebt);
+        if (pendingReflection > 0) {
+            if (address(dividendToken) == address(0x0)) {
                 payable(walletA).transfer(pendingReflection);
             } else {
-                IERC20(dividendToken).safeTransfer( walletA, pendingReflection);
+                IERC20(dividendToken).safeTransfer(walletA, pendingReflection);
             }
             totalReflections = totalReflections.sub(pendingReflection);
         }
-        
-        reflectionDebt = _amount.mul(accDividendPerShare).div(PRECISION_FACTOR_REFLECTION);
+
+        reflectionDebt = _amount.mul(accDividendPerShare).div(
+            PRECISION_FACTOR_REFLECTION
+        );
     }
 
     /*
      * @notice Deposit reward token
      * @dev Only call by owner. Needs to be for deposit of reward token when reflection token is same with reward token.
      */
-    function depositRewards(uint _amount) external nonReentrant {
+    function depositRewards(uint256 _amount) external nonReentrant {
         require(_amount > 0);
 
         uint256 beforeAmt = earnedToken.balanceOf(address(this));
@@ -654,14 +732,17 @@ contract PawthStaking is Ownable, ReentrancyGuard {
      * @dev Only callable by owner. Needs to be for emergency.
      */
     function emergencyRewardWithdraw(uint256 _amount) external onlyOwner {
-        require( block.number > bonusEndBlock, "Pool is running");
-        if(address(earnedToken) != address(dividendToken)) {
-            require(availableRewardTokens() >= _amount, "Insufficient reward tokens");
+        require(block.number > bonusEndBlock, "Pool is running");
+        if (address(earnedToken) != address(dividendToken)) {
+            require(
+                availableRewardTokens() >= _amount,
+                "Insufficient reward tokens"
+            );
         }
 
-        if(_amount == 0) _amount = availableRewardTokens();
+        if (_amount == 0) _amount = availableRewardTokens();
         earnedToken.safeTransfer(address(msg.sender), _amount);
-        
+
         if (totalEarned > 0) {
             if (_amount > totalEarned) {
                 totalEarned = 0;
@@ -686,28 +767,34 @@ contract PawthStaking is Ownable, ReentrancyGuard {
             "Cannot be reward token"
         );
 
-        if(_tokenAddress == address(stakingToken)) {
+        if (_tokenAddress == address(stakingToken)) {
             uint256 tokenBal = stakingToken.balanceOf(address(this));
-            require(_tokenAmount <= tokenBal.sub(totalStaked), "Insufficient balance");
+            require(
+                _tokenAmount <= tokenBal.sub(totalStaked),
+                "Insufficient balance"
+            );
         }
 
-        if(_tokenAddress == address(0x0)) {
+        if (_tokenAddress == address(0x0)) {
             payable(msg.sender).transfer(_tokenAmount);
         } else {
-            IERC20(_tokenAddress).safeTransfer(address(msg.sender), _tokenAmount);
+            IERC20(_tokenAddress).safeTransfer(
+                address(msg.sender),
+                _tokenAmount
+            );
         }
 
         emit AdminTokenRecovered(_tokenAddress, _tokenAmount);
     }
 
-    function startReward(uint _blocksInFuture) external onlyOwner {
+    function startReward(uint256 _blocksInFuture) external onlyOwner {
         require(startBlock == 0, "Pool was already started");
 
         startBlock = block.number.add(_blocksInFuture);
         bonusEndBlock = startBlock.add(duration * 28800);
-        rewardPerBlock = availableRewardTokens() / (bonusEndBlock - startBlock); // ensure we do not 
+        rewardPerBlock = availableRewardTokens() / (bonusEndBlock - startBlock); // ensure we do not
         lastRewardBlock = startBlock;
-        
+
         emit NewStartAndEndBlocks(startBlock, bonusEndBlock);
     }
 
@@ -721,7 +808,10 @@ contract PawthStaking is Ownable, ReentrancyGuard {
      * @param _hasUserLimit: whether the limit remains forced
      * @param _poolLimitPerUser: new pool limit per user
      */
-    function updatePoolLimitPerUser( bool _hasUserLimit, uint256 _poolLimitPerUser) external onlyOwner {
+    function updatePoolLimitPerUser(
+        bool _hasUserLimit,
+        uint256 _poolLimitPerUser
+    ) external onlyOwner {
         require(hasUserLimit, "Must be set");
         if (_hasUserLimit) {
             require(
@@ -748,10 +838,12 @@ contract PawthStaking is Ownable, ReentrancyGuard {
         emit NewRewardPerBlock(_rewardPerBlock);
     }
 
-
     function setServiceInfo(address _buyBackWallet, uint256 _fee) external {
         require(msg.sender == buyBackWallet, "setServiceInfo: FORBIDDEN");
-        require(_buyBackWallet != address(0x0) || _buyBackWallet != buyBackWallet, "Invalid address");
+        require(
+            _buyBackWallet != address(0x0) || _buyBackWallet != buyBackWallet,
+            "Invalid address"
+        );
 
         buyBackWallet = _buyBackWallet;
         performanceFee = _fee;
@@ -760,14 +852,20 @@ contract PawthStaking is Ownable, ReentrancyGuard {
     }
 
     function updateWalletA(address _walletA) external onlyOwner {
-        require(_walletA != address(0x0) || _walletA != walletA, "Invalid address");
+        require(
+            _walletA != address(0x0) || _walletA != walletA,
+            "Invalid address"
+        );
 
         walletA = _walletA;
         emit WalletAUpdated(_walletA);
     }
 
     function updateBuybackAddr(address _addr) external onlyOwner {
-        require(_addr != address(0x0) || _addr != buyBackAddress, "Invalid address");
+        require(
+            _addr != address(0x0) || _addr != buyBackAddress,
+            "Invalid address"
+        );
 
         buyBackAddress = _addr;
         emit BuybackAddressUpadted(_addr);
@@ -792,7 +890,10 @@ contract PawthStaking is Ownable, ReentrancyGuard {
     ) external onlyOwner {
         require(_depositFee < MAX_FEE, "Invalid deposit fee");
         require(_withdrawFee < MAX_FEE, "Invalid withdraw fee");
-        require(_slippageFactor <= slippageFactorUL, "_slippageFactor too high");
+        require(
+            _slippageFactor <= slippageFactorUL,
+            "_slippageFactor too high"
+        );
 
         depositFee = _depositFee;
         withdrawFee = _withdrawFee;
@@ -804,29 +905,39 @@ contract PawthStaking is Ownable, ReentrancyGuard {
         reflectionToStakedPath = _reflectionToStakedPath;
         earnedToStakedPath = _earnedToStakedPath;
 
-        emit SetSettings(_depositFee, _withdrawFee, _walletARate, _slippageFactor, _uniRouter, _earnedToStakedPath, _reflectionToStakedPath);
+        emit SetSettings(
+            _depositFee,
+            _withdrawFee,
+            _walletARate,
+            _slippageFactor,
+            _uniRouter,
+            _earnedToStakedPath,
+            _reflectionToStakedPath
+        );
     }
 
     function resetAllowances() external onlyOwner {
         _resetAllowances();
     }
 
-
     /************************
-    ** Internal Methods
-    *************************/
+     ** Internal Methods
+     *************************/
     /*
      * @notice Update reward variables of the given pool to be up-to-date.
      */
     function _updatePool() internal {
         // calc reflection rate
-        if(totalStaked > 0 && hasDividend) {
+        if (totalStaked > 0 && hasDividend) {
             uint256 reflectionAmount = availabledividendTokens();
             uint256 sTokenBal = stakingToken.balanceOf(address(this));
 
             accDividendPerShare = accDividendPerShare.add(
-                    reflectionAmount.sub(totalReflections).mul(PRECISION_FACTOR_REFLECTION).div(sTokenBal)
-                );
+                reflectionAmount
+                    .sub(totalReflections)
+                    .mul(PRECISION_FACTOR_REFLECTION)
+                    .div(sTokenBal)
+            );
 
             totalReflections = reflectionAmount;
         }
@@ -872,7 +983,10 @@ contract PawthStaking is Ownable, ReentrancyGuard {
         address[] memory _path,
         address _to
     ) internal {
-        uint256[] memory amounts = IUniRouter02(uniRouterAddress).getAmountsOut(_amountIn, _path);
+        uint256[] memory amounts = IUniRouter02(uniRouterAddress).getAmountsOut(
+            _amountIn,
+            _path
+        );
         uint256 amountOut = amounts[amounts.length.sub(1)];
 
         IUniRouter02(uniRouterAddress).swapExactTokensForTokens(
@@ -886,12 +1000,9 @@ contract PawthStaking is Ownable, ReentrancyGuard {
 
     function _resetAllowances() internal {
         earnedToken.safeApprove(uniRouterAddress, uint256(0));
-        earnedToken.safeIncreaseAllowance(
-            uniRouterAddress,
-            type(uint256).max
-        );
+        earnedToken.safeIncreaseAllowance(uniRouterAddress, type(uint256).max);
 
-        if(address(dividendToken) == address(0x0)) {
+        if (address(dividendToken) == address(0x0)) {
             address wethAddress = IUniRouter02(uniRouterAddress).WETH();
             IERC20(wethAddress).safeApprove(uniRouterAddress, uint256(0));
             IERC20(wethAddress).safeIncreaseAllowance(
@@ -904,7 +1015,7 @@ contract PawthStaking is Ownable, ReentrancyGuard {
                 uniRouterAddress,
                 type(uint256).max
             );
-        }        
+        }
     }
 
     receive() external payable {}

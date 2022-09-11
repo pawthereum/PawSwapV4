@@ -1,5 +1,6 @@
 import taxStructureFactoryJson from '../../artifacts/contracts/TaxStructureFactory.sol/TaxStructureFactory.json';
 import taxStructureJson from '../../artifacts/contracts/TaxStructureFactory.sol/TaxStructure.json';
+import stakingJson from '../../artifacts/contracts/PawthStaking.sol/PawthStaking.json';
 import pawswapJson from '../../artifacts/contracts/Pawswap.sol/PawSwap.json';
 import { feeOracleAbi } from './abis/feeOracle';
 import { defaultChains } from 'wagmi';
@@ -85,6 +86,8 @@ export const PAWTH_CHARITY_WALLET = {
   56: '0x9e84fe006aa1c290f4cbcd78be32131cbf52cb23',
 }
 
+export const PAWTH_DECIMALS = 9;
+
 export const PAWSWAP = {
   1337: {
     address: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
@@ -169,6 +172,13 @@ export const FEE_ORACLE = {
   1: {
     address: '0x76239B3832ED9b03C34Ae0174A1f4C1fb27c012c',
     abi: feeOracleAbi
+  }
+}
+
+export const STAKING = {
+  1337: {
+    address: '0x610178dA211FEF7D417bC0e6FeD39F05609AD788',
+    abi: stakingJson.abi
   }
 }
 
