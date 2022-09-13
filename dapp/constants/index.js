@@ -170,7 +170,7 @@ export const FEE_ORACLE = {
     abi: feeOracleAbi
   },
   1: {
-    address: '0x76239B3832ED9b03C34Ae0174A1f4C1fb27c012c',
+    address: '0x54c42e7ACE68CF06B12e1F2029c2CA68659A1dC2',
     abi: feeOracleAbi
   }
 }

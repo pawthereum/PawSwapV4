@@ -16,9 +16,11 @@ const Staking = () => {
                   width={350}
                 />
               </div>
-              <h1 className="text-6xl font-bold text-secondary">Stake</h1>
-              <div className="text-xl my-4">Stake your $PAWTH to earn rewards!</div>
-              <StakingControls />
+              <div className="card w-full max-w-xl bg-base-100 shadow-xl sm:px-20 sm:py-10 p-10">
+                <h1 className="text-6xl font-bold text-secondary">Stake</h1>
+                <div className="text-xl my-4">Stake your $PAWTH to earn rewards!</div>
+                <StakingControls />
+              </div>
             </div>
           </div>
         </div>

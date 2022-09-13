@@ -2,16 +2,23 @@ import CountUp from 'react-countup';
 import { utils } from 'ethers';
 import { PAWTH_DECIMALS } from '../../constants';
 
-const UserInfo = ({ tokenBalance, nativeBalance, stakedBalance, chain }) => {
+const UserInfo = ({ 
+  tokenBalance, 
+  nativeBalance, 
+  stakedBalance, 
+  rewardBalance,
+  reflectionBalance,
+  chain 
+}) => {
   return (
     <div className="grid grid-row-2 gap-2">
       <div className="flex justify-between">
         <div>
           <div className="text-left">
-            {chain?.nativeCurrency?.symbol} Balance
+            Currently Staking
           </div>
           <div className="text-left font-bold text-lg">
-            <CountUp end={utils.formatEther(nativeBalance?.toString() || '0')} decimals={4} separator="," />
+            <CountUp end={utils.formatEther(stakedBalance?.toString() || '0')} decimals={0} separator="," />
           </div>
         </div>
         <div>
@@ -26,10 +33,10 @@ const UserInfo = ({ tokenBalance, nativeBalance, stakedBalance, chain }) => {
       <div className="flex justify-between">
         <div>
           <div className="text-left">
-            Currently Staking
+            Reflections Earned
           </div>
           <div className="text-left font-bold text-lg">
-            <CountUp end={utils.formatEther(stakedBalance?.toString() || '0')} decimals={0} separator="," />
+            <CountUp end={utils.formatEther(reflectionBalance?.toString() || '0')} decimals={0} separator="," />
           </div>
         </div>
         <div>
@@ -37,7 +44,7 @@ const UserInfo = ({ tokenBalance, nativeBalance, stakedBalance, chain }) => {
             Staking Profit
           </div>
           <div className="text-right font-bold text-lg">
-            <CountUp end={5256} decimals={0} separator="," />
+            <CountUp end={utils.formatEther(rewardBalance?.toString() || '0')} decimals={0} separator="," />
           </div>
         </div>
       </div>

@@ -21,6 +21,8 @@ const Staking = () => {
   const [tokenBalance, setTokenBalance] = useState(0);
   const [nativeBalance, setNativeBalance] = useState(0);
   const [stakedBalance, setStakedBalance] = useState(0);
+  const [rewardBalance, setRewardBalance] = useState(0);
+  const [reflectionBalance, setReflectionBalance] = useState(0);
 
   useEffect(() => {
     if (isConnected && connectedChain) {
@@ -66,10 +68,38 @@ const Staking = () => {
     }
   }, [stakedBalanceData, stakedBalanceFetched, chain]);
 
+  const { data: rewardBalanceData, isFetched: rewardBalanceFetched, refetch: refetchRewardBalance } = useContractRead({
+    addressOrName: STAKING[chain?.id]?.address,
+    contractInterface: STAKING[chain?.id]?.abi,
+    functionName: 'pendingReward',
+    args: [address],
+  });
+
+  useEffect(() => {
+    if (rewardBalanceFetched) {
+      setStakedBalance(rewardBalanceData);
+    }
+  }, [rewardBalanceData, rewardBalanceFetched, chain]);
+
+  const { data: reflectionBalanceData, isFetched: reflectionBalanceFetched, refetch: refetchReflectionBalance } = useContractRead({
+    addressOrName: STAKING[chain?.id]?.address,
+    contractInterface: STAKING[chain?.id]?.abi,
+    functionName: 'balanceOf',
+    args: [address],
+  });
+
+  useEffect(() => {
+    if (reflectionBalanceFetched) {
+      setStakedBalance(reflectionBalanceData);
+    }
+  }, [reflectionBalanceData, reflectionBalanceFetched, chain]);
+
   const refetchBalances = () => {
     refetchTokenBalance();
     refetchNativeBalance();
     refetchStakedBalance();
+    refetchRewardBalance();
+    refetchReflectionBalance();
   }
 
   return (
@@ -78,6 +108,8 @@ const Staking = () => {
         tokenBalance={tokenBalance}
         nativeBalance={nativeBalance}
         stakedBalance={stakedBalance}
+        rewardBalance={rewardBalance}
+        reflectionBalance={reflectionBalance}
         chain={chain} 
       />
       <div className="flex mx-auto">

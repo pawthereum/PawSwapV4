@@ -63,11 +63,11 @@ const Deposit = ({ tokenBalance, chain, callback }) => {
           <input 
             value={amount}
             onChange={handleChangeAmount} 
-            className="input w-full pl-10" 
+            className="input input-lg w-full pl-10 bg-base-200 shadow-inner focus:outline-0" 
             placeholder="Deposit"
           />
           <div className="absolute inset-y-0 right-0 flex items-center">
-            <div className="badge badge-primary mr-2 cursor-pointer" onClick={maxDeposit}>Max</div>
+            <div className="badge badge-lg badge-primary mr-2 cursor-pointer" onClick={maxDeposit}>Max</div>
           </div>
         </div>
         </div>
@@ -77,7 +77,7 @@ const Deposit = ({ tokenBalance, chain, callback }) => {
           )
           : (
             <button 
-              className={`btn btn-block xl:btn-md btn-primary ${isLoading || depositInProgress ? 'loading' : ''}`}
+              className={`btn btn-block btn-lg btn-primary ${isLoading || depositInProgress ? 'loading' : ''}`}
               onClick={() => write?.()}
               disabled={!write}
             >

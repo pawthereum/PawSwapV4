@@ -6,7 +6,6 @@ import SwapContext from '../context/SwapContext';
 // Components
 import Notification from '../components/utils/Notification';
 import { Swap } from '../components/swap/Swap';
-import Info from '../components/Info';
 // Hooks
 import useNotification from '../hooks/useNotification';
 import useSwap from '../hooks/useSwap';
@@ -37,9 +36,6 @@ export default function Home() {
               <NotificationContext.Provider value={notificationState}>
                 <Notification />
                 <div className="grid grid-flow-row gap-2">
-                  <div className="flex justify-center">
-                    <Info />
-                  </div>
                   <div className="flex justify-center">
                     <Swap />
                   </div>

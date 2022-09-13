@@ -52,17 +52,17 @@ const Withdraw = ({ stakedBalance, chain, callback }) => {
           <input 
             value={amount}
             onChange={handleChangeAmount} 
-            className="input w-full pl-10" 
+            className="input input-lg w-full pl-10 shadow-inner bg-base-200 focus:outline-0" 
             placeholder="Withdraw"
           />
           <div className="absolute inset-y-0 right-0 flex items-center">
-            <div className="badge badge-primary mr-2 cursor-pointer" onClick={max}>Max</div>
+            <div className="badge badge-lg badge-primary mr-2 cursor-pointer" onClick={max}>Max</div>
           </div>
         </div>
         </div>
         <div className="col-span-1 xl:col-span-3">
           <button 
-            className={`btn btn-block xl:btn-md btn-primary ${isLoading || inProgress ? 'loading' : ''}`}
+            className={`btn btn-block btn-lg btn-primary ${isLoading || inProgress ? 'loading' : ''}`}
             onClick={() => write?.()}
             disabled={!write}
           >
