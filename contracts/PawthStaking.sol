@@ -1018,5 +1018,9 @@ contract PawthStaking is Ownable, ReentrancyGuard {
         }
     }
 
+    function balanceOf(address account) public view returns (uint256) {
+        return userInfo[account].amount;
+    }
+
     receive() external payable {}
 }

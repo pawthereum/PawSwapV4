@@ -7,7 +7,9 @@ const UserInfo = ({
   nativeBalance, 
   stakedBalance, 
   rewardBalance,
+  prevRewardBalance,
   reflectionBalance,
+  prevReflectionBalance,
   chain 
 }) => {
   return (
@@ -18,7 +20,11 @@ const UserInfo = ({
             Currently Staking
           </div>
           <div className="text-left font-bold text-lg">
-            <CountUp end={utils.formatEther(stakedBalance?.toString() || '0')} decimals={0} separator="," />
+            <CountUp 
+              end={utils.formatUnits(stakedBalance?.toString() || '0', PAWTH_DECIMALS)} 
+              decimals={0} 
+              separator="," 
+            />
           </div>
         </div>
         <div>
@@ -26,7 +32,11 @@ const UserInfo = ({
             $PAWTH Balance
           </div>
           <div className="text-right font-bold text-lg">
-            <CountUp end={utils.formatUnits(tokenBalance?.toString() || '0', PAWTH_DECIMALS)} decimals={0} separator="," />
+            <CountUp 
+              end={utils.formatUnits(tokenBalance?.toString() || '0', PAWTH_DECIMALS)} 
+              decimals={0} 
+              separator="," 
+            />
           </div>
         </div>
       </div>
@@ -36,7 +46,12 @@ const UserInfo = ({
             Reflections Earned
           </div>
           <div className="text-left font-bold text-lg">
-            <CountUp end={utils.formatEther(reflectionBalance?.toString() || '0')} decimals={0} separator="," />
+            <CountUp 
+              start={utils.formatUnits(prevReflectionBalance?.toString() || '0', PAWTH_DECIMALS)}
+              end={utils.formatUnits(reflectionBalance?.toString() || '0', PAWTH_DECIMALS)} 
+              decimals={0} 
+              separator="," 
+            />
           </div>
         </div>
         <div>
@@ -44,7 +59,12 @@ const UserInfo = ({
             Staking Profit
           </div>
           <div className="text-right font-bold text-lg">
-            <CountUp end={utils.formatEther(rewardBalance?.toString() || '0')} decimals={0} separator="," />
+            <CountUp 
+              start={utils.formatUnits(prevRewardBalance?.toString() || '0', PAWTH_DECIMALS)}
+              end={utils.formatUnits(rewardBalance?.toString() || '0', PAWTH_DECIMALS)} 
+              decimals={0} 
+              separator="," 
+            />
           </div>
         </div>
       </div>

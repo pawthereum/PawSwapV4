@@ -6,6 +6,7 @@ import UserInfo from './staking/UserInfo';
 import { tokenList } from '../constants/tokenList';
 import { useContractRead, useAccount, useNetwork, useBalance, erc20ABI } from 'wagmi';
 import { STAKING, defaultChainId } from '../constants';
+import usePrevious from '../hooks/usePrevious';
 
 const Staking = () => {
   const [activeTab, setActiveTab] = useState('deposit');
@@ -22,7 +23,9 @@ const Staking = () => {
   const [nativeBalance, setNativeBalance] = useState(0);
   const [stakedBalance, setStakedBalance] = useState(0);
   const [rewardBalance, setRewardBalance] = useState(0);
+  const prevRewardBalance = usePrevious(rewardBalance);
   const [reflectionBalance, setReflectionBalance] = useState(0);
+  const prevReflectionBalance = usePrevious(reflectionBalance);
 
   useEffect(() => {
     if (isConnected && connectedChain) {
@@ -73,24 +76,27 @@ const Staking = () => {
     contractInterface: STAKING[chain?.id]?.abi,
     functionName: 'pendingReward',
     args: [address],
+    watch: true
   });
 
   useEffect(() => {
     if (rewardBalanceFetched) {
-      setStakedBalance(rewardBalanceData);
+      setRewardBalance(rewardBalanceData);
     }
   }, [rewardBalanceData, rewardBalanceFetched, chain]);
+
+  console.log({ rewardBalanceData, rewardBalance })
 
   const { data: reflectionBalanceData, isFetched: reflectionBalanceFetched, refetch: refetchReflectionBalance } = useContractRead({
     addressOrName: STAKING[chain?.id]?.address,
     contractInterface: STAKING[chain?.id]?.abi,
-    functionName: 'balanceOf',
+    functionName: 'pendingDividends',
     args: [address],
   });
 
   useEffect(() => {
     if (reflectionBalanceFetched) {
-      setStakedBalance(reflectionBalanceData);
+      setReflectionBalance(reflectionBalanceData);
     }
   }, [reflectionBalanceData, reflectionBalanceFetched, chain]);
 
@@ -109,7 +115,9 @@ const Staking = () => {
         nativeBalance={nativeBalance}
         stakedBalance={stakedBalance}
         rewardBalance={rewardBalance}
+        prevRewardBalance={prevRewardBalance}
         reflectionBalance={reflectionBalance}
+        prevReflectionBalance={prevReflectionBalance}
         chain={chain} 
       />
       <div className="flex mx-auto">
@@ -126,7 +134,7 @@ const Staking = () => {
         </div>
       </div>
       { activeTab === 'deposit' && <Deposit tokenBalance={tokenBalance} chain={chain} callback={refetchBalances} /> }
-      { activeTab === 'claim' && <Claim /> }
+      { activeTab === 'claim' && <Claim chain={chain} callback={refetchBalances} /> }
       { activeTab === 'withdraw' && <Withdraw stakedBalance={stakedBalance} chain={chain} callback={refetchBalances} /> }
     </div>
   )
