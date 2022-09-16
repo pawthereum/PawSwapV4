@@ -1,16 +1,27 @@
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import logo from '../../public/img/logo-icon.svg';
 import { utils } from 'ethers';
 import { usePrepareContractWrite, useContractWrite } from 'wagmi';
 import { STAKING, PAWTH_DECIMALS } from '../../constants';
 import formatError from '../../helpers/formatError';
 import Approve from './Approve';
+import NotificationContext from '../../context/NotificationContext';
 
 const Deposit = ({ tokenBalance, chain, callback }) => {
+  const n = useContext(NotificationContext);
+  const { popNotification } = useContext(NotificationContext);
   const [amount, setAmount] = useState('');
   const [depositInProgress, setDepositInProgress] = useState(false);
   const [insufficientAllowance, setInsufficentAllowance] = useState(false);
+
+
+  const SuccessNotification = () => (
+    <div className="flex items-center">
+      <span className="mt-1">{`View on ${chain?.blockExplorers?.default?.name}`}</span> 
+      <ExternalLink className="ml-1 h-5 w-5" />
+    </div>
+  );
 
   const maxDeposit = () => {
     setAmount(utils.formatUnits(tokenBalance?.toString() || '0', PAWTH_DECIMALS));
@@ -32,10 +43,22 @@ const Deposit = ({ tokenBalance, chain, callback }) => {
     ...config,
     async onSuccess (data) {
       setDepositInProgress(true);
+      popNotification({
+        type: 'success',
+        title: 'Deposit Submitted',
+        description: SuccessNotification,
+        link: `${chain?.blockExplorers?.default?.url}/tx/${data.hash}`
+      });
       await data.wait();
       callback();
       setAmount('');
       setDepositInProgress(false);
+      popNotification({
+        type: 'success',
+        title: 'Deposit Confirmed!',
+        description: SuccessNotification,
+        link: `${chain?.blockExplorers?.default?.url}/tx/${data.hash}`
+      });
     }
   });
 

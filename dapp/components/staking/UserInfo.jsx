@@ -56,7 +56,7 @@ const UserInfo = ({
         </div>
         <div>
           <div className="text-right">
-            Staking Profit
+            Staking Rewards
           </div>
           <div className="text-right font-bold text-lg">
             <CountUp 

@@ -34,13 +34,41 @@ const Claim = ({ chain, callback }) => {
   });
 
   return (
-    <button 
-      className={`btn btn-block btn-primary ${isLoading || inProgress ? 'loading' : ''}`}
-      onClick={() => write?.()}
-      disabled={!write}
-    >
-      Claim
-    </button>
+    <div className="grid grid-flow-row gap-2">
+      <div className="font-bold">
+        Claim Rewards
+      </div>
+      <div className="text-left text-sm">
+        Extract your reward from the staking contract to your wallet
+      </div>
+      <button 
+        className={`btn btn-block btn-primary ${isLoading || inProgress ? 'loading' : ''}`}
+        onClick={() => write?.()}
+        disabled={!write}
+      >
+        Claim Profit
+      </button>
+      <div className="font-bold mt-4">
+        Claim Reflections
+      </div>
+      <div className="text-left text-sm">
+        Extract your reflections from the staking contract to your wallet.
+      </div>
+      <button 
+        className={`btn btn-block btn-primary ${isLoading || inProgress ? 'loading' : ''}`}
+        onClick={() => write?.()}
+        disabled={!write}
+      >
+        Claim Reflections
+      </button>
+      <button 
+        className={`btn btn-block btn-primary ${isLoading || inProgress ? 'loading' : ''}`}
+        onClick={() => write?.()}
+        disabled={!write}
+      >
+        Compound Profit
+      </button>
+    </div>
   )
 }
 
