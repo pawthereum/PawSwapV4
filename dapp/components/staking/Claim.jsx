@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { usePrepareContractWrite, useContractWrite, useContractRead } from "wagmi";
+import { useContractRead } from "wagmi";
 import { STAKING } from '../../constants';
+import RewardButton from './RewardButton';
 
-const Claim = ({ chain, callback }) => {
+const Claim = ({ chain, callback, functionName, btnLabel }) => {
   const [inProgress, setInProgress] = useState(false);
 
   const { data: performanceFee } = useContractRead({
@@ -10,64 +11,50 @@ const Claim = ({ chain, callback }) => {
     contractInterface: STAKING[chain?.id]?.abi,
     functionName: 'performanceFee',
   });
-  
-  const { config } = usePrepareContractWrite({
-    addressOrName: STAKING[chain?.id]?.address,
-    contractInterface: STAKING[chain?.id]?.abi,
-    functionName: 'claimReward',
-    overrides: {
-      value: performanceFee
-    }
-  });
 
-  const { write, isLoading } = useContractWrite({
-    ...config,
-    async onSuccess (data) {
-      setInProgress(true);
-      await data.wait();
-      setInProgress(false);
-      callback();
-    },
-    onError (e) {
-      console.log(e);
-    }
-  });
 
   return (
     <div className="grid grid-flow-row gap-2">
       <div className="font-bold">
-        Claim Rewards
+        Claim
       </div>
       <div className="text-left text-sm">
-        Extract your reward from the staking contract to your wallet
+        Extract your tokens from the staking contract to your wallet
       </div>
-      <button 
-        className={`btn btn-block btn-primary ${isLoading || inProgress ? 'loading' : ''}`}
-        onClick={() => write?.()}
-        disabled={!write}
-      >
-        Claim Profit
-      </button>
+      <RewardButton
+        fee={performanceFee}
+        chain={chain}
+        callback={callback}
+        functionName={'claimReward'}
+        btnLabel={'Claim Rewards'}
+      />
+      <RewardButton
+        fee={performanceFee}
+        chain={chain}
+        callback={callback}
+        functionName={'claimDividend'}
+        btnLabel={'Claim Reflections'}
+      />
       <div className="font-bold mt-4">
-        Claim Reflections
+        Compound
       </div>
       <div className="text-left text-sm">
-        Extract your reflections from the staking contract to your wallet.
+        Stake your earned and reflected tokens back into the contract to increase your staked position
       </div>
-      <button 
-        className={`btn btn-block btn-primary ${isLoading || inProgress ? 'loading' : ''}`}
-        onClick={() => write?.()}
-        disabled={!write}
-      >
-        Claim Reflections
-      </button>
-      <button 
-        className={`btn btn-block btn-primary ${isLoading || inProgress ? 'loading' : ''}`}
-        onClick={() => write?.()}
-        disabled={!write}
-      >
-        Compound Profit
-      </button>
+      <RewardButton
+        fee={performanceFee}
+        chain={chain}
+        callback={callback}
+        functionName={'compoundReward'}
+        btnLabel={'Compound Rewards'}
+      />
+      <RewardButton
+        fee={performanceFee}
+        chain={chain}
+        callback={callback}
+        functionName={'compoundDividend'}
+        btnLabel={'Compound Reflections'}
+      />
     </div>
   )
 }
