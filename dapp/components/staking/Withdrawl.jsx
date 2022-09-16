@@ -1,14 +1,24 @@
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import logo from '../../public/img/logo-icon.svg';
 import { utils } from 'ethers';
 import { usePrepareContractWrite, useContractWrite } from 'wagmi';
-import { STAKING } from '../../constants';
+import { PAWTH_DECIMALS, STAKING } from '../../constants';
 import formatError from '../../helpers/formatError';
+import NotificationContext from '../../context/NotificationContext';
+import { ExternalLink } from 'react-feather';
 
 const Withdraw = ({ stakedBalance, chain, callback }) => {
+  const { popNotification } = useContext(NotificationContext);
   const [amount, setAmount] = useState('');
   const [inProgress, setInProgress] = useState(false);
+
+  const SuccessNotification = () => (
+    <div className="flex items-center">
+      <span className="mt-1">{`View on ${chain?.blockExplorers?.default?.name}`}</span> 
+      <ExternalLink className="ml-1 h-5 w-5" />
+    </div>
+  );
 
   const max = () => {
     setAmount(utils.formatEther(stakedBalance?.toString()));
@@ -23,17 +33,36 @@ const Withdraw = ({ stakedBalance, chain, callback }) => {
     addressOrName: STAKING[chain?.id]?.address,
     contractInterface: STAKING[chain?.id]?.abi,
     functionName: 'withdraw',
-    args: [utils.parseEther(amount || '0')],
+    args: [utils.parseUnits(amount || '0', PAWTH_DECIMALS)],
   });
 
   const { write, isLoading } = useContractWrite({
     ...config,
     async onSuccess (data) {
       setInProgress(true);
+      popNotification({
+        type: 'success',
+        title: 'Withdrawl Submitted',
+        description: SuccessNotification,
+        link: `${chain?.blockExplorers?.default?.url}/tx/${data.hash}`
+      });
       await data.wait();
       callback();
+      popNotification({
+        type: 'success',
+        title: 'Withdrawl Confirmed',
+        description: SuccessNotification,
+        link: `${chain?.blockExplorers?.default?.url}/tx/${data.hash}`
+      });
       setInProgress(false);
       setAmount('');
+    },
+    onError (error) {
+      popNotification({
+        type: 'error',
+        title: 'Withdrawl Error',
+        description: formatError(error),
+      });
     }
   });
 

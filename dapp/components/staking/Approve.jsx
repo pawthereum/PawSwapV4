@@ -4,6 +4,8 @@ import { STAKING } from "../../constants";
 import { constants } from 'ethers';
 import { tokenList } from '../../constants/tokenList';
 import NotificationContext from '../../context/NotificationContext';
+import formatError from "../../helpers/formatError";
+import { ExternalLink } from "react-feather";
 
 const Approve = ({ chain, callback }) => {
   const { popNotification } = useContext(NotificationContext);
@@ -41,6 +43,13 @@ const Approve = ({ chain, callback }) => {
         title: 'Approval Confirmed!',
         description: SuccessNotification,
         link: `${chain?.blockExplorers?.default?.url}/tx/${data.hash}`
+      });
+    },
+    onError (error) {
+      popNotification({
+        type: 'error',
+        title: 'Approval Error',
+        description: formatError(error),
       });
     }
   });

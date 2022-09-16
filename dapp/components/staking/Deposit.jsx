@@ -7,9 +7,9 @@ import { STAKING, PAWTH_DECIMALS } from '../../constants';
 import formatError from '../../helpers/formatError';
 import Approve from './Approve';
 import NotificationContext from '../../context/NotificationContext';
+import { ExternalLink } from 'react-feather';
 
 const Deposit = ({ tokenBalance, chain, callback }) => {
-  const n = useContext(NotificationContext);
   const { popNotification } = useContext(NotificationContext);
   const [amount, setAmount] = useState('');
   const [depositInProgress, setDepositInProgress] = useState(false);
@@ -58,6 +58,13 @@ const Deposit = ({ tokenBalance, chain, callback }) => {
         title: 'Deposit Confirmed!',
         description: SuccessNotification,
         link: `${chain?.blockExplorers?.default?.url}/tx/${data.hash}`
+      });
+    },
+    onError(error) {
+      popNotification({
+        type: 'error',
+        title: 'Deposit Error',
+        description: formatError(error),
       });
     }
   });
