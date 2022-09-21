@@ -14,7 +14,7 @@ export default function Layout({children}) {
   return (
     <>
       <NextHead>
-        <title>PawSwap - {pageName.pageName}</title>
+        <title>PawSwap | {pageName.pageName}</title>
       </NextHead>
       <div className="drawer">
         <input id="nav-drawer" type="checkbox" className="drawer-toggle" />

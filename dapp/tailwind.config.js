@@ -7,6 +7,7 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
+        'hero': 'url("/img/hero-bg.svg")',
         'gradient-radial': 'radial-gradient(125% 300% at center -200%, var(--tw-gradient-stops))',
       },
     },
