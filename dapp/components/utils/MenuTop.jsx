@@ -9,7 +9,7 @@ export default function MenuTop() {
 
   return (
     <div className="navbar max-w-3xl mx-auto mt-2">
-      <div className="flex justify-between w-full">
+      <div className="flex w-full">
         <label htmlFor="nav-drawer" className="btn btn-ghost drawer-button sm:hidden flex">
           <Menu className="h-5 w-5" />
         </label>

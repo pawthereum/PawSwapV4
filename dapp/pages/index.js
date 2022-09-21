@@ -14,7 +14,7 @@ const Landing = () => {
               <div className="grid grid-flow-row gap-2">
                 <span className="text-5xl font-bold">PawSwap</span>
                 <div>
-                  The first ever Charitable DEX by <span className="font-bold">Pawthereum</span>
+                  The first ever Charitable DEX by <a className="font-bold" href="https://pawthereum.com" target="_blank" rel="noreferrer">Pawthereum</a>
                 </div>
                 <div className="flex items-center">
                   <Link href="/swap">
@@ -60,7 +60,7 @@ const Landing = () => {
             </div>
             <div className="m-auto">
               <span className="flex justify-center text-2xl font-bold">Built by Pawthereum</span>
-              <p>Pawthereum is decentralized, community-run charity cryptocurrency project that gives back to animal shelters and advocates for the well-being of animals in need!</p>
+              <p className="xl:text-start text-center">Pawthereum is decentralized, community-run charity cryptocurrency project that gives back to animal shelters and advocates for the well-being of animals in need!</p>
               <div className="flex justify-center">
                 <a href="https://pawthereum.com" target="_blank" rel="noreferrer">
                   <button className="btn btn-primary btn-sm mt-2">Learn More</button>
@@ -70,7 +70,7 @@ const Landing = () => {
           </div>
         </div>
         <div className="grid grid-rows-2 gap-2 justify-center mt-20 mb-10">
-          <div className="text-2xl font-bold">List your token on PawSwap for free!</div>
+          <div className="text-2xl font-bold px-5 text-center">List your token on PawSwap for free!</div>
             <div className="w-full flex justify-center">
               <Link href="/list">
                 <button className="btn btn-secondary">List My Token</button>
@@ -127,10 +127,10 @@ const Landing = () => {
             </a>
           </div> 
           <div>
-            <span className="footer-title text-secondary">Pawthereum</span> 
+            <span className="footer-title">Pawthereum Charity</span> 
             <a className="link link-hover" href="mailto:charity@pawthereum.com" target="_blank" rel="noreferrer">Charity Outreach</a>
             <a className="link link-hover" href="https://pawthereum.com/charity-donations" target="_blank" rel="noreferrer">Donations</a>
-            <a className="link link-hover" href="https://pawthereum.com/nft/">NFT</a>
+            <a className="link link-hover" href="https://vote.pawthereum.com/">Vote</a>
           </div>
         </div>
       </footer>
