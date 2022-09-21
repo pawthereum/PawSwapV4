@@ -34,11 +34,11 @@ export default function Layout({children}) {
             <div className="my-8 w-full justify-center flex">
               <Image src={logo} className="filter-primary" alt="Pawthereum Logo" width={125} height={19} />
             </div>
-            <Link href="/">
+            <Link href="/swap">
               <li>
                 <a 
                   onClick={() => document.getElementById('nav-drawer').click()}
-                  className={`btn btn-ghost normal-case text-lg ${router?.pathname === '/' ? 'text-primary-content bg-primary' : ''}`}
+                  className={`btn btn-ghost normal-case text-lg ${router?.pathname === '/swap' ? 'text-primary-content bg-primary' : ''}`}
                 >
                   Swap
                 </a>
