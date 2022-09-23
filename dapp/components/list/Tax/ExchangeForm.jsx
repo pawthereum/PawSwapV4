@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import shortenAddress from "../../../helpers/shortenAddress";
 import { ExternalLink } from "react-feather";
 import { useContractWrite, useNetwork, usePrepareContractWrite } from "wagmi";
-import { PANCAKESWAP_ROUTER, SAFEMOONSWAP_ROUTER, defaultChainId, TAX_STRUCTURE_ABI } from "../../../constants";
+import { PANCAKESWAP_ROUTER, SAFEMOONSWAP_ROUTER, defaultChainId, TAX_STRUCTURE_ABI, PAWSWAP } from "../../../constants";
 import ListContext from "../../../context/ListContext";
 import NotificationContext from "../../../context/NotificationContext";
 import formatError from "../../../helpers/formatError";
@@ -111,6 +111,12 @@ export const ExchangeForm = () => {
             Pancakeswap
           </button>
           <button 
+            className={`btn btn-xs ${routerAddress?.toLowerCase() !== PAWSWAP[chain?.id]?.address?.toLowerCase() ? 'btn-outline' : ''} mr-2`}
+            onClick={() => setRouterAddress(PAWSWAP[chain?.id]?.address)}
+          >
+            PawSwap
+          </button>
+          <button 
             className={`btn btn-xs ${routerAddress?.toLowerCase() !== SAFEMOONSWAP_ROUTER[chain?.id]?.address?.toLowerCase() ? 'btn-outline' : ''} mr-2`}
             onClick={() => setRouterAddress(SAFEMOONSWAP_ROUTER[chain?.id]?.address)}
           >
@@ -130,7 +136,7 @@ export const ExchangeForm = () => {
       {
         hasUnsavedChanges && error ?
         <div className="text-xs text-secondary-content flex justify-end mt-1">
-          {formatError(error?.toString())}
+          {error?.reason ? formatError(error?.reason?.toString()) : error?.toString()}
         </div>
         : ''
       }

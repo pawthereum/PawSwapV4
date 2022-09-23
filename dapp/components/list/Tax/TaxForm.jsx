@@ -219,6 +219,7 @@ export const TaxForm = ({ tax, index }) => {
           { !hasUnsavedChanges ? '' :
             <button 
               className={`btn btn-block btn-primary mt-2 ${isLoading || updateInProgress ? 'loading' : ''}`}
+              disabled={error || !write?.()}
               onClick={() => write?.()}
             >
               Update Tax
@@ -227,7 +228,7 @@ export const TaxForm = ({ tax, index }) => {
           {
             hasUnsavedChanges && error ?
             <div className="text-xs text-secondary-content flex justify-end mt-1">
-              {formatError(error?.toString())}
+              {error?.reason ? formatError(error?.reason?.toString()) : error?.toString()}
             </div>
             : ''
           }
