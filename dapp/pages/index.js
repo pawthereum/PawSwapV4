@@ -8,7 +8,7 @@ const Landing = () => {
   return (
     <div>
       <div className="w-full max-w-7xl mx-auto">
-        <div className="w-full xl:rounded-xl xl:shadow-xl bg-hero bg-cover bg-no-repeat px-10 sm:px-20 py-20">
+        <div className="w-full xl:rounded-xl xl:shadow-xl dark:bg-hero-dark bg-hero bg-cover bg-no-repeat px-10 sm:px-20 py-20">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div className="flex items-center">
               <div className="grid grid-flow-row gap-2">
@@ -22,7 +22,7 @@ const Landing = () => {
                   </Link>
                   <Link href="/list">
                     <div className="indicator">
-                      <span className="indicator-item badge badge-accent">free!</span> 
+                      <span className="indicator-item badge badge-accent">free</span> 
                       <button className="btn btn-secondary">List My Token</button>
                     </div>
                   </Link>

@@ -8,6 +8,7 @@ module.exports = {
     extend: {
       backgroundImage: {
         'hero': 'url("/img/hero-bg.svg")',
+        'hero-dark': 'url("/img/hero-bg-dark.svg")',
         'gradient-radial': 'radial-gradient(125% 300% at center -200%, var(--tw-gradient-stops))',
       },
     },
@@ -26,6 +27,7 @@ module.exports = {
         dark: {
           ...require("daisyui/src/colors/themes")["[data-theme=dark]"],
           primary: "#FF65B3",
+          secondary: "rgb(56, 58, 107)",
         },
       },
     ],

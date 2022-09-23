@@ -193,17 +193,17 @@ export const TaxForm = ({ tax, index }) => {
         </div>
       </div>
       <div className="collapse-content bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content"> 
-        <div className="form-control mt-4 text-neutral">
+        <div className="form-control mt-4 text-neutral dark:text-base-content">
           <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-2">
             <label className="input-group my-1 w-full">
               <span>Buy</span>
               <input value={buy} onChange={handleBuyChanged} type="text" placeholder="Buy Tax" className="input input-bordered w-full text-end" />
-              <span className="bg-success"><Percent className="h-5 w-5"/></span>
+              <span className="bg-success"><Percent className="h-5 w-5 text-neutral"/></span>
             </label>
             <label className="input-group my-1">
               <span>Sell</span>
               <input value={sell} onChange={handleSellChanged} type="text" placeholder="Sell Tax" className="input input-bordered w-full text-end" />
-              <span className="bg-error"><Percent className="h-5 w-5"/></span>
+              <span className="bg-error"><Percent className="h-5 w-5 text-neutral"/></span>
             </label>
           </div>
           { hideName ? '' :
