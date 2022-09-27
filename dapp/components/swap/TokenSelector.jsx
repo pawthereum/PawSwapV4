@@ -4,6 +4,7 @@ import { ChevronDown, X } from 'react-feather';
 import { utils } from 'ethers';
 import { useToken } from 'wagmi';
 import TokenSearchResult from './TokenSelector/TokenSearchResult';
+import { useRouter } from 'next/router';
 // Context
 import SwapContext from '../../context/SwapContext';
 
@@ -11,11 +12,24 @@ const COINGECKO_API_ENDPOINT = `https://api.coingecko.com/api/v3/coins/binance-s
 
 export const TokenSelector = ({ side }) => {
   const { inputToken, outputToken } = useContext(SwapContext); 
+  const router = useRouter();
+  const { input, output } = router.query;
   const [tokenQuery, setTokenQuery] = useState('');
   const [tokenAddress, setTokenAddress] = useState('');
   const [tokenImg, setTokenImg] = useState(null);
 
   const { data: erc20Data, isLoading: erc20DataLoading } = useToken({ address: tokenAddress });
+
+  // handle query params
+  useEffect(() => {
+    console.log({ input })
+    if (input && side === 'input') {
+      console.log('setting token address');
+      setTokenAddress(input);
+    } else if (output && side === 'output') {
+      setTokenAddress(output);
+    }
+  }, [input, output, side]);
 
   const selectedToken = useMemo(() => {
     if (side === 'output') {

@@ -9,7 +9,7 @@ import {
   PAWSWAP_FEE,
   FEE_ORACLE
 } from '../constants';
-import { useAccount, useContractRead, useNetwork, usePrepareContractWrite, useSigner, useContract } from 'wagmi';
+import { useAccount, useContractRead, useNetwork, useToken, useSigner, useContract } from 'wagmi';
 import { Token, Pair, TokenAmount, Route, Percent } from '@uniswap/sdk';
 import { defaultChainId } from '../constants';
 import { createExactInBuyTrade } from '../helpers/swap/createExactInBuyTrade';
@@ -18,11 +18,14 @@ import { createExactOutBuyTrade } from '../helpers/swap/createExactOutBuyTrade';
 import { createExactOutSellTrade } from '../helpers/swap/createExactOutSellTrade';
 import { getPawth, getNative } from '../helpers/getTokens';
 import usePrevious from './usePrevious';
+import { useRouter } from 'next/router';
 
 const useSwap = () => {
   const { chain: connectedChain } = useNetwork();
   const { data: signer } = useSigner()
   const [chain, setChain] = useState({ id: defaultChainId });
+  const nextRouter = useRouter();
+  const { input, output } = nextRouter.query;
   const [inputToken, setInputToken] = useState(null);
   const [outputToken, setOutputToken] = useState(null);
   const [inputAmount, setInputAmount] = useState('');
@@ -35,6 +38,13 @@ const useSwap = () => {
   const [slippage, setSlippage] = useState(DEFAULT_SLIPPAGE);
   const [typicalBuyTax, setTypicalBuyTax] = useState(null);
   const [typicalSellTax, setTypicalSellTax] = useState(null);
+
+  const COINGECKO_API_ENDPOINT = useMemo(() => {
+    if (chain?.id === 1) {
+      return `https://api.coingecko.com/api/v3/coins/ethereum/contract/`
+    }
+    return `https://api.coingecko.com/api/v3/coins/binance-smart-chain/contract/`
+  }, [chain]);
 
   const { address } = useAccount({
     onDisconnect() {
@@ -51,6 +61,7 @@ const useSwap = () => {
 
   // this is the token that is not the native token in the trade
   const nonNativeTokenInSwap = useMemo(() => {
+    console.log({ inputToken, outputToken })
     if (!inputToken && !outputToken) {
       return null;
     }
@@ -353,10 +364,54 @@ const useSwap = () => {
     }
   }, [connectedChain]);
 
+  // handle query params
+  const { data: queryParamInput } = useToken({
+    address: input
+  });
+
+  const { data: queryParamOutput } = useToken({
+    address: output
+  });
+
   useEffect(() => {
-    setInputToken(getNative(chain));
-    setOutputToken(getPawth(chain));
-  }, [chain]);
+    if (queryParamInput) {
+      (async () => {
+        const cgData = await fetch(COINGECKO_API_ENDPOINT + queryParamInput?.address?.toLowerCase());
+        const cgJson = await cgData.json();
+        setInputToken({
+          logoURI: cgJson?.image?.large,
+          token: new Token(
+            chain?.id,
+            queryParamInput?.address,
+            queryParamInput?.decimals,
+            queryParamInput?.symbol,
+            queryParamInput?.name,
+          )
+        });
+        setOutputToken(getNative(chain));
+      })();
+    } else if (queryParamOutput) {
+      (async () => {
+        const cgData = await fetch(COINGECKO_API_ENDPOINT + queryParamOutput?.address?.toLowerCase());
+        const cgJson = await cgData.json();
+        setOutputToken({
+          logoURI: cgJson?.image?.large,
+          token: new Token(
+            chain?.id,
+            queryParamOutput?.address,
+            queryParamOutput?.decimals,
+            queryParamOutput?.symbol,
+            queryParamOutput?.name,
+          )
+        });
+        setInputToken(getNative(chain));
+      })();
+    }
+    if (!queryParamInput && !queryParamOutput) {
+      setInputToken(getNative(chain));
+      setOutputToken(getPawth(chain));
+    }
+  }, [queryParamInput, queryParamOutput, chain]);
 
   ////////////////////////////////////////////////////////
   // contexts for updating state from other components //

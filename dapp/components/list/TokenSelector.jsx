@@ -2,24 +2,40 @@ import Image from 'next/image';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { ChevronDown, ChevronRight, X } from 'react-feather';
 import { utils } from 'ethers';
-import { useToken } from 'wagmi';
+import { useToken, useNetwork } from 'wagmi';
 import TokenSearchResult from './TokenSelector/TokenSearchResult';
 // Context
 import ListContext from '../../context/ListContext';
-
-const COINGECKO_API_ENDPOINT = `https://api.coingecko.com/api/v3/coins/binance-smart-chain/contract/`
+import { defaultChainId } from '../../constants';
 
 export const TokenSelector = ({ side }) => {
+  const { chain: connectedChain } = useNetwork();
+  const [chain, setChain] = useState({ id: defaultChainId });
   const { listToken, nextStep } = useContext(ListContext); 
   const [tokenQuery, setTokenQuery] = useState('');
   const [tokenAddress, setTokenAddress] = useState('');
   const [tokenImg, setTokenImg] = useState(null);
+
+  const COINGECKO_API_ENDPOINT = useMemo(() => {
+    if (chain?.id === 1) {
+      return `https://api.coingecko.com/api/v3/coins/ethereum/contract/`
+    }
+    return `https://api.coingecko.com/api/v3/coins/binance-smart-chain/contract/`
+  }, [chain]);
 
   const { data: erc20Data, isLoading: erc20DataLoading } = useToken({ address: tokenAddress });
 
   const selectedToken = useMemo(() => {
     return listToken;
   }, [listToken]);
+
+  useEffect(() => {
+    if (connectedChain) {
+      setChain(connectedChain);
+    } else {
+      setChain({ id: defaultChainId });
+    }
+  }, [connectedChain]);
 
   useEffect(() => {
     if (utils.isAddress(tokenQuery)) {
