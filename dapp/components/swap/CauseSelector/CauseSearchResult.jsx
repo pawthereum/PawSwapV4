@@ -37,8 +37,11 @@ export const CauseSearchResult = memo(({ results }) => {
   return (
     <div>
       {
-        results.map((r, i) => (
-          <div className={`mt-4 pt-2 pb-0 cursor-pointer rounded-xl ${ r.isFeatured ? 'shadow' : 'hover:shadow'}`}>
+        results.map((r) => (
+          <div 
+            key={r?.address}
+            className={`mt-4 pt-2 pb-0 cursor-pointer rounded-xl ${ r.isFeatured ? 'shadow' : 'hover:shadow'}`}
+          >
             { r.isFeatured && (
               <div className="bg-gradient-to-r from-primary to-accent via-secondary text-primary-content rounded-t-xl p-1 mb-2">
                 <div className="font-bold text-center text-sm">✨ Featured Cause ✨</div>
@@ -48,7 +51,6 @@ export const CauseSearchResult = memo(({ results }) => {
               className="flex items-start w-full px-4" 
               onClick={() => selectCause(r)}
               htmlFor="cause-selector"
-              key={r?.address}
             >
               <div className="avatar mr-2">
                 <div className="w-12 rounded-full">
