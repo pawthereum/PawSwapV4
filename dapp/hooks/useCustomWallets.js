@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react'
-import { defaultChainId, PAWTH_CHARITY_WALLET } from '../constants'
+import { defaultChainId, FEATURED_CAUSE, PAWTH_CHARITY_WALLET } from '../constants'
 import { useNetwork } from 'wagmi'
 
 const API_ENDPOINT = `https://api.getchange.io/api/v1/nonprofits?public_key=${process.env.NEXT_PUBLIC_CHANGE_API_KEY}&search_term=`
@@ -74,10 +74,14 @@ const useGetCustomWallets = (searchQuery, selectedCategories, execute) => {
           website: 'https://pawthereum.com',
           twitter: '@pawthereum',
           facebook: 'pawthereum',
-          instagram: 'pawthereum',
+          instagram: 'pawthereum'
+        }
+        const featuredCause = {
+          ...FEATURED_CAUSE,
           isFeatured: true
         }
-        wallets.unshift(pawthCharity)
+        wallets.unshift(pawthCharity);
+        wallets.unshift(featuredCause);
         const formattedJson = {
           nonprofits: wallets,
           page: json.page

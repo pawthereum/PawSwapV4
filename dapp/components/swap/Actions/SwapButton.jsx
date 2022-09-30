@@ -93,7 +93,7 @@ export const SwapButton = () => {
       }
     }
     return null;
-  }, [isBuy, isExactIn, trade]);
+  }, [isBuy, isExactIn, trade, cause, causeAmount]);
 
 
   useEffect(() => {
