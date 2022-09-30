@@ -31,7 +31,7 @@ const Landing = () => {
               </div>
             </div>
             <div className="mx-auto">
-              <Image src={supercat} alt="Supercat" width={400} height={400} />
+              <Image src={supercat} alt="Supercat" priority={true} width={400} height={400} />
             </div>
           </div>
         </div>
