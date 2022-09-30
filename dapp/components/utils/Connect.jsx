@@ -88,17 +88,22 @@ export default function Connect() {
           :
             <div>
               <label tabIndex={0} className="btn m-1">
-                <span className="mr-2">{ensName ?? shortenAddress(address)}</span>
+                <span className="mr-2 sm:flex hidden">{ensName ?? shortenAddress(address)}</span>
                   <Jazzicon diameter={20} seed={jsNumberForAddress(address || '0x0')} />
                   <ChevronDown
                     className="ml-2 -mr-1 h-5 w-5"
                     aria-hidden="true"
                   />
               </label>
-              <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-neutral-content text-neutral rounded-box w-52">
+              <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-neutral-content text-neutral rounded-box">
                 <li>
                   <a onClick={() => { disconnect(); setShowMenu(false); }} className="hover:bg-neutral-focus hover:text-neutral-content">
-                    Disconnect
+                    <div className="grid grid-flow-row w-full">
+                      <div className="mx-auto">Disconnect</div>
+                      <p className="sm:hidden mx-auto">
+                        {ensName ?? shortenAddress(address)}
+                      </p>
+                    </div>
                   </a>
                 </li>
               </ul>
