@@ -84,6 +84,7 @@ export const NATIVE_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 export const PAWTH_CHARITY_WALLET = {
   1337: '0x9036464e4ecD2d40d21EE38a0398AEdD6805a09B',
   56: '0x9e84fe006aa1c290f4cbcd78be32131cbf52cb23',
+  1: '0xf4A22C530e8cC64770C4eDb5766D26F8926E20bd',
 }
 
 export const PAWTH_DECIMALS = 9;
@@ -118,6 +119,10 @@ export const TAX_STRUCTURE_FACTORY = {
   },
   56: {
     address: '0xdc3e542a3824ef646761155Ec442886bF12E7ab5',
+    abi: taxStructureFactoryJson.abi
+  },
+  1: {
+    address: '0xdDf2B332360BF65c0161fb4f1500c3010dFC82e3',
     abi: taxStructureFactoryJson.abi
   }
 }
