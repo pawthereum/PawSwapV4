@@ -4,6 +4,7 @@ import supercat from '../public/img/supercat.svg';
 import pawthLogo from '../public/img/pawthereum.svg';
 import nsala from '../public/img/nsala.png';
 import { TrendingUp, Heart, DollarSign, BarChart, Droplet, Zap } from 'react-feather';
+import { FEATURED_CAUSE } from '../constants';
 
 const Landing = () => {
   return (
@@ -115,7 +116,7 @@ const Landing = () => {
               <span className="flex justify-center text-2xl text-center font-bold">North Shore Animal League America</span>
               <p className="xl:text-start text-center">A pioneer of the no-kill movement, North Shore Animal League America continues to lead the way with the development of national and international programs that increase adoptions and raise awareness about the plight of homeless animals.</p>
               <div className="flex justify-center mt-2">
-                <Link href="/swap">
+                <Link href={`/swap?cause=${FEATURED_CAUSE?.address}`}>
                   <button className="btn btn-primary btn-sm mr-2">Swap &amp; Donate</button>
                 </Link>
                 <a href="https://www.animalleague.org" target="_blank" rel="noreferrer">

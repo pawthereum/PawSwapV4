@@ -19,13 +19,14 @@ import { createExactOutSellTrade } from '../helpers/swap/createExactOutSellTrade
 import { getPawth, getNative } from '../helpers/getTokens';
 import usePrevious from './usePrevious';
 import { useRouter } from 'next/router';
+import { getCauseByWallet } from './useCustomWallets';
 
 const useSwap = () => {
   const { chain: connectedChain } = useNetwork();
   const { data: signer } = useSigner()
   const [chain, setChain] = useState({ id: defaultChainId });
   const nextRouter = useRouter();
-  const { input, output } = nextRouter.query;
+  const { input, output, cause: causeQuery } = nextRouter.query;
   const [inputToken, setInputToken] = useState(null);
   const [outputToken, setOutputToken] = useState(null);
   const [inputAmount, setInputAmount] = useState('');
@@ -374,6 +375,15 @@ const useSwap = () => {
   });
 
   useEffect(() => {
+    if (causeQuery) {
+      (async ()=> {
+        const fetchedCause = await getCauseByWallet(causeQuery);
+        setCause(fetchedCause);
+      })();
+    }
+  }, [causeQuery]);
+
+  useEffect(() => {
     if (queryParamInput) {
       (async () => {
         const cgData = await fetch(COINGECKO_API_ENDPOINT + queryParamInput?.address?.toLowerCase());
@@ -472,6 +482,7 @@ const useSwap = () => {
   }
 
   const updateCause = (cause) => {
+    console.log({ cause})
     setCause(cause);
   }
 
