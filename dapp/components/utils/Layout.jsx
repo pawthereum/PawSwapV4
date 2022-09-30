@@ -1,4 +1,3 @@
-import NextHead from 'next/head';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -13,9 +12,6 @@ export default function Layout({children}) {
 
   return (
     <>
-      <NextHead>
-        <title>PawSwap | {pageName.pageName}</title>
-      </NextHead>
       <div className="drawer">
         <input id="nav-drawer" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content">
