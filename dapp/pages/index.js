@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import supercat from '../public/img/supercat.svg';
 import pawthLogo from '../public/img/pawthereum.svg';
+import nsala from '../public/img/nsala.png';
 import { TrendingUp, Heart, DollarSign, BarChart, Droplet, Zap } from 'react-feather';
 
 const Landing = () => {
@@ -103,6 +104,28 @@ const Landing = () => {
               </div>
             </div>
             <span>Trending tokens on PawSwap are determined by how much your community gives to charitable causes on the platform!</span>
+          </div>
+        </div>
+        <div className="bg-gradient-to-r from-primary to-accent via-secondary text-primary-content xl:rounded-t-xl p-2 mt-20">
+          <div className="text-lg font-bold text-center">✨ Featured Cause ✨</div>
+        </div>
+        <div className="w-full xl:rounded-xl xl:rounded-t-none xl:shadow-xl bg-gradient-radial from-base-100 to-[#CCE0F5] text-[#003366] bg-cover bg-no-repeat px-10 sm:px-20 py-10 mb-10">
+          <div className="grid lg:grid-cols-2 grid-cols-1 gap-4 my-10 px-5">
+            <div className="m-auto">
+              <span className="flex justify-center text-2xl text-center font-bold">North Shore Animal League America</span>
+              <p className="xl:text-start text-center">A pioneer of the no-kill movement, North Shore Animal League America continues to lead the way with the development of national and international programs that increase adoptions and raise awareness about the plight of homeless animals.</p>
+              <div className="flex justify-center mt-2">
+                <Link href="/swap">
+                  <button className="btn btn-primary btn-sm mr-2">Swap &amp; Donate</button>
+                </Link>
+                <a href="https://www.animalleague.org" target="_blank" rel="noreferrer">
+                  <button className="btn btn-secondary btn-sm">Learn More</button>
+                </a>
+              </div>
+            </div>
+            <div className="m-auto">
+              <Image src={nsala} alt="NSALA" height={200} width={474} />
+            </div>
           </div>
         </div>
       </div>
