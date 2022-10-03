@@ -52,7 +52,7 @@ const Landing = () => {
           <div className="mx-auto text-center">
             <span className="flex justify-center"><DollarSign className="text-primary h-12 w-12 mb-2"  /></span>
             <span className="flex justify-center text-lg font-bold">Good for Users</span>
-            <span>Projects attracts users to PawSwap by offering lower tax rates so that the project can minimize sell pressure on their charts</span>
+            <span>Projects attract users to PawSwap by offering lower tax rates so that the project can minimize sell pressure on their charts</span>
           </div>
           <div className="mx-auto text-center">
             <span className="flex justify-center"><Heart className="text-primary h-12 w-12 mb-2"  /></span>
