@@ -7,6 +7,7 @@ import { ArrowDown, ArrowUpCircle, CheckCircle, ExternalLink, X } from 'react-fe
 import TradeDetails from '../TradeDetails';
 import formatWithCommas from '../../../helpers/formatWithCommas';
 import NotificationContext from '../../../context/NotificationContext';
+import usePrice from '../../../hooks/usePrice';
 
 export const ConfirmSwap = memo(({ 
   prepareConfig,
@@ -20,12 +21,22 @@ export const ConfirmSwap = memo(({
   const [swapSubmitted, setSwapSubmitted] = useState(false);
   const [swapComplete, setSwapComplete] = useState(false);
   const [txLink, setTxLink] = useState(null);
+  const { price } = usePrice(chain?.nativeCurrency?.symbol);
 
-  const { config } = usePrepareContractWrite({
-    ...prepareConfig
+
+  const { config, data } = usePrepareContractWrite({
+    ...prepareConfig,
+    onSettled(data) {
+      console.log({data})
+    }
   });
 
-  console.log({ prepareConfig })
+  const gasInUsd = useMemo(() => {
+    if (!data || !price) return 0;
+    return Number(data?.request?.gasLimit?.toString()) * price;
+  }, [data, price]);
+
+  console.log({ prepareConfig, data, price, gasInUsd });
 
   const { write, isLoading } = useContractWrite({
     ...config,

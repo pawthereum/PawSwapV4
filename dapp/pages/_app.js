@@ -32,11 +32,11 @@ const infuraId = process.env.NEXT_PUBLIC_INFURA_ID
 const { provider, webSocketProvider } = configureChains(
   validChains,
   [
-    // alchemyProvider({ alchemyId }),
     // infuraProvider({ infuraId }),
     jsonRpcProvider({
       rpc: (chain) => ({ http: chain.rpcUrls.default }),
     }),
+    alchemyProvider({ alchemyId }),
     publicProvider()
   ],
 );
@@ -63,7 +63,7 @@ const client = createClient({
     new CoinbaseWalletConnector({
       options: {
         appName: 'PawSwap',
-        jsonRpcUrl: `https://eth-mainnet.alchemyapi.io/v2/${alchemyId}`,
+        jsonRpcUrl: `https://eth-mainnet.g.alchemy.com/v2/${alchemyId}`,
       },
     }),
     new InjectedConnector({
