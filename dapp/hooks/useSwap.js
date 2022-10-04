@@ -276,7 +276,7 @@ const useSwap = () => {
     try {
       if (isBuy && isExactIn) {
         // account for optional cause tax
-        preSwapBuyTaxAmount = Number(preSwapBuyTaxAmount) + Number(causeAmount * 100) + PAWSWAP_FEE;
+        preSwapBuyTaxAmount = Number(preSwapBuyTaxAmount) + Number(utils.formatEther(causeAmount || '0') * 100) + PAWSWAP_FEE;
         createdTrade = createExactInBuyTrade({
           route,
           inputAmount,
@@ -287,7 +287,7 @@ const useSwap = () => {
         });
       }
       if (!isBuy && isExactIn) {
-        postSwapSellTaxAmount = Number(postSwapSellTaxAmount) + Number(causeAmount * 100) + PAWSWAP_FEE;
+        postSwapSellTaxAmount = Number(postSwapSellTaxAmount) + Number(utils.formatEther(causeAmount || '0') * 100) + PAWSWAP_FEE;
         createdTrade = createExactInSellTrade({
           route,
           inputAmount,
@@ -298,7 +298,7 @@ const useSwap = () => {
         });
       }
       if (isBuy && !isExactIn) {
-        preSwapBuyTaxAmount = Number(preSwapBuyTaxAmount) + Number(causeAmount * 100) + PAWSWAP_FEE;
+        preSwapBuyTaxAmount = Number(preSwapBuyTaxAmount) + Number(utils.formatEther(causeAmount || '0') * 100) + PAWSWAP_FEE;
         createdTrade = createExactOutBuyTrade({
           route,
           outputAmount,
@@ -310,7 +310,7 @@ const useSwap = () => {
         })
       }
       if (!isBuy && !isExactIn) {
-        postSwapSellTaxAmount = Number(postSwapSellTaxAmount) + Number(causeAmount * 100) + PAWSWAP_FEE;
+        postSwapSellTaxAmount = Number(postSwapSellTaxAmount) + Number(utils.formatEther(causeAmount || '0') * 100) + PAWSWAP_FEE;
         createdTrade = createExactOutSellTrade({
           route,
           outputAmount,
@@ -343,14 +343,14 @@ const useSwap = () => {
     if (!buyTaxes) return BigNumber.from('0');
     const buyTaxTotal = buyTaxes?.reduce((p, c) => BigNumber.from(c).add(p), BigNumber.from('0'));
     if (!causeAmount) return buyTaxTotal;
-    return Number(buyTaxTotal) + Number(causeAmount * 100);
+    return Number(buyTaxTotal) + Number(utils.formatEther(causeAmount || '0') * 100);
   }, [buyTaxes, causeAmount]);
 
   const totalSellTax = useMemo(() => {
     if (!sellTaxes) return BigNumber.from('0');
     const sellTaxTotal = sellTaxes?.reduce((p, c) => BigNumber.from(c).add(p), BigNumber.from('0'));
     if (!causeAmount) return sellTaxTotal;
-    return Number(sellTaxTotal) + Number(causeAmount * 100);
+    return Number(sellTaxTotal) + Number(utils.formatEther(causeAmount || '0') * 100);
   }, [sellTaxes, causeAmount]);
 
   /////////////////////////////////
@@ -478,7 +478,8 @@ const useSwap = () => {
   }
 
   const updateCauseAmount = (amount) => {
-    setCauseAmount(BigNumber.from(amount?.toString()?.trim() || '0'));
+    if (isNaN(amount)) return;
+    setCauseAmount(utils.parseEther(amount || '0'));
   }
 
   const updateCause = (cause) => {

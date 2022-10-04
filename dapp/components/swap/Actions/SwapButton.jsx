@@ -4,6 +4,7 @@ import SwapContext from '../../../context/SwapContext';
 import { defaultChainId, PAWSWAP } from '../../../constants';
 import ConfirmSwap from './ConfirmSwap';
 import TradeDetails from '../TradeDetails';
+import { utils } from 'ethers';
 
 export const SwapButton = () => {
   const {
@@ -36,7 +37,7 @@ export const SwapButton = () => {
         functionName: 'buyOnPawSwap',
         args: [
           outputToken?.token?.address,
-          causeAmount || '0',
+          utils.formatEther(causeAmount || '0'),
           cause?.address || address,
           '0', //trade?.calculatedAmountWithSlippage?.raw?.toString(),
           true
@@ -53,7 +54,7 @@ export const SwapButton = () => {
         functionName: 'buyOnPawSwap',
         args: [
           trade?.swapResult?.outputAmount?.token?.address,
-          causeAmount || '0',
+          utils.formatEther(causeAmount || '0'),
           cause?.address || address,
           outputAmount?.raw?.toString(),
           false
@@ -71,7 +72,7 @@ export const SwapButton = () => {
         args: [
           inputToken?.token?.address,
           inputAmount?.raw?.toString(),
-          causeAmount || '0',
+          utils.formatEther(causeAmount || '0'),
           cause?.address  || address,
           trade?.calculatedAmountWithSlippage?.raw?.toString(),
           true
@@ -85,7 +86,7 @@ export const SwapButton = () => {
         args: [
           inputToken?.token?.address,
           trade?.calculatedAmountWithSlippage?.raw?.toString(),
-          causeAmount || '0',
+          utils.formatEther(causeAmount || '0'),
           cause?.address  || address,
           outputAmount?.raw?.toString(),
           false

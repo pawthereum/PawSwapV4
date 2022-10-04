@@ -31,7 +31,7 @@ export const CauseSelector = (() => {
   }
 
   useEffect(() => {
-    updateCauseAmount(causeAmount);
+    updateCauseAmount(Number(causeAmount).toFixed(2));
   }, [causeAmount]);
 
   useEffect(() => {

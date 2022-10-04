@@ -229,7 +229,7 @@ export const ConfirmSwap = memo(({
               ? 
                 <div className="flex items-center ml-3 text-sm">
                   <div>
-                    {params.causeAmount?.toString()}% donated to
+                    {utils.formatEther(params.causeAmount?.toString() || '0')}% donated to
                   </div>
                   <div className="flex items-center">
                     <div className="avatar mx-1">
