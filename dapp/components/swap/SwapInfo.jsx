@@ -126,7 +126,7 @@ export const SwapInfo = () => {
           </div>
         </div>
         { causeAmount ? <TaxRow tax={Number(causeAmount) * 100} taxName="Your Donation" isCause={true} /> : null }
-        {!taxes?.length && !taxNames?.length ? '' : taxes?.map((t, i) => (
+        {!taxes?.length || !taxNames?.length ? '' : taxes?.map((t, i) => (
           t?.toString() === '0' || taxNames[i] === '' ? '' :
           <TaxRow tax={t} taxName={taxNames[i]} key={i} />
         ))}
