@@ -25,6 +25,7 @@ export const Manage = () => {
   }, [taxNames, taxWallets, buyTaxes, sellTaxes]);
 
   const tokenTaxes = useMemo(() => {
+    if (!taxNames || !taxNames[4] || !taxNames[5]) return [];
     return [taxNames[4], taxNames[5]].map((t, i) => {
       return {
         name: t,
@@ -37,6 +38,7 @@ export const Manage = () => {
   }, [taxNames, taxWallets, buyTaxes, sellTaxes]);
 
   const liquidityTax = useMemo(() => {
+    if (!taxNames || !taxNames[6]) return [];
     return [taxNames[6]].map((t, i) => {
       return {
         name: t,
