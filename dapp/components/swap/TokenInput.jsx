@@ -137,13 +137,13 @@ export const TokenInput = ({ side }) => {
           )
         }</span>
       </div>
-      <div className="flex bg-base-200 rounded-lg items-center shadow-inner">
+      <div className="flex bg-base-200 rounded-lg items-center shadow-inner p-1">
         <input 
           type="text" 
           onChange={handleAmountChanged}
           value={amount}
           placeholder="Type here" 
-          className="input shadow-inner clip-right bg-base-200 hover:bg-base-300 focus:outline-0 rounded-r-none input-lg w-full" 
+          className="input bg-base-200 focus:outline-0 rounded-r-none input-lg w-full" 
         />
         <TokenSelector side={side} />
       </div>

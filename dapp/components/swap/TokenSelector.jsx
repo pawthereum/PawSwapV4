@@ -65,7 +65,7 @@ export const TokenSelector = ({ side }) => {
 
   return (
     <div className="min-w-max">
-      <label htmlFor={`${side}-token-selector`} className="btn modal-button sm:shadow-inner clip-left min-h-full sm:btn-lg btn-ghost bg-base-200 hover:bg-base-300 rounded-l-none">
+      <label htmlFor={`${side}-token-selector`} className="btn modal-button min-h-full sm:btn-lg btn-ghost bg-base-200 hover:bg-base-200 rounded-l-none">
         <div className="avatar">
           <div className="rounded-full">
             <SelectedTokenImg token={selectedToken}/>

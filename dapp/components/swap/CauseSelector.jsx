@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
-import { ChevronDown, X } from 'react-feather';
+import { ChevronDown, X, Percent } from 'react-feather';
 import useGetCustomWallets from '../../hooks/useCustomWallets';
 import CauseSearchResult from './CauseSelector/CauseSearchResult';
 import { useAccount } from 'wagmi';
@@ -80,15 +80,25 @@ export const CauseSelector = (() => {
   
   return (
     <div className="grid grid-flow-row auto-rows-auto">
-      <div className="flex bg-base-200 rounded-lg items-center shadow-inner">
-        <input 
-          type="text" 
-          placeholder="Type here" 
-          value={causeAmount}
-          onChange={handleCauseAmountChanged}
-          className="shadow-inner clip-right input bg-base-200 hover:bg-base-300 focus:outline-0 rounded-r-none input-lg w-full" 
-        />
-        <label htmlFor="cause-selector" className="btn modal-button shadow-inner clip-left sm:btn-lg btn-ghost bg-base-200 hover:bg-base-300 rounded-l-none min-h-full">
+      <div className="flex justify-between mb-2">
+        <div className="text-base">Donation <div className="badge badge-outline badge-sm badge-secondary">optional</div></div>
+      </div>
+      <div className="flex bg-base-200 rounded-lg items-center p-1 shadow-inner">
+        <div className="relative">
+          <input 
+            type="text" 
+            placeholder="Type here" 
+            value={causeAmount}
+            onChange={handleCauseAmountChanged}
+            className="ml-4 input bg-base-200 focus:outline-0 rounded-r-none input-lg w-full" 
+          />
+          <div className="absolute inset-y-0 left-0 flex items-center">
+            <div className="badge badge-ghost cursor-pointer" onClick={() => {}}>
+              <Percent className="h-5 w-5" />
+            </div>
+          </div>
+        </div>
+        <label htmlFor="cause-selector" className="btn modal-button sm:btn-lg btn-ghost bg-base-200 hover:bg-base-200 rounded-l-none min-h-full">
           <SelectedCauseImg cause={selectedCause}/>
           <span className="ml-1">{selectedCause?.symbol ? <SelectedCauseDisplayName cause={selectedCause} />: <span>Select Cause</span>}</span>
           <ChevronDown className="h-5 w-5 ml-1" />
@@ -103,7 +113,7 @@ export const CauseSelector = (() => {
             <input 
               type="text" 
               placeholder="Search for Cause" 
-              className="shadow-inner input bg-base-200 hover:bg-base-300 focus:outline-0 input-lg w-full"
+              className="shadow-inner input bg-base-200 focus:outline-0 input-lg w-full"
               onChange={handleCauseQueryChange}
               value={causeQuery}
             />
