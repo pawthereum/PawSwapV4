@@ -171,6 +171,18 @@ export const tokenList = {
       "isFeatured": true
     },
     {
+      "name": "GlowV2",
+      "symbol": "GlowV2",
+      "address": "0x05De1dbFCdc876F790371508b97C337640Dcd6a9",
+      "chainId": 56,
+      "decimals": 9,
+      "logoURI": "https://assets.coingecko.com/coins/images/23301/large/17513.png?1643668784",
+      "dex": "pancakeswap",
+      "color": "#C90D0C",
+      "description": "We present to you a token focused on giving back through a lottery for our holders, charitable donations, education to the masses, and empowering others to succeed and do good in the world while also being transparent in how we operate.",
+      "isFeatured": true
+    },
+    {
       "name": "Shiba Evil",
       "symbol": "SBE",
       "address": "0x4Ed6DfA9cf301504CEEe1c06827ea2fAca128f73",
@@ -182,6 +194,5 @@ export const tokenList = {
       "description": "Shiba Evil mission is to deliver a simple and secure DEFI to the Crypto community.",
       "isFeatured": true
     },
-    
   ]
 }
