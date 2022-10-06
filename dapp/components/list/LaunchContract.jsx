@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { ChevronRight, ExternalLink } from 'react-feather';
 import { useContractWrite, usePrepareContractWrite, useAccount, useNetwork, useContractEvent } from 'wagmi';
 import ListContext from '../../context/ListContext';
-import { TAX_STRUCTURE_FACTORY, defaultChainId, PANCAKESWAP_ROUTER } from '../../constants';
+import { TAX_STRUCTURE_FACTORY, defaultChainId, PANCAKESWAP_ROUTER, UNISWAP_ROUTER } from '../../constants';
 import NotificationContext from '../../context/NotificationContext';
 import shortenAddress from '../../helpers/shortenAddress';
 import { constants } from 'ethers';
@@ -67,7 +67,7 @@ export const LaunchContract = () => {
     functionName: 'deployTaxStructure',
     args: [
       parseInt(new Date().getMinutes()), // psuedo random salt
-      PANCAKESWAP_ROUTER[chain?.id]?.address
+      chain?.id === 1 ? UNISWAP_ROUTER[chain?.id]?.address || PANCAKESWAP_ROUTER[chain?.id]?.address
     ]
   });
 
