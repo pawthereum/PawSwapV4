@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState, memo } from 'react';
 import { Percent } from 'react-feather';
 import ListContext from '../../../context/ListContext';
 import NotificationContext from '../../../context/NotificationContext';
@@ -7,7 +7,7 @@ import { TAX_STRUCTURE_ABI, defaultChainId } from '../../../constants';
 import formatError from '../../../helpers/formatError';
 import { ExternalLink } from 'react-feather';
 
-export const TaxForm = ({ tax, index }) => {
+export const TaxForm = memo(({ tax, index }) => {
   const { popNotification } = useContext(NotificationContext);
   const { 
     listedTaxStructureAddress, 
@@ -126,7 +126,7 @@ export const TaxForm = ({ tax, index }) => {
     addressOrName: taxStructureContractAddress || listedTaxStructureAddress,
     contractInterface: TAX_STRUCTURE_ABI,
     functionName: tax?.updateFunction,
-    args: updateArgs
+    args: updateArgs,
   });
 
   const { write, isLoading } = useContractWrite({
@@ -168,6 +168,13 @@ export const TaxForm = ({ tax, index }) => {
       });
     }
   });
+
+  // it makes no sense why we need this function
+  // if you strictly use "write", metamask makes 1000 calls and
+  // it breaks the page
+  async function update () {
+    await write();
+  }
 
   return (
     <div className="collapse collapse-arrow rounded-md mb-2">
@@ -219,8 +226,8 @@ export const TaxForm = ({ tax, index }) => {
           { !hasUnsavedChanges ? '' :
             <button 
               className={`btn btn-block btn-primary mt-2 ${isLoading || updateInProgress ? 'loading' : ''}`}
-              disabled={error || !write?.()}
-              onClick={() => write?.()}
+              disabled={error}
+              onClick={() => update()}
             >
               Update Tax
             </button>
@@ -236,6 +243,6 @@ export const TaxForm = ({ tax, index }) => {
       </div>
     </div>
   )
-}
+})
 
 export default TaxForm;
