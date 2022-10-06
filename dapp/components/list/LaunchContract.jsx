@@ -67,8 +67,8 @@ export const LaunchContract = () => {
     functionName: 'deployTaxStructure',
     args: [
       parseInt(new Date().getMinutes()), // psuedo random salt
-      chain?.id === 1 ? UNISWAP_ROUTER[chain?.id]?.address || PANCAKESWAP_ROUTER[chain?.id]?.address
-    ]
+      chain?.id === 1 ? UNISWAP_ROUTER[chain?.id]?.address : PANCAKESWAP_ROUTER[chain?.id]?.address
+    ],
   });
 
   const { write, isLoading } = useContractWrite({
