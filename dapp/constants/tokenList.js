@@ -176,7 +176,7 @@ export const tokenList = {
       "address": "0x4Ed6DfA9cf301504CEEe1c06827ea2fAca128f73",
       "chainId": 56,
       "decimals": 9,
-      "logoURI": "https://assets.coingecko.com/coins/images/26901/small/shiba_evil_logo_200.png?1660724661",
+      "logoURI": "https://assets.coingecko.com/coins/images/26901/large/shiba_evil_logo_200.png?1660724661",
       "dex": "pancakeswap",
       "color": "#C90D0C",
       "description": "Shiba Evil mission is to deliver a simple and secure DEFI to the Crypto community.",
