@@ -8,6 +8,8 @@ import formatError from '../../../helpers/formatError';
 import { ExternalLink } from 'react-feather';
 
 export const TaxForm = memo(({ tax, index }) => {
+  TaxForm.displayName = 'TaxForm';
+  
   const { popNotification } = useContext(NotificationContext);
   const { 
     listedTaxStructureAddress, 
