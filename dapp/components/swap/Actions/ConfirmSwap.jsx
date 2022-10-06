@@ -38,7 +38,7 @@ export const ConfirmSwap = memo(({
 
   console.log({ prepareConfig, data, price, gasInUsd });
 
-  const { write, isLoading } = useContractWrite({
+  const { write, error, isLoading } = useContractWrite({
     ...config,
     onSuccess (data) {
       setSwapInProgress(true);
@@ -182,7 +182,7 @@ export const ConfirmSwap = memo(({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span>View on BSC Scan</span>
+                <span>View on {chain?.blockExplorers?.default?.name}</span>
               </a>
             </div>
             <div className="text-xs mx-auto mt-40 sm:mt-8">

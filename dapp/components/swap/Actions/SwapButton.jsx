@@ -23,6 +23,12 @@ export const SwapButton = () => {
   const { chain: connectedChain } = useNetwork();
   const [chain, setChain] = useState({ id: defaultChainId });
 
+  const formatCauseAmount = (amount) => {
+    // take the cause amount in ether and convert it to an integer raised to the second power
+    const causeAmountEther = utils.formatEther(amount?.toString() || '0');
+    return parseInt(causeAmountEther.toString() * 10**2);
+  }
+
   const contractConfig = useMemo(() => {
     return {
       addressOrName: PAWSWAP[chain?.id]?.address,
@@ -37,7 +43,7 @@ export const SwapButton = () => {
         functionName: 'buyOnPawSwap',
         args: [
           outputToken?.token?.address,
-          utils.formatEther(causeAmount || '0'),
+          formatCauseAmount(causeAmount),
           cause?.address || address,
           '0', //trade?.calculatedAmountWithSlippage?.raw?.toString(),
           true
@@ -54,7 +60,7 @@ export const SwapButton = () => {
         functionName: 'buyOnPawSwap',
         args: [
           trade?.swapResult?.outputAmount?.token?.address,
-          utils.formatEther(causeAmount || '0'),
+          formatCauseAmount(causeAmount),
           cause?.address || address,
           outputAmount?.raw?.toString(),
           false
@@ -72,7 +78,7 @@ export const SwapButton = () => {
         args: [
           inputToken?.token?.address,
           inputAmount?.raw?.toString(),
-          utils.formatEther(causeAmount || '0'),
+          formatCauseAmount(causeAmount),
           cause?.address  || address,
           trade?.calculatedAmountWithSlippage?.raw?.toString(),
           true
@@ -86,7 +92,7 @@ export const SwapButton = () => {
         args: [
           inputToken?.token?.address,
           trade?.calculatedAmountWithSlippage?.raw?.toString(),
-          utils.formatEther(causeAmount || '0'),
+          formatCauseAmount(causeAmount),
           cause?.address  || address,
           outputAmount?.raw?.toString(),
           false
