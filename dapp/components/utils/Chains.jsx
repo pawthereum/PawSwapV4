@@ -2,7 +2,6 @@ import { validChains } from '../../constants';
 import { defaultChainId } from '../../constants';
 import { useState, useEffect } from 'react';
 import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
-import { CheckCircle } from 'react-feather';
 
 export const Chains = () => {
   const { isConnected } = useAccount();
@@ -46,11 +45,7 @@ export const Chains = () => {
                   }}
                 >
                   <img src={chainLogo[c?.id]} className="h-8 w-8" />
-                  <div className="flex justify-between items-center">
-                    <span>{c?.name}</span>
-                    { c.id === chain?.id ? <CheckCircle className="h-5 w-5 ml-1 text-success" /> : <></> }
-                  </div>
-
+                  {c?.name}
                 </a>
               </li>
           ))}
