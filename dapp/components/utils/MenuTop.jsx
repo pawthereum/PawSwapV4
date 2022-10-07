@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { Menu } from 'react-feather';
 // Components
 import Connect from './Connect';
+import Chains from './Chains';
 
 export default function MenuTop() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function MenuTop() {
           </a>
         </Link>
       </div>
-      <div className="mr-2 hidden sm:flex">
+      <div className="hidden sm:flex">
         <Link href="/list">
           <a 
             className={`btn btn-ghost normal-case text-lg ${router?.pathname === '/list' ? 'text-primary-content bg-primary' : ''}`}
@@ -29,6 +30,7 @@ export default function MenuTop() {
         </Link>
       </div> 
       <div className="flex-none">
+        <Chains />
         <Connect />
       </div>
     </div>

@@ -77,7 +77,9 @@ export const validChains = [
     },
     testnet: true
   }
-].concat(defaultChains);
+].concat(defaultChains).filter(c => {
+  return process.env.NODE_ENV === 'production' ? !c.testnet : true
+});
 
 export const NATIVE_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 
