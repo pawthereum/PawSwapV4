@@ -6,9 +6,23 @@ import { utils } from 'ethers';
 
 const API_ENDPOINT = `https://api.getchange.io/api/v1/nonprofits?public_key=${process.env.NEXT_PUBLIC_CHANGE_API_KEY}&search_term=`
 
+// override change.io addresses if need be
+// some shelters arent able to sign on with change
+// so they ask us to custody their donations
+const checkForAddressOverride = (address) => {
+  if (!address) return address;
+  const overrides = {
+    '0x7d2f85777d7e62c3a54d29bc46f2b538c4f97d58': '0xb48047d8d17cec548660a3f758afe1bf2de0d528', // NSALA
+  }
+  if (overrides[address?.toLowerCase()]) {
+    return overrides[address?.toLowerCase()];
+  }
+  return address;
+}
+
 const mapCause = (cause) => (
   {
-    address: cause.crypto.ethereum_address,
+    address: checkForAddressOverride(cause.crypto.ethereum_address),
     symbol: cause.socials.twitter || cause.socials.instagram || cause.name.match(/[A-Z]/g).join(''), // fallback to abbr.
     name: cause.name,
     icon: cause.icon_url,

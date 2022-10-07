@@ -195,7 +195,7 @@ export const PAWSWAP_FEE = 3; // 0.03%
 
 export const FEATURED_CAUSE = {
   address: '0x7D2F85777d7E62C3A54D29bC46F2b538c4F97d58',
-  symbol: 'NSALA',
+  symbol: 'ANIMALLEAGUE',
   name: 'North Shore Animal League America',
   logo: 'https://www.animalleague.org/campaigns/givingday2021/images/logo.png',
   icon: 'https://www.animalleague.org/campaigns/givingday2021/images/logo.png',
