@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { Activity, ChevronDown } from 'react-feather';
 import { useAccount, useConnect, useDisconnect, useEnsName, useNetwork, useSwitchNetwork } from 'wagmi';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
+import walletIcon from '../../public/img/walletIcon.svg';
+import Wallet from './icons/wallet';
 // constants
 import { validChains } from '../../constants';
 // helpers
@@ -116,8 +118,11 @@ export default function Connect() {
   return (
     <div className="top-16 text-right">
       <div className="dropdown dropdown-end">
-        <label tabIndex={0} className="btn m-1" onClick={showMenuHandler}>
-          Connect
+        <label tabIndex={0} className="btn m-1 flex items-center" onClick={showMenuHandler}>
+          <div className="sm:block hidden">Connect</div>
+          <div className="sm:hidden flex items-center">
+            <Wallet className="fill-white h-6 w-6 mt-1" />
+          </div>
           <ChevronDown
             className="ml-2 -mr-1 h-5 w-5"
             aria-hidden="true"
