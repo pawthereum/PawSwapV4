@@ -78,6 +78,14 @@ const Deposit = ({ tokenBalance, chain, callback }) => {
     }
   }, [error]);
 
+  const ignoreError = (error) => {
+    const errorMessage = formatError(error);
+    if (errorMessage === 'Amount should be greater than 0') {
+      return true;
+    }
+    return false;
+  } 
+
   return (
     <div className="grid grid-flow-row gap-2">
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-2">
@@ -117,7 +125,7 @@ const Deposit = ({ tokenBalance, chain, callback }) => {
         </div>
       </div>
       <div className="w-full flex justify-end">
-        {!insufficientAllowance && error && <div className="text-error text-opacity-50 text-xs">{formatError(error)}</div>}
+        {!insufficientAllowance && error && !ignoreError(error) && <div className="text-error text-opacity-50 text-xs">{formatError(error)}</div>}
       </div>
     </div>
   )

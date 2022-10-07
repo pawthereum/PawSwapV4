@@ -66,6 +66,14 @@ const Withdraw = ({ stakedBalance, chain, callback }) => {
     }
   });
 
+  const ignoreError = (error) => {
+    const errorMessage = formatError(error);
+    if (errorMessage === 'Amount should be greater than 0') {
+      return true;
+    }
+    return false;
+  } 
+
   return (
     <div className="grid grid-flow-row gap-2">
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-2">
@@ -100,7 +108,7 @@ const Withdraw = ({ stakedBalance, chain, callback }) => {
         </div>
       </div>
       <div className="w-full flex justify-end">
-        {error && <div className="text-error text-opacity-50 text-xs">{formatError(error)}</div>}
+        {error && !ignoreError(error) && <div className="text-error text-opacity-50 text-xs">{formatError(error)}</div>}
       </div>
     </div>
   )
