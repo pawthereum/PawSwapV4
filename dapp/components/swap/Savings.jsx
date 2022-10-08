@@ -56,6 +56,19 @@ export const Savings = () => {
               <p className="pb-2">
                 Consider donating a portion of your savings to one of the thousands causes listed on PawSwap!
               </p>
+              <div className="w-full flex justify-center">
+                <MoreHorizontal className="h-5 w-5" />
+              </div>
+              <div className="collapse collapse-arrow">
+                <input type="checkbox" className="peer" /> 
+                <div className="collapse-title peer-checked:bg-secondary peer-checked:text-secondary-content rounded-t-lg">
+                  I compared the amount out to another DEX and it looks like I get less tokens here?
+                </div>
+                <div className="collapse-content rounded-lg rounded-t-none bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content"> 
+                  <p className="text-sm">Other DEXs may display a higher amount of tokens to return however those exchanges do not factor a token&apos;s tax structure into account when displaying estimates.</p>
+                  <p className="text-sm mt-2">Those DEXs rely on the user to set a high slippage in order to account for token taxes. PawSwap accounts for taxes and tells you the amount that is actually estimated to receive without the need to adjust for slippage.</p>
+                </div>
+              </div>
             </label>
           </label>
         </div>
