@@ -120,7 +120,7 @@ export default function Connect({ btnGhost }) {
         <label tabIndex={0} className={`btn ${btnGhost ? 'btn-ghost' : ''} m-1 flex items-center`} onClick={showMenuHandler}>
           <div className="sm:block hidden">Connect</div>
           <div className="sm:hidden flex items-center">
-            <Wallet className="fill-base-content h-6 w-6 mt-1" />
+            <Wallet className={`${btnGhost ? 'fill-base-content' : 'fill-white'} h-6 w-6 mt-1`} />
           </div>
           <ChevronDown
             className="ml-2 -mr-1 h-5 w-5"
