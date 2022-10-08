@@ -69,7 +69,7 @@ export default function TokenSearchResult ({ token, isLoading, img, side }) {
         return t.isFeatured && t.chainId == chain?.id
       }));
     }
-  }, [token, img]);
+  }, [token, img, chain]);
 
   const selectToken = (t) => {
     const token = new Token(chain?.id, t?.address, t?.decimals, t?.symbol, t?.name);

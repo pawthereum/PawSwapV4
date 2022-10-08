@@ -142,6 +142,10 @@ const useList = () => {
     } else {
       setChain({ id: defaultChainId });
     }
+    (async () => {
+      await refetchTaxStructureAddress();
+      await refetchListedTaxStructure();
+    })();
   }, [connectedChain]);
 
   return {
