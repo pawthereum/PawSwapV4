@@ -119,6 +119,7 @@ export const LaunchContract = () => {
   return (
     <div className="grid grid-flow-row gap-2">
       <div>
+        <p className="text-lg font-bold text-center mb-2">Deploy a Tax Structure Smart Contract</p>
         <p>PawSwap allows you to set a brand new tax structure for your token. Tax Structures are new smart contracts.</p>
         <p className="my-2">You can deploy a standard Tax Structure contract via the button below (and setup your taxes in the next step) or paste a custom Tax Structure address in the input field!</p>
         <p className="font-bold text-accent text-center">Your Tax Structure address is not your token address</p>

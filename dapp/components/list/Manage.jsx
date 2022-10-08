@@ -70,6 +70,17 @@ export const Manage = () => {
 
   return (
     <div>
+      <p className="text-lg font-bold text-center mb-2">Set up your token&apos;s taxes</p>
+      <div className="grid grid-flow-col gap-2 mb-2">
+        <div className="flex justify-end">
+          <span className="badge badge-success">
+            Buys
+          </span>
+        </div>
+        <div className="badge badge-error">
+          Sells
+        </div>
+      </div>
       <div className="flex items-center justify-between mt-4">
         <div className="text-xl">Total Tax Amount</div>
         <div className="flex">

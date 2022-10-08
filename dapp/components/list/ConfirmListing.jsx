@@ -49,7 +49,7 @@ export const ConfirmListing = () => {
         link: `${chain?.blockExplorers?.default?.url}/tx/${data.hash}`
       });
       await data.wait();
-      setListInProgress(true);
+      setListInProgress(false);
       popNotification({
         type: 'success',
         title: 'List Confirmed',
@@ -93,9 +93,14 @@ export const ConfirmListing = () => {
 
   return (
     <div className="w-full max-w-sm">
+      <div className="w-full my-2">
+        <p className="text-lg font-bold text-center mb-2">Finalize Your Listing</p>
+        <p>Exclude PawSwap from being taxed by your contract.</p>
+        <p className="mt-2">PawSwap will use the Tax Structure that you setup in the previous steps instead of your token&apos;s standard taxes.</p>
+      </div>
       <div className="flex items-start">
         <input checked={acknowledged} onChange={handleAcknowledgeChanged} type="checkbox" className="checkbox" />
-        <span className="ml-2">Check this box once you have excluded PawSwap from taxes</span>
+        <span className="ml-2">Check this box once you have excluded PawSwap from being taxed by your token&apos;s standard taxes</span>
       </div>
       <div className="flex justify-center mt-2">
         <div className="form-control w-full">
