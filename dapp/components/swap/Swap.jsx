@@ -8,9 +8,12 @@ import Settings from './Settings';
 import SwapActions from './SwapActions';
 import SwapInfo from './SwapInfo';
 import Savings from './Savings';
+import Connect from '../utils/Connect';
+import { useRouter } from 'next/router';
 
 export const Swap = memo(() => {
   const { swapError } = useContext(SwapContext);
+  const router = useRouter();
 
   const [error, setError] = useState(null);
 
@@ -31,8 +34,12 @@ export const Swap = memo(() => {
               <div>PawSwap</div>
               <div className="text-sm text-primary opacity-75">a DEX by Pawthereum</div>
             </div>
-            {/* { SETTINGS } */}
-            <Settings />
+            <div className="flex items-center">
+              {/* { CONNECT BTN IF EMEDDED } */}
+              { router.pathname === '/embed' ? <Connect btnGhost={true} /> : <></> }
+              {/* { SETTINGS } */}
+              <Settings />
+            </div>
           </div>
 
           {/* { INPUT } */}

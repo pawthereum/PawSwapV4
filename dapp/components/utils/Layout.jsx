@@ -4,20 +4,32 @@ import Image from 'next/image';
 // components
 import MenuTop from './MenuTop';
 import logo from '../../public/img/pawth-horizontal.svg';
+import { useMemo } from 'react';
 
 export default function Layout({children}) {
-  // @ts-ignore
-  const pageName = {pageName: children?.type?.name};
   const router = useRouter();
+  const pathname = router.pathname;
+
+  const isEmbedded = useMemo(() => {
+    return pathname === '/embed';
+  }, [pathname]);
+
+  const noBg = useMemo(() => {
+    return isEmbedded;
+  }, [isEmbedded]);
+
+  const hideMenuTop = useMemo(() => {
+    return isEmbedded;
+  }, [isEmbedded]);
 
   return (
     <>
       <div className="drawer">
         <input id="nav-drawer" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content">
-          <div className="h-full brand-backdrop min-h-screen relative flex flex-col app-bg">
+          <div className={`h-full min-h-screen relative flex flex-col ${ noBg ? 'bg-transparent' : 'app-bg'}`}>
             <div className="h-full grow flex flex-col">
-              <MenuTop />
+              { hideMenuTop ? <></> : <MenuTop />}
               <div className="z-10">
                 {children}
               </div>

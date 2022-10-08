@@ -26,7 +26,7 @@ export const Settings = () => {
 
   return (
     <div>
-      <label htmlFor="settings-modal" className="btn btn-lg btn-ghost modal-button">
+      <label htmlFor="settings-modal" className="btn btn-ghost modal-button">
         <SettingsIcon className="h-5 w-5" />
       </label>
       <input type="checkbox" id="settings-modal" className="modal-toggle" />

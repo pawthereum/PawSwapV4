@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { Activity, ChevronDown } from 'react-feather';
 import { useAccount, useConnect, useDisconnect, useEnsName, useNetwork, useSwitchNetwork } from 'wagmi';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
-import walletIcon from '../../public/img/walletIcon.svg';
 import Wallet from './icons/wallet';
 // constants
 import { validChains } from '../../constants';
@@ -16,7 +15,7 @@ import walletConnectIcon from '../../public/img/walletconnect.png';
 import injectedIcon from '../../public/img/injected.png';
 import coinbaseIcon from '../../public/img/coinbase.png';
 
-export default function Connect() {
+export default function Connect({ btnGhost }) {
   const { address, isConnected } = useAccount();
   const { data: ensName } = useEnsName({ address });
   const { chain: connectedChain } = useNetwork();
@@ -89,7 +88,7 @@ export default function Connect() {
             </div>
           :
             <div>
-              <label tabIndex={0} className="btn m-1">
+              <label tabIndex={0} className={`btn m-1 ${btnGhost ? 'btn-ghost' : ''}`}>
                 <span className="mr-2 sm:flex hidden">{ensName ?? shortenAddress(address)}</span>
                   <Jazzicon diameter={20} seed={jsNumberForAddress(address || '0x0')} />
                   <ChevronDown
@@ -118,10 +117,10 @@ export default function Connect() {
   return (
     <div className="top-16 text-right">
       <div className="dropdown dropdown-end">
-        <label tabIndex={0} className="btn m-1 flex items-center" onClick={showMenuHandler}>
+        <label tabIndex={0} className={`btn ${btnGhost ? 'btn-ghost' : ''} m-1 flex items-center`} onClick={showMenuHandler}>
           <div className="sm:block hidden">Connect</div>
           <div className="sm:hidden flex items-center">
-            <Wallet className="fill-white h-6 w-6 mt-1" />
+            <Wallet className="fill-base-content h-6 w-6 mt-1" />
           </div>
           <ChevronDown
             className="ml-2 -mr-1 h-5 w-5"
