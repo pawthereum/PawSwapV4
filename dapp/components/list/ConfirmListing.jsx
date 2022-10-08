@@ -147,6 +147,16 @@ export const ConfirmListing = () => {
             </a>
         </div>
       }
+      <div className="font-bold text-center text-lg mt-8 mb-2">
+        Embed PawSwap on your website!
+      </div>
+      <div className="mockup-code">
+        <pre>
+          <code>
+            {`<iframe src="https://pawswap.exchange/embed?output=${listToken?.token?.address}" width="100%" height="750px" style="border: none;" allowtransparency="true"></iframe>`}
+          </code>
+        </pre>
+      </div>
     </div>
   )
 }
