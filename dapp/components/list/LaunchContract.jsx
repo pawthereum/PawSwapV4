@@ -177,13 +177,15 @@ export const LaunchContract = () => {
               </div>
             </div>
           :
-            <button 
-              className={`btn btn-lg btn-wide btn-primary ${isLoading || deployInProgress ? 'loading' : ''}`}
-              disabled={!write}
-              onClick={() => write?.()}
-            >
-              Launch New Tax Structure Contract
-            </button>
+            <div className="w-full flex justify-center">
+              <button 
+                className={`btn btn-lg btn-wide btn-primary ${isLoading || deployInProgress ? 'loading' : ''}`}
+                disabled={!write}
+                onClick={() => write?.()}
+              >
+                Launch New Tax Structure Contract
+              </button>
+            </div>
         :
           <div className="w-full flex justify-center mt-2">
             <a className="btn btn-primary btn-lg btn-wide" onClick={() => nextStep()}>
