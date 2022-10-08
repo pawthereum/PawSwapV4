@@ -119,6 +119,11 @@ export const LaunchContract = () => {
   return (
     <div className="grid grid-flow-row gap-2">
       <div>
+        <p>PawSwap allows you to set a brand new tax structure for your token. Tax Structures are new smart contracts.</p>
+        <p className="my-2">You can deploy a standard Tax Structure contract via the button below (and setup your taxes in the next step) or paste a custom Tax Structure address in the input field!</p>
+        <p className="font-bold text-accent text-center">Your Tax Structure address is not your token address</p>
+      </div>
+      <div>
         <label className="label flex justify-end pb-0">
           <span className="label-text text-right">
             { taxStructureContractAddress 
@@ -154,14 +159,16 @@ export const LaunchContract = () => {
         ? 
           onChainTaxStruct !== constants.AddressZero
           ?
-            <div>
-              <button 
-                className={`btn btn-lg btn-wide btn-primary ${isLoading || deployInProgress ? 'loading' : ''}`}
-                disabled={!write}
-                onClick={() => write?.()}
-              >
-                Launch New Tax Structure Contract
-              </button>
+            <div className="grid grid-flow-row gap-2">
+              <div className="flex w-full justify-center">
+                <button 
+                  className={`btn btn-lg btn-wide btn-primary ${isLoading || deployInProgress ? 'loading' : ''}`}
+                  disabled={!write}
+                  onClick={() => write?.()}
+                >
+                  Launch New Tax Structure Contract
+                </button>
+              </div>
               <div className="w-full flex justify-center mt-2">
                 <a className="btn btn-outline btn-primary btn-lg btn-wide" onClick={() => nextStep()}>
                   Next <ChevronRight className="h-5 w-5" />
