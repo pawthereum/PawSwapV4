@@ -196,7 +196,7 @@ export const DEFAULT_SLIPPAGE = 1; // 1% default slippage
 export const PAWSWAP_FEE = 3; // 0.03%
 
 export const FEATURED_CAUSE = {
-  address: '0x7D2F85777d7E62C3A54D29bC46F2b538c4F97d58',
+  address: '0xb48047D8D17ceC548660a3F758aFE1Bf2De0D528',
   symbol: 'ANIMALLEAGUE',
   name: 'North Shore Animal League America',
   logo: 'https://www.animalleague.org/campaigns/givingday2021/images/logo.png',

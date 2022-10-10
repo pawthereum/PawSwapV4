@@ -12,7 +12,7 @@ const API_ENDPOINT = `https://api.getchange.io/api/v1/nonprofits?public_key=${pr
 const checkForAddressOverride = (address) => {
   if (!address) return address;
   const overrides = {
-    '0x7d2f85777d7e62c3a54d29bc46f2b538c4f97d58': '0xb48047d8d17cec548660a3f758afe1bf2de0d528', // NSALA
+    '0x7d2f85777d7e62c3a54d29bc46f2b538c4f97d58': '0xb48047D8D17ceC548660a3F758aFE1Bf2De0D528', // NSALA
   }
   if (overrides[address?.toLowerCase()]) {
     return overrides[address?.toLowerCase()];
