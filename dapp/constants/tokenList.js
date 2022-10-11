@@ -182,4 +182,5 @@ export const tokenList = {
       "description": "We present to you a token focused on giving back through a lottery for our holders, charitable donations, education to the masses, and empowering others to succeed and do good in the world while also being transparent in how we operate.",
       "isFeatured": true
     },
+  ]
 }
