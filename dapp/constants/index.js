@@ -83,6 +83,9 @@ export const validChains = [
 
 export const NATIVE_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 
+export const MORALIS_SERVER = 'https://ldb8iyugkwpu.grandmoralis.com:2053/server';
+export const MORALIS_APP_ID = 'y8T6swPxZab2dGOmVcLd0f3nymE9gTCWCLUxz1qg';
+
 export const PAWTH_CHARITY_WALLET = {
   1337: '0x9036464e4ecD2d40d21EE38a0398AEdD6805a09B',
   56: '0x9e84fe006aa1c290f4cbcd78be32131cbf52cb23',

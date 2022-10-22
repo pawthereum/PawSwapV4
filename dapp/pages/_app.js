@@ -1,6 +1,7 @@
 // React
 import { useState } from 'react';
-import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MoralisProvider } from "react-moralis";
 
 // Wagmi
 import {
@@ -17,7 +18,7 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
 
-import { validChains } from '../constants';
+import { validChains, MORALIS_SERVER, MORALIS_APP_ID } from '../constants';
 
 // Components
 import Layout from '../components/utils/Layout';
@@ -86,9 +87,11 @@ function App({Component, pageProps}) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
         <WagmiConfig client={client}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <MoralisProvider serverUrl={MORALIS_SERVER} appId={MORALIS_APP_ID}>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </MoralisProvider>
         </WagmiConfig>
       </Hydrate>
     </QueryClientProvider>
