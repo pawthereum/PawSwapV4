@@ -28,17 +28,18 @@ import '../styles/globals.scss';
 
 // Wagmi setup
 const alchemyId = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY
-const infuraId = process.env.NEXT_PUBLIC_INFURA_ID
+const infuraId = process.env.NEXT_PUBLIC_INFURA_API_KEY
 
 const { provider, webSocketProvider } = configureChains(
   validChains,
   [
-    // infuraProvider({ infuraId }),
     jsonRpcProvider({
       rpc: (chain) => ({ http: chain.rpcUrls.default }),
+      priority: 1
     }),
-    alchemyProvider({ alchemyId }),
-    publicProvider()
+    infuraProvider({ infuraId, priority: 0 }),
+    alchemyProvider({ alchemyId, priority: 2 }),
+    publicProvider({ priority: 3 })
   ],
 );
 
