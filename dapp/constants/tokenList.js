@@ -182,5 +182,17 @@ export const tokenList = {
       "description": "We present to you a token focused on giving back through a lottery for our holders, charitable donations, education to the masses, and empowering others to succeed and do good in the world while also being transparent in how we operate.",
       "isFeatured": true
     },
+    {
+      "name": "Shiba Evil",
+      "symbol": "SBE",
+      "address": "0x4Ed6DfA9cf301504CEEe1c06827ea2fAca128f73",
+      "chainId": 56,
+      "decimals": 9,
+      "logoURI": "https://assets.coingecko.com/coins/images/26901/large/shiba_evil_logo_200.png?1660724661",
+      "dex": "pancakeswap",
+      "color": "#C90D0C",
+      "description": "Shiba Evil mission is to deliver a simple and secure DEFI to the Crypto community.",
+      "isFeatured": true
+    },
   ]
 }
