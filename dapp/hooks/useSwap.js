@@ -269,7 +269,7 @@ const useSwap = () => {
       new TokenAmount(sortedTokens[0], reserves[0]),
       new TokenAmount(sortedTokens[1], reserves[1])
     );
-    const route = new Route([pair], isExactIn ? outputToken?.token : inputToken?.token);
+    const route = new Route([pair], inputToken?.token);
     const slippagePercentage = new Percent(slippage || 0, 100);
 
     let createdTrade;

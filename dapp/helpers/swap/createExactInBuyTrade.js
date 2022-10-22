@@ -1,4 +1,4 @@
-import { TokenAmount, Trade, Percent } from '@uniswap/sdk';
+import { TokenAmount, Trade, Percent, TradeType } from '@uniswap/sdk';
 
 export const createExactInBuyTrade = ({
   route,
@@ -20,7 +20,7 @@ export const createExactInBuyTrade = ({
   console.log({ amountIn: amountInSwap?.raw?.toString() })
 
   // execute swap
-  const swapResult =  new Trade(route, amountInSwap);
+  const swapResult =  new Trade(route, amountInSwap, TradeType.EXACT_INPUT);
   
   // post swap deductions
   const postSwapBuyTaxAmountPercentage = new Percent(postSwapBuyTaxAmount, 100**2);
