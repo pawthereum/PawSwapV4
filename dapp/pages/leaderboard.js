@@ -56,6 +56,7 @@ const Leaderboard = () => {
   };
 
   useEffect(() => {
+    console.log('calling cloud')
     cloudCall();
   }, []);
 
@@ -107,8 +108,6 @@ const Leaderboard = () => {
     setCombinedLeaderboard(combined);
   }, [buyLeaderboard, sellLeaderboard]);
 
-  console.log({activeLeaderboard})
-
   return (
     <div className="mx-2">
       <div className="max-w-3xl mx-auto">
@@ -120,6 +119,7 @@ const Leaderboard = () => {
         </div>
       </div>
       <div className="flex justify-center w-full mb-4">
+        <button className="btn" onClick={() => cloudCall()}>Call Cloud Function</button>
         <div className="tabs tabs-boxed">
           <a 
             className={`tab ${activeTab === 'all' ? 'tab-active' : ''}`}
@@ -142,7 +142,7 @@ const Leaderboard = () => {
         </div>
       </div>
       <div className="max-w-3xl mx-auto">
-        <div className="overflow-x-auto w-full shadow-2xl">
+        <div className="overflow-x-auto w-full shadow-2xl rounded-xl">
           <table className="table w-full">
             <thead>
               <tr>
