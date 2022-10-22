@@ -105,6 +105,11 @@ const Leaderboard = () => {
       return b;
     });
     setCombinedLeaderboard(combined);
+    console.log({
+      buyLeaderboard,
+      sellLeaderboard,
+      combinedLeaderboard: combined
+    })
   }, [buyLeaderboard, sellLeaderboard]);
 
   return (
