@@ -56,9 +56,8 @@ const Leaderboard = () => {
   };
 
   useEffect(() => {
-    console.log('calling cloud')
     cloudCall();
-  }, []);
+  }, [chain, getLeaderboard]);
 
   const mapDonations = async (donations, stateSetter) => {
     const tokens = await Promise.all(donations?.map(async (t) => {
@@ -119,7 +118,6 @@ const Leaderboard = () => {
         </div>
       </div>
       <div className="flex justify-center w-full mb-4">
-        <button className="btn" onClick={() => cloudCall()}>Call Cloud Function</button>
         <div className="tabs tabs-boxed">
           <a 
             className={`tab ${activeTab === 'all' ? 'tab-active' : ''}`}
