@@ -105,12 +105,9 @@ const Leaderboard = () => {
       return b;
     });
     setCombinedLeaderboard(combined);
-    console.log({
-      buyLeaderboard,
-      sellLeaderboard,
-      combinedLeaderboard: combined
-    })
   }, [buyLeaderboard, sellLeaderboard]);
+
+  console.log({activeLeaderboard})
 
   return (
     <div className="mx-2">
