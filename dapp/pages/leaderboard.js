@@ -43,6 +43,7 @@ const Leaderboard = () => {
 
   const { fetch: getLeaderboard } = useMoralisCloudFunction(
     "leaderboard",
+    { chainId: chain?.id },
     { autoFetch: false }
   );
 
