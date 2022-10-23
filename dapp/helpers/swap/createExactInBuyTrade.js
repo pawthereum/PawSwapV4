@@ -17,31 +17,31 @@ export const createExactInBuyTrade = ({
     ).quotient
   );
   const amountInSwap = inputAmount?.subtract(amountDeductedPreSwap);
-  console.log({ amountIn: amountInSwap?.raw?.toString() })
 
   // execute swap
   const swapResult =  new Trade(route, amountInSwap, TradeType.EXACT_INPUT);
-  
+
   // post swap deductions
   const postSwapBuyTaxAmountPercentage = new Percent(postSwapBuyTaxAmount, 100**2);
   const amountDeductedPostSwap = new TokenAmount(
-    swapResult?.inputAmount?.token,
+    swapResult?.outputAmount?.token,
     postSwapBuyTaxAmountPercentage.multiply(
-      swapResult?.inputAmount?.raw
+      swapResult?.outputAmount?.raw
     ).quotient
   );
 
   // amount that will be returned to the user without slippage
-  const calculatedAmount = swapResult?.inputAmount?.subtract(amountDeductedPostSwap);
+  const calculatedAmount = swapResult?.outputAmount?.subtract(amountDeductedPostSwap);
+
   // account for slippage
   const slippageAmount = new TokenAmount(
-    swapResult?.inputAmount?.token,
+    swapResult?.outputAmount?.token,
     slippagePercentage.multiply(
       calculatedAmount?.raw
     ).quotient
   );
   const calculatedAmountWithSlippage = calculatedAmount.subtract(slippageAmount);
-  console.log({ c: calculatedAmountWithSlippage?.raw?.toString()})
+
   return {
     swapResult,
     calculatedAmount,
