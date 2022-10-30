@@ -114,16 +114,18 @@ const Landing = () => {
         <div className="bg-gradient-to-r from-primary to-accent via-secondary text-primary-content xl:rounded-t-xl p-2 mt-20">
           <div className="text-lg font-bold text-center">✨ Featured Cause ✨</div>
         </div>
-        <div className={`w-full xl:rounded-xl xl:rounded-t-none xl:shadow-xl bg-gradient-radial from-base-100 to-[${FEATURED_CAUSE?.background}] text-[${FEATURED_CAUSE?.textColor}] bg-cover bg-no-repeat px-10 sm:px-20 py-10 mb-10`}>
+        <div className={`w-full xl:rounded-xl xl:rounded-t-none xl:shadow-xl bg-gradient-radial from-base-100 to-[#F2F2F2] text-[#ea6c11] bg-cover bg-no-repeat px-10 sm:px-20 py-10 mb-10`}>
           <div className="grid lg:grid-cols-2 grid-cols-1 gap-4 my-10 px-5">
             <div className="grid grid-flow-row gap-2">
               <div className="flex w-full justify-center">
                 <Image src={wap} alt="NSALA" height={127} width={127} />
               </div>
               <div>
-                <span className="flex justify-center text-2xl text-center font-bold">World Animal Protection</span>
+                <span className="flex justify-center text-2xl text-center font-bold">
+                  {FEATURED_CAUSE?.name}
+                </span>
                 <p className="xl:text-start text-center">
-                  Together we will take on the global systems that fuel animal abuse, to end the root causes of their suffering. Our work is focused on two primary goals, transforming the global food system and stopping the exploitation of wild animals.
+                  {FEATURED_CAUSE?.description}
                 </p>
                 <div className="flex justify-center mt-2">
                   <Link href={`/swap?cause=${FEATURED_CAUSE?.address}`}>

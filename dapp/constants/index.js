@@ -214,4 +214,5 @@ export const FEATURED_CAUSE = {
   youtubeVideo: 'Zh0N38Hnwsg',
   background: '#F2F2F2',
   textColor: '#ea6c11',
+  description: 'Together we will take on the global systems that fuel animal abuse, to end the root causes of their suffering. Our work is focused on two primary goals, transforming the global food system and stopping the exploitation of wild animals.',
 }
