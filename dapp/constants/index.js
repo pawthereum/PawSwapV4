@@ -199,15 +199,19 @@ export const DEFAULT_SLIPPAGE = 1; // 1% default slippage
 export const PAWSWAP_FEE = 3; // 0.03%
 
 export const FEATURED_CAUSE = {
-  address: '0xb48047D8D17ceC548660a3F758aFE1Bf2De0D528',
-  symbol: 'ANIMALLEAGUE',
-  name: 'North Shore Animal League America',
-  logo: 'https://www.animalleague.org/campaigns/givingday2021/images/logo.png',
-  icon: 'https://www.animalleague.org/campaigns/givingday2021/images/logo.png',
-  mission: 'A pioneer of the no-kill movement, North Shore Animal League America continues to lead the way with the development of national and international programs that increase adoptions and raise awareness about the plight of homeless animals.',
+  address: '0x3E404d222b90C23518292e2f50423888caBACa8E',
+  symbol: 'WAP',
+  name: 'World Animal Protection',
+  logo: 'https://www.worldanimalprotection.us/themes/custom/wap_master/images/svg/wap-logo.svg',
+  icon: 'https://www.worldanimalprotection.us/themes/custom/wap_master/images/svg/wap-logo.svg',
+  mission: 'Our vision is a world where animals live free from suffering - Together we can move the world for animals.',
   category: 'animals',
-  website: 'https://www.animalleague.org/',
-  twitter: 'https://twitter.com/AnimalLeague',
-  facebook: 'https://www.facebook.com/theanimalleague',
-  instagram: 'https://www.instagram.com/animalleague/'
+  website: 'https://worldanimalprotection.us.org/',
+  twitter: 'https://twitter.com/MoveTheWorld',
+  facebook: 'https://www.facebook.com/WorldAnimalProtectionInt',
+  instagram: 'https://www.instagram.com/world_animal_protection/',
+  youtubeTitle: 'World Animal Protection',
+  youtubeVideo: 'Zh0N38Hnwsg',
+  background: '#F2F2F2',
+  textColor: '#ea6c11',
 }
