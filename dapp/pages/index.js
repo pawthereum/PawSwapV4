@@ -3,10 +3,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import supercat from '../public/img/supercat.svg';
 import pawthLogo from '../public/img/pawthereum.svg';
-import nsala from '../public/img/nsala.png';
+import wap from '../public/img/wap.svg';
 import { TrendingUp, Heart, DollarSign, BarChart, Droplet, Zap } from 'react-feather';
 import { FEATURED_CAUSE } from '../constants';
-import { NodeNextRequest } from 'next/dist/server/base-http/node';
 
 const Landing = () => {
   return (
@@ -115,20 +114,24 @@ const Landing = () => {
         <div className="bg-gradient-to-r from-primary to-accent via-secondary text-primary-content xl:rounded-t-xl p-2 mt-20">
           <div className="text-lg font-bold text-center">✨ Featured Cause ✨</div>
         </div>
-        <div className="w-full xl:rounded-xl xl:rounded-t-none xl:shadow-xl bg-gradient-radial from-base-100 to-[#CCE0F5] text-[#003366] bg-cover bg-no-repeat px-10 sm:px-20 py-10 mb-10">
+        <div className={`w-full xl:rounded-xl xl:rounded-t-none xl:shadow-xl bg-gradient-radial from-base-100 to-[#F2F2F2] text-[#ea6c11] bg-cover bg-no-repeat px-10 sm:px-20 py-10 mb-10`}>
           <div className="grid lg:grid-cols-2 grid-cols-1 gap-4 my-10 px-5">
             <div className="grid grid-flow-row gap-2">
               <div className="flex w-full justify-center">
-                <Image src={nsala} alt="NSALA" height={127} width={300} />
+                <Image src={wap} alt="NSALA" height={127} width={127} />
               </div>
               <div>
-                <span className="flex justify-center text-2xl text-center font-bold">North Shore Animal League America</span>
-                <p className="xl:text-start text-center">A pioneer of the no-kill movement, North Shore Animal League America continues to lead the way with the development of national and international programs that increase adoptions and raise awareness about the plight of homeless animals.</p>
+                <span className="flex justify-center text-2xl text-center font-bold">
+                  {FEATURED_CAUSE?.name}
+                </span>
+                <p className="xl:text-start text-center">
+                  {FEATURED_CAUSE?.description}
+                </p>
                 <div className="flex justify-center mt-2">
                   <Link href={`/swap?cause=${FEATURED_CAUSE?.address}`}>
                     <button className="btn btn-primary btn-sm mr-2">Swap &amp; Donate</button>
                   </Link>
-                  <a href="https://www.animalleague.org" target="_blank" rel="noreferrer">
+                  <a href={FEATURED_CAUSE?.website} target="_blank" rel="noreferrer">
                     <button className="btn btn-secondary btn-sm">Learn More</button>
                   </a>
                 </div>
@@ -136,7 +139,7 @@ const Landing = () => {
             </div>
             <div className="h-full w-full shadow-xl rounded-xl bg-gradient-to-tr from-primary via-secondary to-accent p-2">
               <div className="flex h-full w-full relative" style={{ background: 'none transparent' }}>
-                <iframe className="rounded-xl" style={{aspectRatio: 16/9}} width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/5h8FnQBrA-o?rel=0&amp;autoplay=1&amp;mute=1&amp;modestbranding=1&amp;autohide=1&amp;showinfo=0&amp;controls=1&amp;loop=1&amp;playlist=5h8FnQBrA-o" title="Pawthereum donates $25k to North Shore Animal League America" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                <iframe className="rounded-xl" style={{aspectRatio: 16/9}} width="100%" height="100%" src={`https://www.youtube-nocookie.com/embed/${FEATURED_CAUSE?.youtubeVideo}?rel=0&amp;autoplay=1&amp;mute=1&amp;modestbranding=1&amp;autohide=1&amp;showinfo=0&amp;controls=1&amp;loop=1&amp;playlist=${FEATURED_CAUSE?.youtubeVideo}`} title={FEATURED_CAUSE?.youtubeTitle} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
               </div>
             </div>
           </div>
