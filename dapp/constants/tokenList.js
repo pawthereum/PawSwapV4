@@ -194,5 +194,17 @@ export const tokenList = {
       "description": "Shiba Evil mission is to deliver a simple and secure DEFI to the Crypto community.",
       "isFeatured": true
     },
+    {
+      "name": "FrogeX",
+      "symbol": "FROGEX",
+      "address": "0x5fa54fddf1870c344dbfabb37dfab8700ec0def1",
+      "chainId": 1,
+      "decimals": 9,
+      "logoURI": "https://assets.coingecko.com/coins/images/14775/large/-p8cz7Bk_400x400.png?1618371907",
+      "dex": "uniswap",
+      "color": "#90C83E",
+      "description": "FrogeX is a hyper-optimized, managed, Eth Reflection smart contract of the ERC20 token standard.",
+      "isFeatured": true
+    },
   ]
 }
