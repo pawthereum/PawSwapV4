@@ -29,7 +29,7 @@ export default function Layout({children}) {
         <div className="drawer-content">
           <div className={`h-full min-h-screen relative flex flex-col ${ noBg ? 'bg-transparent' : 'app-bg'}`}>
             <div className="h-full grow flex flex-col">
-              { hideMenuTop ? <></> : <MenuTop />}
+              { hideMenuTop || process.env.NEXT_PUBLIC_MAINTENANCE_MODE === '1' ? <></> : <MenuTop />}
               <div className="z-10">
                 {children}
               </div>
