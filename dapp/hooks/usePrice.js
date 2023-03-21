@@ -7,9 +7,14 @@ const usePrice = (token) => {
   useEffect(() => {
     if (!token) return;
     const fetchPrice = async () => {
-      const response = await fetch(API + (token || 'BNB') + 'USDT');
-      const json = await response.json();
-      setPrice(json.price);
+      try {
+        const response = await fetch(API + (token || 'BNB') + 'USDT');
+        const json = await response.json();
+        setPrice(json.price);
+      } catch (e) {
+        console.log(e);
+        setPrice(0);
+      }
     }
     fetchPrice()
   }, [token]);

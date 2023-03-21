@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import Script from 'next/script';
 // Context
 import NotificationContext from '../context/NotificationContext';
 import SwapContext from '../context/SwapContext';
@@ -52,10 +53,25 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <div className="flex items-center">
-            <div className="mr-1">Learn more about</div>
-            <div className="pt-2">
-              <Image src="/img/pawth-horizontal.svg" className="filter-primary" alt="Pawthereum Logo" width={132} height={20} />
+          <div className="flex flex-col gap-2 items-center">
+            <div className="flex items-center">
+              <div className="mr-1">Learn more about</div>
+              <div className="pt-2">
+                <Image src="/img/pawth-horizontal.svg" className="filter-primary" alt="Pawthereum Logo" width={132} height={20} />
+              </div>
+            </div>
+            <div>
+              <Script
+                src={`const BADGE_ID = ${process.env.NEXT_PUBLIC_ALCHEMY_BADGE_ID}`}
+                strategy="beforeInteractive"
+              />
+              <Script
+                src="https://static.alchemyapi.io/scripts/badge/alchemy-badge.js"
+                strategy="beforeInteractive"
+              />
+              <a href="#">
+                <img onclick={() => window?.logBadgeClick() || {}} id="badge-button" style={{ width: "240px", height: "53px" }} src="https://static.alchemyapi.io/images/marketing/badgeLight.png" alt="Alchemy Supercharged" />
+              </a>
             </div>
           </div>
         </a>

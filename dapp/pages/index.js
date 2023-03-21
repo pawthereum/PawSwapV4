@@ -6,8 +6,15 @@ import pawthLogo from '../public/img/pawthereum.svg';
 import wap from '../public/img/wap.svg';
 import { TrendingUp, Heart, DollarSign, BarChart, Droplet, Zap } from 'react-feather';
 import { FEATURED_CAUSE } from '../constants';
+import Script from 'next/script';
+import { useEffect } from 'react';
 
 const Landing = () => {
+  // when the page loads, mount logBadgeClick() function to the window
+  useEffect(() => {
+    window.logBadgeClick = logBadgeClick;
+  }, []);
+
   return (
     <div>
       <NextHead>
@@ -170,6 +177,17 @@ const Landing = () => {
             <a className="link link-hover" href="mailto:charity@pawthereum.com" target="_blank" rel="noreferrer">Charity Outreach</a>
             <a className="link link-hover" href="https://pawthereum.com/charity-donations" target="_blank" rel="noreferrer">Donations</a>
             <a className="link link-hover" href="https://vote.pawthereum.com/">Vote</a>
+            <Script
+              src={`const BADGE_ID = ${process.env.NEXT_PUBLIC_ALCHEMY_BADGE_ID}`}
+              strategy="beforeInteractive"
+            />
+            <Script
+              src="https://static.alchemyapi.io/scripts/badge/alchemy-badge.js"
+              strategy="beforeInteractive"
+            />
+            <a href="#">
+              <img onclick={() => window?.logBadgeClick() || {}} id="badge-button" style={{ width: "240px", height: "53px" }} src="https://static.alchemyapi.io/images/marketing/badgeLight.png" alt="Alchemy Supercharged" />
+            </a>
           </div>
         </div>
       </footer>

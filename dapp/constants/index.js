@@ -77,7 +77,7 @@ export const validChains = [
     },
     testnet: true
   }
-].concat(defaultChains).filter(c => {
+].concat([]).filter(c => { // remove other chains for now // defaultChains).filter(c => {
   return process.env.NODE_ENV === 'production' ? !c.testnet : true
 });
 

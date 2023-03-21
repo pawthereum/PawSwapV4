@@ -30,7 +30,7 @@ export default function MenuTop() {
         </Link>
       </div> 
       <div className="flex-none">
-        <Chains />
+        {/* <Chains /> */}
         <Connect />
       </div>
     </div>
