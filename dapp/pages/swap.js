@@ -70,7 +70,7 @@ export default function Home() {
                 strategy="beforeInteractive"
               />
               <a href="#">
-                <img onclick={() => window?.logBadgeClick() || {}} id="badge-button" style={{ width: "240px", height: "53px" }} src="https://static.alchemyapi.io/images/marketing/badgeLight.png" alt="Alchemy Supercharged" />
+                <img onClick={() => window?.logBadgeClick() || {}} id="badge-button" style={{ width: "240px", height: "53px" }} src="https://static.alchemyapi.io/images/marketing/badgeLight.png" alt="Alchemy Supercharged" />
               </a>
             </div>
           </div>
